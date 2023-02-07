@@ -13,7 +13,7 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/logo"
         android:layout_marginBottom="16dp"/>
 
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="200dp"
         android:textColor="@color/black"
         android:fontFamily="serif-monospace"
         android:text="Bao Store"/>
