@@ -6,7 +6,7 @@
         android:startColor="#9BC9F2"
         android:endColor="#53AEE1"
         android:type="linear"
-        android:angle="@integer/material_motion_duration_long_2"
+        android:angle="270"
 
         />
     <size
