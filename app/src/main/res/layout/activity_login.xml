@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
     tools:context=".LoginActivity">
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/sivLogo"
         android:layout_width="160dp"
@@ -27,17 +28,114 @@
         android:fontFamily="serif-monospace"
         android:text="Bao Store"/>
 
+    <View
+        android:id="@+id/roundedView_login"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:layout_below="@+id/sivLogo"
+        android:background="@drawable/login_tab"/>
 
-    <ScrollView
-        android:id="@+id/scrollViewLogin"
+    <TextView
+        android:id="@+id/tvHeader_Login"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="Scroll"
-        android:layout_below="@+id/sivLogo">
-        <FrameLayout
-            android:id="@+id/flLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/sivLogo"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textColor="#3D5ED6"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:text="Đăng nhập" />
 
-    </ScrollView>
-</RelativeLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfUsername_Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:boxBackgroundColor="@color/white"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_below="@+id/tvHeader_Login"
+        android:hint="Tài khoản"
+        app:startIconDrawable="@drawable/ic_person"
+        app:startIconTint="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfPassword_Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_below="@+id/tfUsername_Login"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:boxBackgroundColor="@color/white"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Mật khẩu"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconTint="@color/black"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnToChangePass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tfPassword_Login"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:text="Quên mật khẩu"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnToChangePass"
+        android:text="Đăng nhập"/>
+
+    <TextView
+        android:id="@+id/tvNoAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:textSize="16dp"
+        android:text="Bạn chưa có tài khoản???"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvNoAccount"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:textStyle="bold|italic"
+        android:text="Đăng ký"/>
+    </RelativeLayout>
+</ScrollView>

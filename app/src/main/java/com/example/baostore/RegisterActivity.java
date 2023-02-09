@@ -5,49 +5,42 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnToRegister, btnToChangePass;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    MaterialButton btnCancel, btnReg;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        btnToRegister = findViewById(R.id.btnToRegister);
-        btnToChangePass = findViewById(R.id.btnToChangePass);
+        setContentView(R.layout.activity_register);
+        btnCancel = findViewById(R.id.btnCancelReg);
+        btnReg = findViewById(R.id.btnReg);
 
-        btnToRegister.setOnClickListener(this);
-        btnToChangePass.setOnClickListener(this);
+        btnCancel.setOnClickListener(view ->{startActivity(new Intent(this, LoginActivity.class));});
+
+        btnReg.setOnClickListener(view ->{startActivity(new Intent(this, LoginActivity.class));});
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnToRegister:
-                loadActivity(RegisterActivity.class);
-                break;
-            case R.id.btnToChangePass:
-                loadActivity(ChangePassActivity.class);
-                break;
+        switch (view.getId()) {
+            case R.id.btnCancelReg:
+                finish();
+            case R.id.btnReg:
+                finish();
+
         }
-    }
 
-    private void loadActivity(Class goTo){
-        Intent intent = new Intent(this, goTo);
-        startActivity(intent);
     }
-
 
     private void createSnackbar(View v, String msg){
         Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
