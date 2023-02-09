@@ -18,16 +18,18 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnToRegister, btnToChangePass;
+    Button btnToRegister, btnToChangePass,btnLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btnToRegister = findViewById(R.id.btnToRegister);
         btnToChangePass = findViewById(R.id.btnToChangePass);
+        btnLogin = findViewById(R.id.btnLogin);
 
         btnToRegister.setOnClickListener(this);
         btnToChangePass.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
 
     }
 
@@ -40,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnToChangePass:
                 loadActivity(ChangePassActivity.class);
                 break;
+            case R.id.btnLogin:
+                loadActivity(MainActivity.class);
         }
     }
 
