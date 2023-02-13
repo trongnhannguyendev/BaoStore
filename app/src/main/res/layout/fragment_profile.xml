@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4F4F4"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ProfileFragment">
 
@@ -60,6 +61,8 @@
                 android:textSize="16dp"
                 android:padding="8dp"
                 android:textColor="@color/black"
+                android:drawableRight="@drawable/ic_arrow_next"
+
                 android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
@@ -108,7 +111,7 @@
            android:layout_height="match_parent"
            android:background="@drawable/custom_button_1"
            android:text="Đăng xuất"
-
+            android:textColor="@color/white"
            android:textSize="20dp"
            android:textStyle="bold"
 
