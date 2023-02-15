@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             app:cardElevation="8dp">
 
             <LinearLayout
@@ -84,42 +84,47 @@
                             android:gravity="bottom"
                             android:paddingBottom="2dp">
 
-                            <androidx.cardview.widget.CardView
+                            <LinearLayout
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                app:cardBackgroundColor="#F1EEEE">
+                                android:background="#F1EEEE"
+                                android:gravity="center">
 
-                                <TextView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:gravity="center"
-                                    android:text="-"
-                                    android:textColor="@color/black" />
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_remove" />
+                            </LinearLayout>
 
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="@color/black" />
+                                android:gravity="center">
 
-                            <androidx.cardview.widget.CardView
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+
+                                    android:gravity="center"
+                                    android:text="1"
+
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                app:cardBackgroundColor="#F1EEEE">
+                                android:background="#F1EEEE"
+                                android:gravity="center">
 
-                                <TextView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:gravity="center"
-                                    android:text="+"
-                                    android:textColor="@color/black" />
-
-                            </androidx.cardview.widget.CardView>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_add" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <TextView
