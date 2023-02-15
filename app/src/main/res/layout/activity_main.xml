@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/custom_header"
@@ -32,7 +33,13 @@
                 android:textStyle="bold|italic" />
         </LinearLayout>
     </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/holo_red_light"
+        android:layout_below="@id/layoutHeader"
+        android:layout_height="match_parent">
 
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
