@@ -14,6 +14,7 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:orientation="vertical"
+          android:padding=""
           android:layout_height="match_parent">
           <androidx.cardview.widget.CardView
               android:id="@+id/layoutFormCart"
@@ -276,6 +277,7 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/layoutFormCart"
               android:layout_margin="10dp"
+
               app:cardCornerRadius="12dp">
 
               <LinearLayout
@@ -362,7 +364,6 @@
           </androidx.cardview.widget.CardView>
 
           <androidx.cardview.widget.CardView
-
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_below="@id/layoutFormFuncPayment"
@@ -406,45 +407,7 @@
                           android:layout_height="20dp"
                           android:src="@drawable/ic_arrow_down" />
                   </LinearLayout>
-                  <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_margin="5dp"
-                      android:visibility="gone"
-                      android:orientation="vertical">
 
-                      <androidx.cardview.widget.CardView
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_margin="5dp"
-                          app:cardBackgroundColor="#F3F6F9">
-
-                          <TextView
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:padding="8dp"
-
-                              android:text="Thanh toán khi nhận hàng"
-
-                              android:textColor="@color/black" />
-                      </androidx.cardview.widget.CardView>
-
-                      <androidx.cardview.widget.CardView
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_margin="5dp"
-                          app:cardBackgroundColor="#F3F6F9">
-
-                          <TextView
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:padding="8dp"
-
-                              android:text="Sử dụng ví Momo"
-
-                              android:textColor="@color/black" />
-                      </androidx.cardview.widget.CardView>
-                  </LinearLayout>
 
               </LinearLayout>
           </androidx.cardview.widget.CardView>
