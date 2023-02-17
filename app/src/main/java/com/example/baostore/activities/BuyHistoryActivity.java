@@ -1,21 +1,19 @@
 package com.example.baostore.activities;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.baostore.R;
 
-public class MainActivity extends AppCompatActivity {
+public class BuyHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_test_2);
 
-
+        setContentView(R.layout.activity_buy_history);
     }
 }

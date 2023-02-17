@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#F4F4F4"
+    android:orientation="vertical"
+    tools:context=".activities.UserInforActivity">
 
     <LinearLayout
         android:id="@+id/layoutHeader"
@@ -14,38 +16,44 @@
         android:gravity="center|bottom"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp">
+
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/custom_arrow_back"
                 android:src="@drawable/arrow_back" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Title"
-                android:textSize="24dp"
+                android:text="Lịch sử mua hàng"
                 android:textColor="@color/black"
+                android:textSize="24dp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
     </LinearLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:background="@android:color/holo_red_light"
-        android:layout_below="@id/layoutHeader"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bot_nav_menu" />
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
 
-
+        <androidx.constraintlayout.utils.widget.MotionButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_1"
+            android:text="Xác nhận"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+    </LinearLayout>
 </RelativeLayout>
