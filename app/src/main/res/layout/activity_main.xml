@@ -3,40 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#F4F4F4"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+   >
+   <include  android:id="@+id/myToolbar" layout="@layout/layout_toolbar"/>
 
-    <LinearLayout
-        android:id="@+id/layoutHeader"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/custom_header"
-        android:gravity="center|bottom"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/custom_arrow_back"
-                android:src="@drawable/arrow_back" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Title"
-                android:textSize="24dp"
-                android:textColor="@color/black"
-                android:textStyle="bold|italic" />
-        </LinearLayout>
-    </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@android:color/holo_red_light"
-        android:layout_below="@id/layoutHeader"
+
+        android:layout_below="@id/myToolbar"
         android:layout_height="match_parent">
 
     </FrameLayout>
@@ -45,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+
         app:menu="@menu/bot_nav_menu" />
 
 

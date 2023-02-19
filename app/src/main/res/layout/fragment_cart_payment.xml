@@ -6,8 +6,11 @@
     android:layout_height="match_parent"
     android:background="#F4F4F4"
     tools:context=".fragments.CartInforFragment">
+    <include android:id="@+id/layoutProgress" layout="@layout/layout_cart_progress" />
+
 
     <ScrollView
+        android:layout_below="@id/layoutProgress"
         android:layout_width="match_parent"
         android:layout_above="@id/layoutBotButton"
         android:layout_height="match_parent">
