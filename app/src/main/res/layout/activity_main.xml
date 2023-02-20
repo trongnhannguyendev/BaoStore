@@ -23,5 +23,4 @@
 
         app:menu="@menu/bot_nav_menu" />
 
-
 </RelativeLayout>
