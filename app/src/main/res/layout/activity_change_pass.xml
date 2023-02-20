@@ -8,41 +8,13 @@
     android:orientation="vertical"
     tools:context=".activities.UserInforActivity">
 
-    <LinearLayout
-        android:id="@+id/layoutHeader"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/custom_header"
-        android:gravity="center|bottom"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+    <include  android:id="@+id/myToolbar" layout="@layout/layout_toolbar"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/custom_arrow_back"
-                android:src="@drawable/arrow_back" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Thay đổi mật khẩu"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold|italic" />
-        </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutHeader"
+        android:layout_below="@id/myToolbar"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
