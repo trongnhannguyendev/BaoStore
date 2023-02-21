@@ -55,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.teal_700));
-        }
+
 
 
         // Thêm HomeFragment vào FrameLayout

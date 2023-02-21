@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@drawable/image_1">
 
     <RelativeLayout
@@ -30,7 +31,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/custom_form_background_login"
 
@@ -131,7 +132,7 @@
                     android:gravity="center">
 
                     <androidx.constraintlayout.utils.widget.MotionButton
-                        android:id="@+id/btn_login"
+                        android:id="@+id/btnLogin"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/custom_button_1"
@@ -150,7 +151,8 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_register"
+
+                    android:id="@+id/tvRegister"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

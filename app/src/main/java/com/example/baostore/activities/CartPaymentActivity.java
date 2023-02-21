@@ -23,8 +23,6 @@ public class CartPaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_payment);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.teal_700));
 
             // màu icon progress
             cvIconProgress = findViewById(R.id.cvProgress_3);
@@ -65,4 +63,3 @@ public class CartPaymentActivity extends AppCompatActivity {
             });
         }
     }
-}
