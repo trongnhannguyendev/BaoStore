@@ -56,8 +56,8 @@ public class CartInforActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
                 startActivity(i);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
+
+
             }
         });
     }
