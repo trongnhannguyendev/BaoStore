@@ -9,14 +9,16 @@
    <include  android:id="@+id/myToolbar" layout="@layout/layout_toolbar"/>
 
     <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-
+        android:layout_above="@id/myBottomNav"
         android:layout_below="@id/myToolbar"
         android:layout_height="match_parent">
 
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/myBottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
