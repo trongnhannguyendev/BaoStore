@@ -7,14 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.constraintlayout.utils.widget.MotionButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.baostore.R;
+import com.example.baostore.activities.CartInforActivity;
+import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.UserInforActivity;
 
 
 public class ProfileFragment extends Fragment {
     LinearLayout btnUserInfor;
+    MotionButton btnLogOut;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,6 +33,17 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), UserInforActivity.class);
                 startActivity(i);
+            }
+        });
+
+        // Đăng xuất
+        btnLogOut=view.findViewById(R.id.btnLogOut);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+               getActivity().finish();
             }
         });
 

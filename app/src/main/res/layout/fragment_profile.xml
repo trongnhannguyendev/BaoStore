@@ -114,6 +114,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp">
         <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnLogOut"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:background="@drawable/custom_button_1"

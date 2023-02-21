@@ -20,9 +20,7 @@ public class UserInforActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_infor);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.teal_700));
-        }
+
         //header
         tvTitleHeader=findViewById(R.id.title);
         tvTitleHeader.setText("Thông tin cá nhân");
