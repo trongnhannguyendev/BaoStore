@@ -41,10 +41,6 @@ public class CartFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CartInforActivity.class);
                 startActivity(i);
-
-
-
-
             }
         });
 

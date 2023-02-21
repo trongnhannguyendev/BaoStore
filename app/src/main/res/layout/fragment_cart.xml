@@ -51,9 +51,9 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_alignParentBottom="true"
-           android:layout_marginBottom="8dp"
+
            android:gravity="center"
-           android:padding="5dp">
+           android:padding="10dp">
            <androidx.constraintlayout.utils.widget.MotionButton
                android:id="@+id/btnComnfirmCart"
                android:layout_width="match_parent"
