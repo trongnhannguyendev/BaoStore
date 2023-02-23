@@ -1,7 +1,11 @@
 package com.example.baostore.Api;
 
 import com.example.baostore.models.User;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Result {
 
@@ -11,12 +15,16 @@ public class Result {
     @SerializedName("message")
     private String message;
 
-    @SerializedName("user")
-    private User user;
+    @SerializedName("respone_code")
+    private int responseCode;
 
-    public Result(Boolean error, String message, User user) {
+    @SerializedName("data")
+    private JsonArray user;
+
+    public Result(Boolean error, String message, int responseCode, JsonArray user) {
         this.error = error;
         this.message = message;
+        this.responseCode = responseCode;
         this.user = user;
     }
 
@@ -28,7 +36,11 @@ public class Result {
         return message;
     }
 
-    public User getUser() {
+    public int getResponseCode(){
+        return responseCode;
+    }
+
+    public JsonArray getUser() {
         return user;
     }
 }
