@@ -19,9 +19,10 @@ public class Result {
     private int responseCode;
 
     @SerializedName("data")
-    private JsonArray user;
+    private JsonArray data;
+    private User user;
 
-    public Result(Boolean error, String message, int responseCode, JsonArray user) {
+    public Result(Boolean error, String message, int responseCode, User user) {
         this.error = error;
         this.message = message;
         this.responseCode = responseCode;
@@ -40,7 +41,15 @@ public class Result {
         return responseCode;
     }
 
-    public JsonArray getUser() {
+    public User getUser() {
+        JsonArray myArr = data;
+        JsonObject jsonObject1 = myArr.get(0).getAsJsonObject();
+
+        int id = Integer.parseInt(jsonObject1.get("userID").toString());
+        String email = jsonObject1.get("email").toString();
+        String fullName = jsonObject1.get("fullName").toString();
+        String phonenumber = jsonObject1.get("phoneNumber").toString();
+        User user = new User(id, email, fullName, phonenumber);
         return user;
     }
 }
