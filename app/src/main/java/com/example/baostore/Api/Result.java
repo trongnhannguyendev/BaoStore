@@ -5,8 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Result {
 
     @SerializedName("error")
@@ -49,7 +47,6 @@ public class Result {
         String email = jsonObject1.get("email").toString();
         String fullName = jsonObject1.get("fullName").toString();
         String phonenumber = jsonObject1.get("phoneNumber").toString();
-        User user = new User(id, email, fullName, phonenumber);
-        return user;
+        return new User(id, email, fullName, phonenumber);
     }
 }
