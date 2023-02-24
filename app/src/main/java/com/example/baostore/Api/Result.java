@@ -1,5 +1,7 @@
 package com.example.baostore.Api;
 
+import android.util.Log;
+
 import com.example.baostore.models.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -43,10 +45,10 @@ public class Result {
         JsonArray myArr = data;
         JsonObject jsonObject1 = myArr.get(0).getAsJsonObject();
 
-        int id = Integer.parseInt(jsonObject1.get("userID").toString());
-        String email = jsonObject1.get("email").toString();
-        String fullName = jsonObject1.get("fullName").toString();
-        String phonenumber = jsonObject1.get("phoneNumber").toString();
+        int id = jsonObject1.get("userID").getAsInt();
+        String email = jsonObject1.get("email").getAsString();
+        String fullName = jsonObject1.get("fullName").getAsString();
+        String phonenumber = jsonObject1.get("phoneNumber").getAsString();
         return new User(id, email, fullName, phonenumber);
     }
 }
