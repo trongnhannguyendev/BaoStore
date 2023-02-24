@@ -5,14 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F4F4"
-    tools:context=".fragments.CartInforFragment">
+   >
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:id="@+id/layoutHeader"
+      android:layout_height="wrap_content">
+      <include  android:id="@+id/myToolbar"
+          layout="@layout/layout_toolbar"/>
+  </LinearLayout>
 
-    <include android:id="@+id/layoutProgress" layout="@layout/layout_cart_progress" />
+ <LinearLayout
+     android:id="@+id/layoutProgress"
+     android:layout_below="@id/layoutHeader"
+     android:layout_width="match_parent"
+     android:layout_margin="10dp"
+     android:layout_height="wrap_content">
+     <include
+         android:id="@+id/myProgress"
+         layout="@layout/layout_cart_progress" />
+ </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_below="@id/layoutProgress"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp">
@@ -89,11 +106,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp"
+
         android:gravity="center"
-        android:padding="5dp">
+        android:padding="10dp">
 
         <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnConfirmCartInfor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

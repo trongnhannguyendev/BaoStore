@@ -4,21 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
-    tools:context=".fragments.CartInforFragment">
-    <include android:id="@+id/layoutProgress" layout="@layout/layout_cart_progress" />
+    android:background="#F4F4F4">
 
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/myToolbar"
+            layout="@layout/layout_toolbar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutHeader"
+        android:layout_margin="10dp">
+
+        <include
+            android:id="@+id/myProgress"
+            layout="@layout/layout_cart_progress" />
+    </LinearLayout>
 
     <ScrollView
-        android:layout_below="@id/layoutProgress"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/layoutBotButton"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
+        android:layout_below="@id/layoutProgress"
+     >
 
-            android:layout_height="match_parent">
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/layoutFormCart"
                 android:layout_width="match_parent"
@@ -280,8 +303,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFormCart"
                 android:layout_margin="10dp"
-                app:cardElevation="5dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -328,8 +351,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
@@ -372,9 +395,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFormFuncPayment"
                 android:layout_marginLeft="10dp"
-                app:cardElevation="5dp"
                 android:layout_marginRight="10dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -412,45 +435,7 @@
                             android:layout_height="20dp"
                             android:src="@drawable/ic_arrow_down" />
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            app:cardBackgroundColor="#F3F6F9">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="8dp"
-
-                                android:text="Thanh toán khi nhận hàng"
-
-                                android:textColor="@color/black" />
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            app:cardBackgroundColor="#F3F6F9">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="8dp"
-
-                                android:text="Sử dụng ví Momo"
-
-                                android:textColor="@color/black" />
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -464,9 +449,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp"
+
         android:gravity="center"
-        android:padding="5dp">
+        android:padding="10dp">
 
         <androidx.constraintlayout.utils.widget.MotionButton
             android:layout_width="match_parent"
