@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Log.d("-------------", t.getMessage()+"");
+                Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
             }
         });
     }
