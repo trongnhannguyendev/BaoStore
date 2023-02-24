@@ -3,6 +3,7 @@ package com.example.baostore.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class activity_login extends AppCompatActivity {
+public class activity_login extends AppCompatActivity implements View.OnClickListener {
     EditText edEmail,edPassword;
     TextView tvToChangePass,tvToReg;
     Button btnLogin;
@@ -45,17 +46,24 @@ public class activity_login extends AppCompatActivity {
         tvToReg = findViewById(R.id.tv_register);
         tvToChangePass = findViewById(R.id.tvToChangePass);
 
-        btnLogin.setOnClickListener(view ->{
+        btnLogin.setOnClickListener(this);
+        tvToReg.setOnClickListener(this);
+        tvToChangePass.setOnClickListener(this);
 
-            login();
-
-        });
-
-        tvToReg.setOnClickListener(view -> startActivity(new Intent(this, activity_register.class)));
-
-        tvToChangePass.setOnClickListener(view ->{startActivity(new Intent(this, ChangePassActivity.class));});
-
-
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_login:
+                login();
+                break;
+            case R.id.tv_register:
+                startActivity(new Intent(this, activity_register.class));
+                break;
+            case R.id.tvToChangePass:
+                startActivity(new Intent(this, ChangePassActivity.class));
+                break;
+        }
     }
 
     private void login(){
@@ -107,5 +115,6 @@ public class activity_login extends AppCompatActivity {
             }
         });
     }
+
 
 }
