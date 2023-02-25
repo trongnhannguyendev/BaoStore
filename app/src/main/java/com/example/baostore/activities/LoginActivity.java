@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /*
     private void login(){
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
@@ -97,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("-------------", response.body().getError()+"");
                         Log.d("-------------", response.body().getMessage()+"");
                         Log.d("-------------", response.body().getResponseCode()+"");
-                        Log.d("-------------", response.body().getUser()+"");
                         if(response.body().getResponseCode() == 1) {
                             SharedPrefManager.getInstance(getApplicationContext()).userLogin(response.body().getUser());
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -122,6 +122,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
 
 }

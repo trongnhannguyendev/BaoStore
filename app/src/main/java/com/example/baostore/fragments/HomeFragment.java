@@ -1,19 +1,14 @@
 package com.example.baostore.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.ApiUrl;
-import com.example.baostore.Api.BookResult;
 import com.example.baostore.DAOs.TempBookDAO;
 import com.example.baostore.R;
 import com.example.baostore.adapters.Book2Adapter;
@@ -22,12 +17,6 @@ import com.example.baostore.models.Book;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeFragment extends Fragment {
@@ -72,6 +61,7 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /*
     private void getBooks() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -81,12 +71,25 @@ public class HomeFragment extends Fragment {
 
         ApiService service = retrofit.create(ApiService.class);
 
-        Call<BookResult> call = service.getbook();
-        call.enqueue(new Callback<BookResult>() {
+        Call<Result> call = service.getbook();
+        call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<BookResult> call, Response<BookResult> response) {
-                list_book = response.body().getBook();
-                Log.d("-----------------------fragment",list_book.get(0).getTitle());
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                JsonArray myArr = response.body().getData();
+
+                Log.d("------------------------", myArr.size()+"");
+                for(JsonElement jsonElement: myArr){
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    int bookID = jsonObject.get("bookid").getAsInt();
+                    String title = jsonObject.get("title").getAsString();
+                    double price = jsonObject.get("price").getAsDouble();
+                    String url = jsonObject.get("url").getAsString();
+
+                    Book book = new Book(bookID,title, price,url);
+                    Log.d("--------------------",book.getTitle());
+                    list_book.add(book);
+
+                }
 
 
                 adapter = new BookAdapter(list_book,getContext());
@@ -96,14 +99,16 @@ public class HomeFragment extends Fragment {
                 recyBook_New.setAdapter(book2Adapter);
 
                 adapter.notifyDataSetChanged();
+                book2Adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<BookResult> call, Throwable t) {
+            public void onFailure(Call<Result> call, Throwable t) {
                 Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
             }
 
 
         });
-    }
+        }
+     */
 }
