@@ -22,11 +22,11 @@ public class Result {
     private JsonArray data;
     private User user;
 
-    public Result(Boolean error, String message, int responseCode, User user) {
+    public Result(Boolean error, String message, int responseCode, JsonArray data) {
         this.error = error;
         this.message = message;
         this.responseCode = responseCode;
-        this.user = user;
+        this.data = data;
     }
 
     public Boolean getError() {
@@ -39,6 +39,10 @@ public class Result {
 
     public int getResponseCode(){
         return responseCode;
+    }
+
+    public JsonArray getData(){
+        return data;
     }
 
     public User getUser() {

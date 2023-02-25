@@ -10,7 +10,9 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     @GET("get-all-book.php")
-    Call<BookResult> getbook();
+    Call<Result> getbook();
+
+
 
 
     @POST("check-login.php")
