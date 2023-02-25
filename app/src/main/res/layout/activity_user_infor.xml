@@ -25,6 +25,7 @@
 
 
         <EditText
+            android:id="@+id/edFullname_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -37,6 +38,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edPhoneNumber_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -49,6 +51,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edAddress_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -64,6 +67,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edMail_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
