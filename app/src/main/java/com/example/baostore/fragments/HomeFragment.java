@@ -19,6 +19,7 @@ import com.example.baostore.Api.ApiUrl;
 import com.example.baostore.Api.BookResult;
 import com.example.baostore.Api.Result;
 import com.example.baostore.R;
+import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Book;
 
@@ -42,15 +43,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
     List<Book> list_book;
-    RecyclerView recyBook_Popular;
+    RecyclerView recyBook_Popular, recyBook_New;
     BookAdapter adapter;
+    Book2Adapter book2Adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_home, container, false);
+
         list_book = new ArrayList<>();
+
         recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
+        recyBook_New = v.findViewById(R.id.recyBook_new);
+
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         adapter = new BookAdapter(list_book,getContext());
         recyBook_Popular.setAdapter(adapter);
 
@@ -73,8 +82,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<BookResult> call, Response<BookResult> response) {
                 list_book = response.body().getBook();
+
                 adapter = new BookAdapter(list_book,getContext());
+                book2Adapter = new Book2Adapter(list_book,getContext());
+
                 recyBook_Popular.setAdapter(adapter);
+                recyBook_New.setAdapter(book2Adapter);
+
                 adapter.notifyDataSetChanged();
             }
 

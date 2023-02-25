@@ -50,6 +50,7 @@ public class BookResult {
     public List<Book> getBook() {
         JsonArray myArr = data;
         List<Book> list = new ArrayList<>();
+        Log.d("------------------------", myArr.size()+"");
         for(JsonElement jsonElement: myArr){
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             int bookID = jsonObject.get("bookid").getAsInt();
