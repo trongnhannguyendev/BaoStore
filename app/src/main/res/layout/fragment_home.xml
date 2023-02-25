@@ -166,19 +166,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyBook_new"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
 
                 </LinearLayout>

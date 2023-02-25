@@ -3,8 +3,6 @@ package com.example.baostore.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.models.Book;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.net.URL;
 import java.util.List;
 
-public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
+public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
 
     private List<Book> list;
     Context context;
 
-    public BookAdapter(List<Book> list, Context context) {
+    public Book2Adapter(List<Book> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -35,16 +31,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Book2Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
-        View v = inflater.inflate(R.layout.item_layout_2, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(v);
+        View v = inflater.inflate(R.layout.item_layout_1, parent, false);
+        Book2Adapter.MyViewHolder viewHolder = new Book2Adapter.MyViewHolder(v);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Book2Adapter.MyViewHolder holder, int position) {
         Book book = list.get(position);
         holder.tvTitle.setText(book.getTitle());
         holder.tvPrice.setText(String.valueOf(book.getPrice()));
@@ -102,7 +98,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         }
         return bmp;
     }
-
 
 
 }
