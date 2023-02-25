@@ -6,6 +6,7 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,10 +17,9 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.ApiUrl;
 import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
+import com.example.baostore.DAOs.TempUserDAO;
 import com.example.baostore.R;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,10 +31,14 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvRegister;
     MotionButton btnLogin;
     EditText edEmail,edPassword;
+    TempUserDAO tempUserDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -55,10 +59,15 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin=findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
+        tempUserDAO = new TempUserDAO(this, this);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                String email = edEmail.getText().toString().trim();
+                String password = edPassword.getText().toString().trim();
+
+                tempUserDAO.login(email, password);
             }
         });
     }
@@ -113,4 +122,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

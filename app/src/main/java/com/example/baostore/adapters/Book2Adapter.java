@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +36,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
         View v = inflater.inflate(R.layout.item_layout_1, parent, false);
-        Book2Adapter.MyViewHolder viewHolder = new Book2Adapter.MyViewHolder(v);
+        MyViewHolder viewHolder = new MyViewHolder(v);
         return viewHolder;
     }
 
@@ -61,6 +62,12 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
         });
         thread.start();
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, book.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
