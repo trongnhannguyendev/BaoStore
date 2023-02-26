@@ -45,14 +45,5 @@ public class Result {
         return data;
     }
 
-    public User getUser() {
-        JsonArray myArr = data;
-        JsonObject jsonObject1 = myArr.get(0).getAsJsonObject();
 
-        int id = jsonObject1.get("userID").getAsInt();
-        String email = jsonObject1.get("email").getAsString();
-        String fullName = jsonObject1.get("fullName").getAsString();
-        String phonenumber = jsonObject1.get("phoneNumber").getAsString();
-        return new User(id, email, fullName, phonenumber);
-    }
 }

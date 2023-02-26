@@ -12,6 +12,7 @@ import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
+import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -22,10 +23,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TempUserDAO extends AsyncTask<String,Void,String> {
+public class TempUserDAO {
     private final Context context;
     public int responseCode = -1;
     LoginActivity loginActivity;
+    User user;
+    Address address;
 
     public TempUserDAO(Context context, LoginActivity loginActivity) {
         this.context = context;
@@ -64,7 +67,7 @@ public class TempUserDAO extends AsyncTask<String,Void,String> {
                                 String email = jsonObject1.get("email").getAsString();
                                 String fullName = jsonObject1.get("fullName").getAsString();
                                 String phonenumber = jsonObject1.get("phoneNumber").getAsString();
-                                User user = new User(id, email, fullName, phonenumber);
+                                user = new User(id, email, fullName, phonenumber);
 
 
                                 SharedPrefManager.getInstance(context).userLogin(user);
@@ -95,8 +98,5 @@ public class TempUserDAO extends AsyncTask<String,Void,String> {
     }
 
 
-    @Override
-    protected String doInBackground(String... strings) {
-        return null;
-    }
+
 }
