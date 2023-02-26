@@ -12,7 +12,10 @@ public interface ApiService {
     @GET("get-all-book.php")
     Call<Result> getbook();
 
-
+    @POST("get-all-adress-by-user.php")
+    Call<Result> getAddressByUser(
+            @Body JsonObject jsonObject
+    );
 
 
     @POST("check-login.php")
