@@ -1,19 +1,19 @@
 package com.example.baostore.models;
 
 public class Category {
-    private String categoryID;
+    private int categoryID;
     private String categoryName;
 
-    public Category(String categoryID, String categoryName) {
+    public Category(int categoryID, String categoryName) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
     }
 
-    public String getCategoryID() {
+    public int getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(String categoryID) {
+    public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
 

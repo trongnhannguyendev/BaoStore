@@ -54,7 +54,8 @@ public class TempBookDAO {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                JsonArray myArr = response.body().getData();
+                JsonElement element = response.body().getData();
+                JsonArray myArr = element.getAsJsonArray();
 
                 Log.d("------------------------", myArr.size()+"");
                 for(JsonElement jsonElement: myArr){
@@ -68,6 +69,8 @@ public class TempBookDAO {
                     Log.d("--------------------",book.getTitle());
                     list_book.add(book);
 
+
+
                 }
 
 
@@ -79,14 +82,18 @@ public class TempBookDAO {
 
                 adapter.notifyDataSetChanged();
                 book2Adapter.notifyDataSetChanged();
+
+
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                Log.d("----------------------",t.toString());
             }
-
-
-        });
+        }
+        );
     }
+
+
 }
