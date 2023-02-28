@@ -71,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
 
+
+
                 tempUserDAO.login(email, password);
             }
         });

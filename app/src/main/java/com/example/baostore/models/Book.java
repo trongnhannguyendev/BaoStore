@@ -14,6 +14,8 @@ public class Book {
     private int state;
     private String url;
 
+    public Book(){}
+
     public Book(int bookID, String title, double price, String url) {
         this.bookID = bookID;
         this.title = title;

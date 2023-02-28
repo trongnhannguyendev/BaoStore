@@ -100,6 +100,7 @@ public class UserInforActivity extends AppCompatActivity {
                         Log.d("-------------", response.body().getMessage() + "");
                         Log.d("-------------", response.body().getResponseCode() + "");
                         if (response.body().getResponseCode() == 1) {
+                            /*
                             JsonArray myArr = response.body().getData();
                             JsonObject jsonObject1 = myArr.get(0).getAsJsonObject();
 
@@ -109,6 +110,8 @@ public class UserInforActivity extends AppCompatActivity {
                             edAddress.setText(address.getAddressLocation());
 
 
+
+                             */
                         } else {
                             Toast.makeText(UserInforActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                         }
