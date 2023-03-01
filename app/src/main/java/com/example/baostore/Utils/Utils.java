@@ -1,8 +1,12 @@
 package com.example.baostore.Utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.baostore.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -70,4 +74,6 @@ public class Utils {
         }
         return bmp;
     }
+
+
 }

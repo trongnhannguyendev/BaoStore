@@ -18,6 +18,7 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.models.User;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -53,12 +54,23 @@ public class ChangePassActivity extends AppCompatActivity {
 
     }
 
+
+
     private void changePass(){
         boolean hasError = false;
 
-        String oldPass = edOldPass.getText().toString();
-        String newPass = edNewPass.getText().toString();
-        String reNewPass = edReNewPass.getText().toString();
+        String oldPass = edOldPass.getText().toString().trim();
+        String newPass = edNewPass.getText().toString().trim();
+        String reNewPass = edReNewPass.getText().toString().trim();
+
+        if(!newPass.equals(reNewPass)){
+            Toast.makeText(this, getResources().getString(R.string.pass_not_equal_repass), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(oldPass.isEmpty() || newPass.isEmpty()){
+            Toast.makeText(this, getResources().getString(R.string.no_pass)+"", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApiUrl.BASE)
@@ -72,73 +84,53 @@ public class ChangePassActivity extends AppCompatActivity {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email",user.getEmail());
+        jsonObject.addProperty("password",oldPass);
 
-        Call<Result> call = service.checkUserEmailExist(jsonObject);
 
-        /*
-        call.enqueue(new Callback<Result>() {
+
+        Call<Result> loginCall = service.userLogin(jsonObject);
+
+        loginCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                try {
-                    if (!response.body().getError()) {
-                        Log.d("-------------", response.body().getError()+"");
-                        Log.d("-------------", response.body().getMessage()+"");
-                        Log.d("-------------", response.body().getResponseCode()+"");
-                        if(response.body().getResponseCode() == 1) {
-                            JsonArray array = response.body().getData();
-                            JsonObject getUSer = array.get(0).getAsJsonObject();
-                            String password = getUSer.get("password").getAsString();
+                if(response.body().getResponseCode() == 1){
 
-                            if(password != oldPass){
-                                Toast.makeText(ChangePassActivity.this, "Wrong pass", Toast.LENGTH_SHORT).show();
-                                return;
+
+                    JsonObject updateObj = new JsonObject();
+                    updateObj.addProperty("email",user.getEmail());
+                    updateObj.addProperty("password",newPass);
+                    Call<Result> updateCall = service.updatePassword(updateObj);
+                    updateCall.enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+                            int responseCode = response.body().getResponseCode();
+                            Log.d("-------------------",response.body().getMessage());
+                            if(responseCode == 1){
+                                Toast.makeText(ChangePassActivity.this, "update successful", Toast.LENGTH_SHORT).show();
+
                             }
-                            if(newPass != reNewPass) {
-                                Toast.makeText(ChangePassActivity.this, "New pass not equal", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("password",newPass);
-
-                            Call<Result> changePassCall = service.updatePassword(jsonObject);
-
-                            changePassCall.enqueue(new Callback<Result>() {
-                                @Override
-                                public void onResponse(Call<Result> call, Response<Result> response) {
-                                    if(response.body().getResponseCode() == 1){
-                                        Toast.makeText(ChangePassActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Result> call, Throwable t) {
-                                    Toast.makeText(ChangePassActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-
-                        } else{
-                            Toast.makeText(ChangePassActivity.this, response.body().getMessage()+"", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Log.d("-------------", response.body().getError()+"");
-                        Log.d("-------------", response.body().getMessage()+"");
-                    }
-                } catch (Exception e){
-                    Toast.makeText(ChangePassActivity.this, "Cant get response body error", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+
+                        @Override
+                        public void onFailure(Call<Result> call, Throwable t) {
+
+                        }
+                    });
+                } else{
+                    Toast.makeText(ChangePassActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                Log.d("-------------", t.getMessage()+"");
-                Toast.makeText(ChangePassActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+
             }
         });
 
-         */
+
+
+
+
     }
 
 

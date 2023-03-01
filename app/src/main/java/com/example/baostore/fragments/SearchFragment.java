@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment {
         searchList.clear();
         Log.d("----------------------",find);
         for (int i = 0; i < list_book.size(); i++) {
-            Book book = new Book();
+            Book book;
             book = list_book.get(i);
             find = find.toLowerCase();
             if(book.getTitle().toLowerCase().contains(find)){
