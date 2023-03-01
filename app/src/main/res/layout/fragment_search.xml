@@ -23,14 +23,10 @@
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:hint="Bạn muốn tìm gì ?"
+            app:iconifiedByDefault="false"
             android:lines="1"
             android:maxLines="1" />
 
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_search"
-            app:tint="#8C8C8C" />
 
     </LinearLayout>
 

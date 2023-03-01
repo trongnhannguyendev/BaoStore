@@ -3,6 +3,7 @@ package com.example.baostore.fragments;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment {
     Book2Adapter book2Adapter;
     TempBookDAO tempBookDAO;
     TempCategoryDAO tempCategoryDAO;
+    LinearLayout btnSearchNew, btnSearchPopular;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +52,8 @@ public class HomeFragment extends Fragment {
         recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
         recyBook_New = v.findViewById(R.id.recyBook_new);
         recyCategory = v.findViewById(R.id.recyCategory);
+        btnSearchNew = v.findViewById(R.id.btnSearchNew);
+        btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
 
         tempBookDAO = new TempBookDAO(getContext(),this,recyBook_Popular,recyBook_New);
         tempCategoryDAO = new TempCategoryDAO(getContext(), recyCategory);
@@ -61,9 +66,23 @@ public class HomeFragment extends Fragment {
         tempBookDAO.getBooks();
         tempCategoryDAO.getCategory();
 
+        btnSearchNew.setOnClickListener(view->{
+            Fragment fragment = new SearchFragment();
+            loadFragment(fragment);
+        });
+
+        btnSearchPopular.setOnClickListener(view ->{
+            Fragment fragment = new SearchFragment();
+            loadFragment(fragment);
+        });
 
 
         return v;
+    }
+
+    public void loadFragment(Fragment fragment){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
     public void showBooks(){
