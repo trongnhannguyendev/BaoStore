@@ -25,6 +25,7 @@
         android:padding="15dp">
 
         <EditText
+            android:id="@+id/edOldPass_cp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
@@ -34,6 +35,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edNewPass_cp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
@@ -43,6 +45,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edReNewPass_cp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
@@ -63,6 +66,7 @@
         android:gravity="center">
 
         <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnChangePass_cp"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_1"

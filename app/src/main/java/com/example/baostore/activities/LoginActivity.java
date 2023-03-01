@@ -37,12 +37,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+
+        // Kiem tra da dang nhap truoc do
+        if(SharedPrefManager.getInstance(this).isLoggedIn()){
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
         }
 
         // Chuyển màn hình Register
@@ -66,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
+
+
 
                 tempUserDAO.login(email, password);
             }

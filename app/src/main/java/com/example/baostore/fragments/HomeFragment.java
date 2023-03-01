@@ -3,6 +3,7 @@ package com.example.baostore.fragments;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,53 +16,73 @@ import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.DAOs.TempBookDAO;
+import com.example.baostore.DAOs.TempCategoryDAO;
 import com.example.baostore.R;
 
 import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Book;
+import com.example.baostore.models.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.firebase.database.core.Tag;
-
-
-
 public class HomeFragment extends Fragment {
     List<Book> list_book;
-    RecyclerView recyBook_Popular, recyBook_New;
+    List<Category> list_category;
+    RecyclerView recyBook_Popular, recyBook_New, recyCategory;
     BookAdapter adapter;
     Book2Adapter book2Adapter;
     TempBookDAO tempBookDAO;
+    TempCategoryDAO tempCategoryDAO;
+    LinearLayout btnSearchNew, btnSearchPopular;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
- dang
         View v =inflater.inflate(R.layout.fragment_home, container, false);
 
         list_book = new ArrayList<>();
+        list_category= new ArrayList<>();
 
         recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
         recyBook_New = v.findViewById(R.id.recyBook_new);
+        recyCategory = v.findViewById(R.id.recyCategory);
+        btnSearchNew = v.findViewById(R.id.btnSearchNew);
+        btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
 
         tempBookDAO = new TempBookDAO(getContext(),this,recyBook_Popular,recyBook_New);
+        tempCategoryDAO = new TempCategoryDAO(getContext(), recyCategory);
 
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        recyCategory.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
 
         tempBookDAO.getBooks();
+        tempCategoryDAO.getCategory();
 
-        recyBook_Popular.setAdapter(adapter);
-        recyBook_New.setAdapter(book2Adapter);
+        btnSearchNew.setOnClickListener(view->{
+            Fragment fragment = new SearchFragment();
+            loadFragment(fragment);
+        });
+
+        btnSearchPopular.setOnClickListener(view ->{
+            Fragment fragment = new SearchFragment();
+            loadFragment(fragment);
+        });
+
 
         return v;
+    }
+
+    public void loadFragment(Fragment fragment){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
     public void showBooks(){
@@ -73,13 +94,15 @@ public class HomeFragment extends Fragment {
         recyBook_New.setAdapter(book2Adapter);
 
         adapter.notifyDataSetChanged();
-
+/*
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
         NestedScrollView nestedScrollView = view.findViewById(R.id.myScrollView);
         LinearLayout layout1 = view.findViewById(R.id.layout_category_1);
         LinearLayout layout2 = view.findViewById(R.id.layout_category_2);
+
+
 
 
 
@@ -120,6 +143,8 @@ public class HomeFragment extends Fragment {
 
         return view;
 
+
+ */
     }
 
     /*

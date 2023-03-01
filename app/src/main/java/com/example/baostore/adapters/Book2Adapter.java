@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.Book;
 
 import java.net.URL;
@@ -43,9 +44,13 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull Book2Adapter.MyViewHolder holder, int position) {
         Book book = list.get(position);
+
+        Utils utils = new Utils();
+        String price = utils.priceToString(book.getPrice());
+
         holder.tvTitle.setText(book.getTitle());
-        holder.tvPrice.setText(String.valueOf(book.getPrice()));
-        holder.tvSalePrice.setText(String.valueOf(book.getPrice()));
+        holder.tvPrice.setText(price);
+        holder.tvSalePrice.setText(price);
         holder.ivBook.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Thread thread = new Thread(new Runnable() {

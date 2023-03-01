@@ -72,6 +72,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnSearchPopular"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
 
@@ -127,6 +128,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/btnSearchNew"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -166,7 +168,14 @@
                     android:layout_width="match_parent"
                     android:background="@color/white"
                     android:layout_height="wrap_content">
-                    <include layout="@layout/layout_category" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
                 </LinearLayout>
 
                 <LinearLayout
