@@ -8,19 +8,9 @@ public class User {
     private String phoneNumber;
 
 
-    public User(int userID, String email, String password, String fullname, String phoneNumber) {
-        this.userID = userID;
-        this.email = email;
-        this.password = password;
-        this.fullname = fullname;
-        this.phoneNumber = phoneNumber;
-    }
 
-    public User(int userID, String email, String fullname, String phoneNumber) {
-        this.userID = userID;
-        this.email = email;
-        this.fullname = fullname;
-        this.phoneNumber = phoneNumber;
+
+    public User() {
     }
 
     public int getUserID() {
