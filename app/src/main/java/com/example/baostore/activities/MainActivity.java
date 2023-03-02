@@ -10,7 +10,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -119,7 +121,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
-
+    // Nhấn back 2 lần để thoát app
+    boolean canExit = false;
+    @Override
+    public void onBackPressed() {
+        if(canExit) {
+            super.onBackPressed();
+        } else{
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            canExit = !canExit;
+        }
+    }
 }

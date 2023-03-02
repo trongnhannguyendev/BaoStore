@@ -130,4 +130,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 */
 
+    // Nhấn back 2 lần để thoát app
+    boolean canExit = false;
+    @Override
+    public void onBackPressed() {
+        if(canExit) {
+            super.onBackPressed();
+        } else{
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            canExit = !canExit;
+        }
+    }
+
 }
