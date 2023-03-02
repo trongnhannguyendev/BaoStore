@@ -30,8 +30,9 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     TextView tvRegister;
     MotionButton btnLogin;
-    EditText edEmail,edPassword;
+    EditText edEmail, edPassword;
     UserDAO userDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +45,17 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Chuyển màn hình Register
-        tvRegister=findViewById(R.id.tvRegister);
+        tvRegister = findViewById(R.id.tvRegister);
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
         });
 
         // Xử lí Đăng nhập
-        btnLogin=findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
         userDAO = new UserDAO(this);
@@ -71,39 +72,34 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login(String email, String password){
+    public void login(String email, String password) {
         ApiService service = new GetRetrofit().getRetrofit();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_EMAIL,email);
-        jsonObject.addProperty(USER_PASSWORD,password);
+        jsonObject.addProperty(USER_EMAIL, email);
+        jsonObject.addProperty(USER_PASSWORD, password);
 
         Call<Result> call = service.userLogin(jsonObject);
 
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                    if (!response.body().getError()) {
-                        Log.d("-------------", response.body().getError() + "");
-                        Log.d("-------------", response.body().getMessage() + "");
-                        Log.d("-------------", response.body().getResponseCode() + "");
-                        if (response.body().getResponseCode() == 1) {
-                            JsonElement element = response.body().getData();
-                            JsonArray array = element.getAsJsonArray();
-                            JsonObject object = array.get(0).getAsJsonObject();
-                            userDAO.saveLoginInfo(object);
+                int responseCode = response.body().getResponseCode();
+                Log.d("-------------", response.body().getError() + "");
+                Log.d("-------------", response.body().getMessage() + "");
+                Log.d("-------------", response.body().getResponseCode() + "");
 
-                            finish();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                    JsonElement element = response.body().getData();
+                    JsonArray array = element.getAsJsonArray();
+                    JsonObject object = array.get(0).getAsJsonObject();
+                    userDAO.saveLoginInfo(object);
 
-                        } else {
-                            Toast.makeText(LoginActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } else {
-                        Log.d("-------------", response.body().getError() + "");
-                        Log.d("-------------", response.body().getMessage() + "");
-                    }
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+                    Toast.makeText(LoginActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -117,11 +113,12 @@ public class LoginActivity extends AppCompatActivity {
 
     // Nhấn back 2 lần để thoát app
     boolean canExit = false;
+
     @Override
     public void onBackPressed() {
-        if(canExit) {
+        if (canExit) {
             super.onBackPressed();
-        } else{
+        } else {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
             canExit = !canExit;
         }

@@ -66,9 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
             String phoneNumber = edPhoneNumber.getText().toString();
             String fullname = edFullname.getText().toString();
 
-            if(checkError(email, pass, pass_re, phoneNumber, fullname)){
-                register(email,pass, fullname,phoneNumber);
-            } else{
+            if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
+                register(email, pass, fullname, phoneNumber);
+            } else {
                 Toast.makeText(this, "Còn lỗi trong form", Toast.LENGTH_SHORT).show();
             }
 
@@ -76,11 +76,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void register(String email,String pass,String fullname,String phoneNumber){
+    public void register(String email, String pass, String fullname, String phoneNumber) {
         ApiService service = new GetRetrofit().getRetrofit();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_EMAIL,email);
+        jsonObject.addProperty(USER_EMAIL, email);
 
         Call<Result> call = service.checkUserEmailExist(jsonObject);
 
@@ -93,40 +93,35 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Email already exist", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Toast.makeText(RegisterActivity.this, "Email available to register", Toast.LENGTH_SHORT).show();
-
                     JsonObject jsonObject1 = new JsonObject();
-                    jsonObject1.addProperty(USER_EMAIL,email);
-                    jsonObject1.addProperty(USER_PASSWORD,pass);
-                    jsonObject1.addProperty(USER_FULL_NAME,fullname);
-                    jsonObject1.addProperty(USER_PHONE_NUMBER,phoneNumber);
+                    jsonObject1.addProperty(USER_EMAIL, email);
+                    jsonObject1.addProperty(USER_PASSWORD, pass);
+                    jsonObject1.addProperty(USER_FULL_NAME, fullname);
+                    jsonObject1.addProperty(USER_PHONE_NUMBER, phoneNumber);
 
-                    Log.d("----------------------------",jsonObject1+"");
+                    Log.d("----------------------------", jsonObject1 + "");
 
                     Call<Result> regCall = service.registerUser(jsonObject1);
 
                     regCall.enqueue(new Callback<Result>() {
                         @Override
                         public void onResponse(Call<Result> call, Response<Result> response) {
-                            if (!response.body().getError()) {
-                                Log.d("-------------", response.body().getError() + "");
-                                Log.d("-------------", response.body().getMessage() + "");
-                                Log.d("-------------", response.body().getResponseCode() + "");
-                                if (response.body().getResponseCode() == 1) {
-                                    Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
+                            Log.d("-------------", response.body().getError() + "");
+                            Log.d("-------------", response.body().getMessage() + "");
+                            Log.d("-------------", response.body().getResponseCode() + "");
 
-                                    dao.saveLoginInfo(jsonObject1);
-                                    finish();
-                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            int responseCode = response.body().getResponseCode();
+                            if (responseCode == RESPONSE_OKAY) {
 
-                                } else {
-                                    Toast.makeText(RegisterActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
-                                }
+                                Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
+
+                                finish();
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 
                             } else {
-                                Log.d("-------------", response.body().getError() + "");
-                                Log.d("-------------", response.body().getMessage() + "");
+                                Toast.makeText(RegisterActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                             }
+
                         }
 
                         @Override
@@ -162,7 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (phoneNumber.isEmpty()) {
             edPhoneNumber.setError(getResources().getString(R.string.no_phonenumber));
             noError = false;
-        } else if(!utils.isNumeric(phoneNumber)){
+        } else if (!utils.isNumeric(phoneNumber)) {
             edPhoneNumber.setError(getResources().getString(R.string.wrong_number_format));
             noError = false;
         }
@@ -170,16 +165,16 @@ public class RegisterActivity extends AppCompatActivity {
         if (email.isEmpty()) {
             edEmail.setError(getResources().getString(R.string.no_email));
             noError = false;
-        } else if(!utils.checkEmailFormat(email)){
+        } else if (!utils.checkEmailFormat(email)) {
             edEmail.setError(getResources().getString(R.string.wrong_number_format));
             noError = false;
         }
 
-        if(fullname.isEmpty()){
+        if (fullname.isEmpty()) {
             edFullname.setError(getResources().getString(R.string.no_fullname));
             noError = false;
         }
-        if (noError){
+        if (noError) {
             return true;
         }
         return false;
