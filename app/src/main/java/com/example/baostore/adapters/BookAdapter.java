@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
 
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
+
                 Bundle bundle = new Bundle();
                 bundle.putInt(BOOK_ID,book.getBookID());
                 bundle.putString(BOOK_TITLE, book.getTitle());
@@ -88,6 +90,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putString(BOOK_URL, book.getUrl());
 
                 intent.putExtras(bundle);
+
+
 
                 view.getContext().startActivity(intent);
 

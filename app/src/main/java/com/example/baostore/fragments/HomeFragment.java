@@ -1,22 +1,15 @@
 package com.example.baostore.fragments;
 
 
-
-
-import static com.example.baostore.Constant.Constants.*;
-
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,10 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.ApiUrl;
 import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.TempBookDAO;
 import com.example.baostore.DAOs.TempCategoryDAO;
 import com.example.baostore.R;
-
 import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CategoryAdapter;
@@ -38,6 +29,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +46,6 @@ public class HomeFragment extends Fragment {
     BookAdapter adapter;
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
-    TempBookDAO tempBookDAO;
     TempCategoryDAO tempCategoryDAO;
     LinearLayout btnSearchNew, btnSearchPopular;
     @Override
@@ -71,7 +62,6 @@ public class HomeFragment extends Fragment {
         btnSearchNew = v.findViewById(R.id.btnSearchNew);
         btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
 
-        tempBookDAO = new TempBookDAO(getContext(),this,adapter,book2Adapter);
         tempCategoryDAO = new TempCategoryDAO(getContext(), recyCategory);
 
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -80,6 +70,8 @@ public class HomeFragment extends Fragment {
 
         getBooks();
         getCategory();
+
+
 
         adapter = new BookAdapter(list_book,getContext());
         book2Adapter = new Book2Adapter(list_book,getContext());
@@ -167,66 +159,14 @@ public class HomeFragment extends Fragment {
 
  */
 
-    public void startRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService service = retrofit.create(ApiService.class);
-
-
-        Call<Result> call = service.getCategories();
-    }
-
     public void getBooks() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            list_book = (List<Book>) bundle.getSerializable("BOOK_LIST");
 
-        ApiService service = retrofit.create(ApiService.class);
-
-
-        Call<Result> call = service.getbook();
-        call.enqueue(new Callback<Result>() {
-                         @Override
-                         public void onResponse(Call<Result> call, Response<Result> response) {
-                             JsonElement element = response.body().getData();
-                             JsonArray myArr = element.getAsJsonArray();
-
-                             Log.d("------------------------", myArr.size()+"");
-                             for(JsonElement jsonElement: myArr){
-                                 JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                 int bookID = jsonObject.get(BOOK_ID).getAsInt();
-                                 String title = jsonObject.get(BOOK_TITLE).getAsString();
-                                 double price = jsonObject.get(BOOK_PRICE).getAsDouble();
-                                 int quantity= jsonObject.get(BOOK_QUANTITY).getAsInt();
-                                 int categoryID =jsonObject.get(BOOK_CATEGORY_ID).getAsInt();
-                                 int authorID = jsonObject.get(BOOK_AUTHOR_ID).getAsInt();
-                                 int publisherID = jsonObject.get(BOOK_PUBLISHER_ID).getAsInt();
-                                 String url = jsonObject.get(BOOK_URL).getAsString();
-
-                                 Book book = new Book(bookID,title, price,quantity, categoryID, authorID,publisherID,url);
-                                 Log.d("--------------------",book.getTitle());
-                                 list_book.add(book);
-
-                             }
-
-
-                             adapter.notifyDataSetChanged();
-                             book2Adapter.notifyDataSetChanged();
-
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<Result> call, Throwable t) {
-                             Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
-                         }
-                     }
-        );
+            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+            Log.d("---------------------------HomeFrag", ((List<?>) bundle.getSerializable("BOOK_LIST")).get(0).toString());
+        }
 }
 
     public void getCategory(){
