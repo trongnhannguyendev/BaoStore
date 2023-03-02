@@ -3,11 +3,9 @@ package com.example.baostore.adapters;
 import static com.example.baostore.Constant.Constants.*;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
-import com.example.baostore.activities.MainActivity;
-import com.example.baostore.fragments.DetailItemFragment;
+import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textview.MaterialTextView;
 
-import java.net.URL;
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
@@ -82,6 +74,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, book.getTitle(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
+
                 Bundle bundle = new Bundle();
                 bundle.putInt(BOOK_ID,book.getBookID());
                 bundle.putString(BOOK_TITLE, book.getTitle());
@@ -92,13 +87,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
                 bundle.putString(BOOK_URL, book.getUrl());
 
-                DetailItemFragment fragment = new DetailItemFragment();
-                fragment.setArguments(bundle);
+                intent.putExtras(bundle);
 
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                FragmentManager manager = activity.getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-
+                view.getContext().startActivity(intent);
 
             }
         });
