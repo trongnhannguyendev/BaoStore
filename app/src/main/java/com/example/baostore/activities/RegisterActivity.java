@@ -1,28 +1,41 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.baostore.DAOs.TempUserDAO;
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
+import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edEmail, edPass, edRePass, edPhoneNumber, edFullname;
     MotionButton btnCancel, btnRegister;
+    UserDAO dao;
     Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        utils = new Utils();
+        dao = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -54,8 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
             String fullname = edFullname.getText().toString();
 
             if(checkError(email, pass, pass_re, phoneNumber, fullname)){
-                TempUserDAO dao = new TempUserDAO(this);
-                dao.register(email, pass, fullname, phoneNumber);
+                register(email,pass, fullname,phoneNumber);
             } else{
                 Toast.makeText(this, "Còn lỗi trong form", Toast.LENGTH_SHORT).show();
             }
@@ -64,8 +76,80 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    public void register(String email,String pass,String fullname,String phoneNumber){
+        ApiService service = new GetRetrofit().getRetrofit();
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(USER_EMAIL,email);
+
+        Call<Result> call = service.checkUserEmailExist(jsonObject);
+
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if (!response.body().getError()) {
+                    if (response.body().getResponseCode() == 1) {
+                        Toast.makeText(RegisterActivity.this, "Email already exist", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Toast.makeText(RegisterActivity.this, "Email available to register", Toast.LENGTH_SHORT).show();
+
+                    JsonObject jsonObject1 = new JsonObject();
+                    jsonObject1.addProperty(USER_EMAIL,email);
+                    jsonObject1.addProperty(USER_PASSWORD,pass);
+                    jsonObject1.addProperty(USER_FULL_NAME,fullname);
+                    jsonObject1.addProperty(USER_PHONE_NUMBER,phoneNumber);
+
+                    Log.d("----------------------------",jsonObject1+"");
+
+                    Call<Result> regCall = service.registerUser(jsonObject1);
+
+                    regCall.enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+                            if (!response.body().getError()) {
+                                Log.d("-------------", response.body().getError() + "");
+                                Log.d("-------------", response.body().getMessage() + "");
+                                Log.d("-------------", response.body().getResponseCode() + "");
+                                if (response.body().getResponseCode() == 1) {
+                                    Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
+
+                                    dao.saveLoginInfo(jsonObject1);
+                                    finish();
+                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                                }
+
+                            } else {
+                                Log.d("-------------", response.body().getError() + "");
+                                Log.d("-------------", response.body().getMessage() + "");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result> call, Throwable t) {
+                            Log.d("-------------", t.getMessage() + "");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.d("-------------", t.getMessage() + "");
+
+            }
+        });
+    }
+
     private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
+        utils = new Utils();
+
         boolean noError = true;
+
 
         if (pass.isEmpty()) {
             edPass.setError(getResources().getString(R.string.no_pass));

@@ -1,6 +1,7 @@
 package com.example.baostore.Constant;
 
 public class Constants {
+    // Book
     public static final String BOOK_ID = "bookid";
     public static final String BOOK_TITLE = "title";
     public static final String BOOK_PRICE = "price";
@@ -9,4 +10,11 @@ public class Constants {
     public static final String BOOK_AUTHOR_ID = "authorid";
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
+
+    // User
+    public static final String USER_ID = "userID";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_PASSWORD = "password";
+    public static final String USER_FULL_NAME = "fullName";
+    public static final String USER_PHONE_NUMBER = "phoneNumber";
 }
