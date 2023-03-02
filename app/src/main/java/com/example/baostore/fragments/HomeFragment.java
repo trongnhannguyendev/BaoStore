@@ -165,7 +165,6 @@ public class HomeFragment extends Fragment {
             list_book = (List<Book>) bundle.getSerializable("BOOK_LIST");
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
-            Log.d("---------------------------HomeFrag", ((List<?>) bundle.getSerializable("BOOK_LIST")).get(0).toString());
         }
 }
 
@@ -184,26 +183,29 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<Result>() {
                          @Override
                          public void onResponse(Call<Result> call, Response<Result> response) {
-                             JsonElement element = response.body().getData();
-                             JsonArray myArr = element.getAsJsonArray();
+                             int responseCode = response.body().getResponseCode();
+                             if(responseCode == 1) {
+                                 JsonElement element = response.body().getData();
+                                 JsonArray myArr = element.getAsJsonArray();
 
 
-                             Log.d("------------------------", myArr.size()+"");
-                             for(JsonElement jsonElement: myArr){
-                                 JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                 int categoryID = jsonObject.get("categoryID").getAsInt();
-                                 String categoryName = jsonObject.get("categoryName").getAsString();
+                                 Log.d("------------------------", myArr.size() + "");
+                                 for (JsonElement jsonElement : myArr) {
+                                     JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                     int categoryID = jsonObject.get("categoryID").getAsInt();
+                                     String categoryName = jsonObject.get("categoryName").getAsString();
 
-                                 Category category = new Category(categoryID,categoryName);
-                                 Log.d("--------------------",category.getCategoryName());
-                                 list_category.add(category);
+                                     Category category = new Category(categoryID, categoryName);
+                                     Log.d("--------------------", category.getCategoryName());
+                                     list_category.add(category);
 
+                                 }
+
+                                 categoryAdapter = new CategoryAdapter(list_category, getContext());
+                                 recyCategory.setAdapter(categoryAdapter);
+
+                                 categoryAdapter.notifyDataSetChanged();
                              }
-
-                             categoryAdapter = new CategoryAdapter(list_category,getContext());
-                             recyCategory.setAdapter(categoryAdapter);
-
-                             categoryAdapter.notifyDataSetChanged();
 
 
                          }

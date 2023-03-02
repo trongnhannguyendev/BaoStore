@@ -25,17 +25,18 @@ public class UserDAO {
 
 
     public void saveLoginInfo(JsonObject object){
-
+        int userID = object.get(USER_ID).getAsInt();
         String email = object.get(USER_EMAIL).getAsString();
         String fullName = object.get(USER_FULL_NAME).getAsString();
         String phonenumber = object.get(USER_PHONE_NUMBER).getAsString();
         user = new User();
+        user.setUserID(userID);
         user.setEmail(email);
         user.setFullname(fullName);
         user.setPhoneNumber(phonenumber);
 
         SharedPrefManager.getInstance(context).userLogin(user);
     }
-    
+
 
 }

@@ -17,4 +17,11 @@ public class Constants {
     public static final String USER_PASSWORD = "password";
     public static final String USER_FULL_NAME = "fullName";
     public static final String USER_PHONE_NUMBER = "phoneNumber";
+
+    // Response
+    public static final int RESPONSE_NOT_OKAY = 0;
+    public static final int RESPONSE_OKAY = 1;
+    public static final int RESPONSE_LACK_PARAMETERS = 3;
+    public static final int RESPONSE_SERVER_DOWN = 4;
+    public static final int RESPONSE_UPDATE_FAILED = 5;
 }
