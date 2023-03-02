@@ -14,6 +14,7 @@ import com.example.baostore.R;
 public class BuyHistoryActivity extends AppCompatActivity {
     ImageView imgBack;
     TextView tvTitleHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +22,7 @@ public class BuyHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buy_history);
 
         // header
-        tvTitleHeader=findViewById(R.id.title);
+        tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Lịch sử mua hàng");
 
     }

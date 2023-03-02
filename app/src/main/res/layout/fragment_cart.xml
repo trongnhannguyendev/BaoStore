@@ -2,77 +2,87 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/fragment_cart"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F4F4"
     tools:context=".fragments.CartFragment">
 
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <include android:id="@+id/layoutProgress" layout="@layout/layout_cart_progress"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/layoutProgress"
+            layout="@layout/layout_cart_progress" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/layoutTong"
+            android:layout_below="@+id/layoutProgress">
+
+            <include layout="@layout/item_cart" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTong"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@id/layoutBotButton"
+            android:layout_margin="5dp"
+            android:background="@drawable/custom_button_4"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng"
+                android:textColor="@color/black"
+                android:textSize="26dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="Price"
+                android:textColor="#FF0000"
+                android:textSize="26dp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/layoutBotButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
 
-       <LinearLayout
-           android:id="@+id/layoutTong"
-           android:layout_width="match_parent"
-           android:layout_height="60dp"
-           android:layout_above="@id/layoutBotButton"
-           android:layout_margin="5dp"
-           android:background="@drawable/custom_button_4"
-           android:gravity="center"
-           android:padding="10dp">
+            android:gravity="center"
+            android:padding="10dp">
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:text="Tổng"
-               android:textColor="@color/black"
-               android:textSize="26dp"
-               android:textStyle="bold" />
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:gravity="right"
-               android:text="Price"
-               android:textColor="#FF0000"
-               android:textSize="26dp"
-               android:textStyle="bold" />
-       </LinearLayout>
+            <androidx.constraintlayout.utils.widget.MotionButton
+                android:id="@+id/btnComnfirmCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/custom_button_blue"
+                android:text="Xác nhận"
+                android:textAllCaps="false"
+                android:textColor="#001AFF"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
 
 
-       <LinearLayout
-           android:id="@+id/layoutBotButton"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_alignParentBottom="true"
-
-           android:gravity="center"
-           android:padding="10dp">
-           <androidx.constraintlayout.utils.widget.MotionButton
-               android:id="@+id/btnComnfirmCart"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="15dp"
-               android:layout_marginRight="15dp"
-               android:background="@drawable/custom_button_blue"
-               android:text="Xác nhận"
-               android:textAllCaps="false"
-               android:textColor="#001AFF"
-               android:textSize="20dp"
-               android:textStyle="bold"
-               tools:ignore="MissingConstraints" />
-       </LinearLayout>
-
-
-   </RelativeLayout>
-
-
+    </RelativeLayout>
 
 
 </FrameLayout>

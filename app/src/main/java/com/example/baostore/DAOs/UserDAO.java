@@ -18,13 +18,12 @@ public class UserDAO {
     Address address;
 
 
-
-    public UserDAO(Context context){
+    public UserDAO(Context context) {
         this.context = context;
     }
 
 
-    public void saveLoginInfo(JsonObject object){
+    public void saveLoginInfo(JsonObject object) {
         int userID = object.get(USER_ID).getAsInt();
         String email = object.get(USER_EMAIL).getAsString();
         String fullName = object.get(USER_FULL_NAME).getAsString();

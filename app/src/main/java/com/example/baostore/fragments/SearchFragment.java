@@ -37,6 +37,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyBook_search;
     Book2Adapter adapter;
     BookDAO dao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,18 +70,18 @@ public class SearchFragment extends Fragment {
 
     }
 
-    void filter(String find){
+    void filter(String find) {
         searchList.clear();
-        Log.d("----------------------",find);
+        Log.d("----------------------", find);
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
             find = find.toLowerCase();
-            if(book.getTitle().toLowerCase().contains(find)){
+            if (book.getTitle().toLowerCase().contains(find)) {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList,getContext());
+        adapter = new Book2Adapter(searchList, getContext());
         recyBook_search.setAdapter(adapter);
 
     }
@@ -106,7 +107,7 @@ public class SearchFragment extends Fragment {
 
                                  adapter.notifyDataSetChanged();
 
-                             } else{
+                             } else {
                                  Toast.makeText(getContext(), "Something wrong happen", Toast.LENGTH_SHORT).show();
                                  Log.d("-----------------------------SearchFragment", response.body().getMessage());
                              }
@@ -115,7 +116,7 @@ public class SearchFragment extends Fragment {
                          @Override
                          public void onFailure(Call<Result> call, Throwable t) {
                              Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
+                             Log.d("----------------------", t.toString());
                          }
                      }
         );

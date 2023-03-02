@@ -31,14 +31,14 @@ public class BookDAO {
     Fragment fragment;
     List<Book> list_book = new ArrayList<>();
 
-    public BookDAO(Context context){
+    public BookDAO(Context context) {
         this.context = context;
     }
 
-    public List<Book> getData(JsonArray array){
+    public List<Book> getData(JsonArray array) {
         List<Book> list = new ArrayList<>();
 
-        for(JsonElement jsonElement: array) {
+        for (JsonElement jsonElement : array) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             int bookID = jsonObject.get(BOOK_ID).getAsInt();
             String title = jsonObject.get(BOOK_TITLE).getAsString();

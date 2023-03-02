@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
      TextView tvTitleHeader;
      BookDAO dao;
      Fragment fragment;
+     ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         dao = new BookDAO(this);
+        progressBar = findViewById(R.id.progressBar_Main);
 
         // header
         tvTitleHeader = findViewById(R.id.title);
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.Home:
+                    progressBar.setVisibility(View.VISIBLE);
                     fragment = new HomeFragment();
                     loadBooksToFragment(fragment);
                     return true;
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
                              Bundle bundle = new Bundle();
                              bundle.putSerializable("BOOK_LIST", (Serializable) list);
+                            progressBar.setVisibility(View.INVISIBLE);
 
                              fragment.setArguments(bundle);
                              loadFragment(fragment);
