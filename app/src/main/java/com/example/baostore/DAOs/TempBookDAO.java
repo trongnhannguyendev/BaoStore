@@ -31,14 +31,13 @@ public class TempBookDAO {
     Book2Adapter book2Adapter;
     private Context context;
     Fragment fragment;
-    RecyclerView rcv1, rcv2;
     List<Book> list_book = new ArrayList<>();
 
-    public TempBookDAO(Context context, Fragment fragment, RecyclerView rcv1, RecyclerView rcv2){
+    public TempBookDAO(Context context, Fragment fragment, BookAdapter adapter, Book2Adapter book2Adapter){
         this.context = context;
         this.fragment = fragment;
-        this.rcv1 = rcv1;
-        this.rcv2 = rcv2;
+        this.adapter = adapter;
+        this.book2Adapter = book2Adapter;
     }
 
     public void getBooks() {
@@ -69,16 +68,10 @@ public class TempBookDAO {
                     Log.d("--------------------",book.getTitle());
                     list_book.add(book);
 
-
-
                 }
-
 
                 adapter = new BookAdapter(list_book,context);
                 book2Adapter = new Book2Adapter(list_book,context);
-
-                rcv1.setAdapter(adapter);
-                rcv2.setAdapter(book2Adapter);
 
                 adapter.notifyDataSetChanged();
                 book2Adapter.notifyDataSetChanged();
