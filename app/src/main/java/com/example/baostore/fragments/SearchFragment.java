@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
@@ -16,10 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.ApiUrl;
 import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.TempBookDAO;
 import com.example.baostore.R;
 import com.example.baostore.adapters.Book2Adapter;
-import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Book;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
