@@ -80,7 +80,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
 
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID,book.getBookID());
+                bundle.putInt(BOOK_ID, book.getBookID());
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
@@ -90,7 +90,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putString(BOOK_URL, book.getUrl());
 
                 intent.putExtras(bundle);
-
 
 
                 view.getContext().startActivity(intent);
@@ -105,7 +104,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     }
 
 
-
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvPrice, tvSalePrice;
         private ImageView ivBook;
@@ -118,10 +116,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             ivBook = itemView.findViewById(R.id.product_image);
         }
     }
-
-
-
-
 
 
 }

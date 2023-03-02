@@ -42,11 +42,11 @@ public class Result {
         return message;
     }
 
-    public int getResponseCode(){
+    public int getResponseCode() {
         return responseCode;
     }
 
-    public JsonElement getData(){
+    public JsonElement getData() {
         return data;
     }
 

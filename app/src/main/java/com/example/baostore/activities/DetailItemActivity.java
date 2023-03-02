@@ -21,6 +21,7 @@ public class DetailItemActivity extends AppCompatActivity {
     ImageView ivBook;
     TextView tvTitle, tvPrice, tvDescription;
     MotionButton btnAddToCart, btnToPayment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,4 +60,4 @@ public class DetailItemActivity extends AppCompatActivity {
         }
 
     }
-    }
+}

@@ -28,13 +28,13 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         // màu icon progress
-        cvIconProgress=(CardView) view.findViewById(R.id.cvProgress_1);
+        cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
         int color = getResources().getColor(R.color.ic_progress);
         cvIconProgress.setCardBackgroundColor(color);
 
         // xử lý button
-        btnConfirmCart=view.findViewById(R.id.btnComnfirmCart);
-        FragmentManager fragmentManager=getChildFragmentManager();
+        btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         btnConfirmCart.setOnClickListener(new View.OnClickListener() {
             @Override

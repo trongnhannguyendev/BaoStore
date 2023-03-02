@@ -38,11 +38,12 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     Toolbar myToolbar;
-     ImageView imgBack;
-     TextView tvTitleHeader;
-     BookDAO dao;
-     Fragment fragment;
-     ProgressBar progressBar;
+    ImageView imgBack;
+    TextView tvTitleHeader;
+    BookDAO dao;
+    Fragment fragment;
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         //
 //        AppBarLayout appBarLayout = findViewById(R.id.myAppBarLayout);
 //        Toolbar toolbar = findViewById(R.id.myToolbarTest);
@@ -134,12 +134,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-
-
-
     }
-
-
 
 
     public void loadBooksToFragment(Fragment fragment) {
@@ -158,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
                              Bundle bundle = new Bundle();
                              bundle.putSerializable("BOOK_LIST", (Serializable) list);
-                            progressBar.setVisibility(View.INVISIBLE);
+                             progressBar.setVisibility(View.INVISIBLE);
 
                              fragment.setArguments(bundle);
                              loadFragment(fragment);
@@ -168,26 +163,27 @@ public class MainActivity extends AppCompatActivity {
                          @Override
                          public void onFailure(Call<Result> call, Throwable t) {
                              Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
+                             Log.d("----------------------", t.toString());
                          }
                      }
         );
     }
 
 
-    public void loadFragment(Fragment fragment){
+    public void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragmentContainer,fragment).commit();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
 
     // Nhấn back 2 lần để thoát app
     boolean canExit = false;
+
     @Override
     public void onBackPressed() {
-        if(canExit) {
+        if (canExit) {
             super.onBackPressed();
-        } else{
+        } else {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
             canExit = !canExit;
         }

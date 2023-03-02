@@ -26,12 +26,10 @@ public class CartInforActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart_infor);
 
 
-
-
-                // màu icon progress
-                cvIconProgress = findViewById(R.id.cvProgress_2);
+        // màu icon progress
+        cvIconProgress = findViewById(R.id.cvProgress_2);
         int color = getResources().getColor(R.color.ic_progress);
-            cvIconProgress.setCardBackgroundColor(color);
+        cvIconProgress.setCardBackgroundColor(color);
 
 
         //header

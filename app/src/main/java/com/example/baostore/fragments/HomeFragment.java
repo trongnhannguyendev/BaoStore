@@ -48,13 +48,14 @@ public class HomeFragment extends Fragment {
     CategoryAdapter categoryAdapter;
     TempCategoryDAO tempCategoryDAO;
     LinearLayout btnSearchNew, btnSearchPopular;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         list_book = new ArrayList<>();
-        list_category= new ArrayList<>();
+        list_category = new ArrayList<>();
 
         recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
         recyBook_New = v.findViewById(R.id.recyBook_new);
@@ -64,33 +65,31 @@ public class HomeFragment extends Fragment {
 
         tempCategoryDAO = new TempCategoryDAO(getContext(), recyCategory);
 
-        recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyCategory.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         getBooks();
         getCategory();
 
 
-
-        adapter = new BookAdapter(list_book,getContext());
-        book2Adapter = new Book2Adapter(list_book,getContext());
-        categoryAdapter = new CategoryAdapter(list_category,getContext());
+        adapter = new BookAdapter(list_book, getContext());
+        book2Adapter = new Book2Adapter(list_book, getContext());
+        categoryAdapter = new CategoryAdapter(list_category, getContext());
 
         recyBook_Popular.setAdapter(adapter);
         recyBook_New.setAdapter(book2Adapter);
         recyCategory.setAdapter(categoryAdapter);
 
 
-
         tempCategoryDAO.getCategory();
 
-        btnSearchNew.setOnClickListener(view->{
+        btnSearchNew.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
             loadFragment(fragment);
         });
 
-        btnSearchPopular.setOnClickListener(view ->{
+        btnSearchPopular.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
             loadFragment(fragment);
         });
@@ -99,7 +98,7 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    public void loadFragment(Fragment fragment){
+    public void loadFragment(Fragment fragment) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
@@ -161,14 +160,14 @@ public class HomeFragment extends Fragment {
 
     public void getBooks() {
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             list_book = (List<Book>) bundle.getSerializable("BOOK_LIST");
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
         }
-}
+    }
 
-    public void getCategory(){
+    public void getCategory() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApiUrl.BASE)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -184,7 +183,7 @@ public class HomeFragment extends Fragment {
                          @Override
                          public void onResponse(Call<Result> call, Response<Result> response) {
                              int responseCode = response.body().getResponseCode();
-                             if(responseCode == 1) {
+                             if (responseCode == 1) {
                                  JsonElement element = response.body().getData();
                                  JsonArray myArr = element.getAsJsonArray();
 
@@ -213,9 +212,9 @@ public class HomeFragment extends Fragment {
                          @Override
                          public void onFailure(Call<Result> call, Throwable t) {
                              Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
+                             Log.d("----------------------", t.toString());
                          }
                      }
         );
     }
-    }
+}

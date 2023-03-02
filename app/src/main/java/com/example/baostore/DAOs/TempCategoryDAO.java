@@ -36,7 +36,7 @@ public class TempCategoryDAO {
         this.recy = recy;
     }
 
-    public void getCategory(){
+    public void getCategory() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApiUrl.BASE)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -55,19 +55,19 @@ public class TempCategoryDAO {
                              JsonArray myArr = element.getAsJsonArray();
 
 
-                             Log.d("------------------------", myArr.size()+"");
-                             for(JsonElement jsonElement: myArr){
+                             Log.d("------------------------", myArr.size() + "");
+                             for (JsonElement jsonElement : myArr) {
                                  JsonObject jsonObject = jsonElement.getAsJsonObject();
                                  int categoryID = jsonObject.get("categoryID").getAsInt();
                                  String categoryName = jsonObject.get("categoryName").getAsString();
 
-                                 Category category = new Category(categoryID,categoryName);
-                                 Log.d("--------------------",category.getCategoryName());
+                                 Category category = new Category(categoryID, categoryName);
+                                 Log.d("--------------------", category.getCategoryName());
                                  list_category.add(category);
 
                              }
 
-                             adapter = new CategoryAdapter(list_category,context);
+                             adapter = new CategoryAdapter(list_category, context);
                              recy.setAdapter(adapter);
 
                              adapter.notifyDataSetChanged();
@@ -78,7 +78,7 @@ public class TempCategoryDAO {
                          @Override
                          public void onFailure(Call<Result> call, Throwable t) {
                              Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
+                             Log.d("----------------------", t.toString());
                          }
                      }
         );
