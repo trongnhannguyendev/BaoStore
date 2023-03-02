@@ -157,6 +157,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (phoneNumber.isEmpty()) {
             edPhoneNumber.setError(getResources().getString(R.string.no_phonenumber));
             noError = false;
+        } else if(phoneNumber.length() != 10){
+            edPhoneNumber.setError(getResources().getString(R.string.not_phone_number));
+            noError = false;
         } else if (!utils.isNumeric(phoneNumber)) {
             edPhoneNumber.setError(getResources().getString(R.string.wrong_number_format));
             noError = false;
