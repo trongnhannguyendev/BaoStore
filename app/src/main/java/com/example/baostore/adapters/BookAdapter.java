@@ -1,9 +1,12 @@
 package com.example.baostore.adapters;
 
+import static com.example.baostore.Constant.Constants.*;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.MainActivity;
+import com.example.baostore.fragments.DetailItemFragment;
 import com.example.baostore.models.Book;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
@@ -49,8 +56,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Book book = list.get(position);
 
-        Utils utils = new Utils();
-        String price = utils.priceToString(book.getPrice());
+        String price = new Utils().priceToString(book.getPrice());
 
         holder.tvTitle.setText(book.getTitle());
         holder.tvPrice.setText(price);
@@ -60,7 +66,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = loadImageFromURL(book.getUrl());
+                Bitmap bitmap = new Utils().loadImageFromURL(book.getUrl());
                 holder.ivBook.post(new Runnable() {
                     @Override
                     public void run() {
@@ -76,6 +82,24 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, book.getTitle(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putInt(BOOK_ID,book.getBookID());
+                bundle.putString(BOOK_TITLE, book.getTitle());
+                bundle.putDouble(BOOK_PRICE, book.getPrice());
+                bundle.putInt(BOOK_QUANTITY, book.getQuantity());
+                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryID());
+                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorID());
+                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
+                bundle.putString(BOOK_URL, book.getUrl());
+
+                DetailItemFragment fragment = new DetailItemFragment();
+                fragment.setArguments(bundle);
+
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                FragmentManager manager = activity.getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+
+
             }
         });
     }
@@ -101,19 +125,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     }
 
 
-    private Bitmap loadImageFromURL(String link) {
 
-
-        URL url;
-        Bitmap bmp = null;
-        try{
-            url = new URL(link);
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return bmp;
-    }
 
 
 

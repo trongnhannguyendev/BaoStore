@@ -3,6 +3,8 @@ package com.example.baostore.fragments;
 
 
 
+import static com.example.baostore.Constant.Constants.*;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -196,12 +198,16 @@ public class HomeFragment extends Fragment {
                              Log.d("------------------------", myArr.size()+"");
                              for(JsonElement jsonElement: myArr){
                                  JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                 int bookID = jsonObject.get("bookid").getAsInt();
-                                 String title = jsonObject.get("title").getAsString();
-                                 double price = jsonObject.get("price").getAsDouble();
-                                 String url = jsonObject.get("url").getAsString();
+                                 int bookID = jsonObject.get(BOOK_ID).getAsInt();
+                                 String title = jsonObject.get(BOOK_TITLE).getAsString();
+                                 double price = jsonObject.get(BOOK_PRICE).getAsDouble();
+                                 int quantity= jsonObject.get(BOOK_QUANTITY).getAsInt();
+                                 int categoryID =jsonObject.get(BOOK_CATEGORY_ID).getAsInt();
+                                 int authorID = jsonObject.get(BOOK_AUTHOR_ID).getAsInt();
+                                 int publisherID = jsonObject.get(BOOK_PUBLISHER_ID).getAsInt();
+                                 String url = jsonObject.get(BOOK_URL).getAsString();
 
-                                 Book book = new Book(bookID,title, price,url);
+                                 Book book = new Book(bookID,title, price,quantity, categoryID, authorID,publisherID,url);
                                  Log.d("--------------------",book.getTitle());
                                  list_book.add(book);
 

@@ -56,7 +56,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = loadImageFromURL(book.getUrl());
+                Bitmap bitmap = new Utils().loadImageFromURL(book.getUrl());
                 holder.ivBook.post(new Runnable() {
                     @Override
                     public void run() {
@@ -97,19 +97,6 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
     }
 
 
-    private Bitmap loadImageFromURL(String link) {
-
-
-        URL url;
-        Bitmap bmp = null;
-        try{
-            url = new URL(link);
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return bmp;
-    }
 
 
 }
