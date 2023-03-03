@@ -1,5 +1,8 @@
 package com.example.baostore.DAOs;
 
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
+import static com.example.baostore.Constant.Constants.CATEGORY_NAME;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -28,8 +31,8 @@ public class CategoryDAO {
         List<Category> list = new ArrayList<>();
         for (JsonElement jsonElement : array) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            int categoryID = jsonObject.get("categoryID").getAsInt();
-            String categoryName = jsonObject.get("categoryName").getAsString();
+            int categoryID = jsonObject.get(CATEGORY_ID).getAsInt();
+            String categoryName = jsonObject.get(CATEGORY_NAME).getAsString();
             Category category = new Category(categoryID, categoryName);
             list.add(category);
             Log.d("-------------adapter", categoryName);

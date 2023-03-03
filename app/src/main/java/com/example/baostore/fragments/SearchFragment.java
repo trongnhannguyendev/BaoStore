@@ -1,5 +1,9 @@
 package com.example.baostore.fragments;
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +31,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyBook_search;
     Book2Adapter adapter;
     BookDAO dao;
+    int searchCode = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +46,11 @@ public class SearchFragment extends Fragment {
         list_book = new ArrayList<>();
         searchList = new ArrayList<>();
 
+        adapter = new Book2Adapter(searchList, getContext());
+        recyBook_search.setAdapter(adapter);
+
         getBooks();
+
 
 
         svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -98,11 +107,26 @@ public class SearchFragment extends Fragment {
     public void getBooks() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable("BOOK_LIST");
-            adapter = new Book2Adapter(list_book, getContext());
-            recyBook_search.setAdapter(adapter);
+            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+
+            searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+            Log.d("------------------SearchFragment", searchCode+"");
+            switch (searchCode) {
+                case 0:
+                    adapter = new Book2Adapter(list_book, getContext());
+                    recyBook_search.setAdapter(adapter);
+                    break;
+                case 1:
+                    int categoryID = bundle.getInt(CATEGORY_ID);
+                    Log.d("------------------SearchFragment", categoryID+"");
+                    filterByCategory(categoryID);
+                    break;
+
+
+            }
+
         }
     }
 }

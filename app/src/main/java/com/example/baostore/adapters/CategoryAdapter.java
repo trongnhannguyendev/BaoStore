@@ -2,6 +2,8 @@ package com.example.baostore.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baostore.R;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.MainActivity;
+import com.example.baostore.fragments.SearchFragment;
 import com.example.baostore.models.Category;
 
 import java.util.List;
@@ -50,7 +53,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             public void onClick(View view) {
                 Toast.makeText(context, category.getCategoryName(), Toast.LENGTH_SHORT).show();
 
-
+                MainActivity mainActivity = (MainActivity) context;
+                SearchFragment fragment = new SearchFragment();
+                mainActivity.setSearchSelection();
+                mainActivity.loadSearchFragment(fragment,1, category.getCategoryID());
+                Log.d("-------------------CategoryAdapter", category.getCategoryID()+"");
             }
         });
 
