@@ -22,7 +22,10 @@
             android:layout_above="@id/layoutTong"
             android:layout_below="@+id/layoutProgress">
 
-            <include layout="@layout/item_cart" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyCart_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
