@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     CategoryAdapter categoryAdapter;
     CategoryDAO categoryDAO;
     LinearLayout btnSearchNew, btnSearchPopular;
+    Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,12 +61,44 @@ public class HomeFragment extends Fragment {
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
 
-        MainActivity activity = (MainActivity) getContext();
+        //MainActivity activity = (MainActivity) getContext();
         //activity.loadBooksToFragment(this);
-        getBooks();
 
-        //activity.loadCategoryToFragment(this);
-        getCategory();
+        bundle = getArguments();
+        if(bundle!= null){
+            if(bundle.containsKey(BOOK_LIST)){
+                getBooks();
+            } else{
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getBooks();
+                        adapter = new BookAdapter(list_book, getContext());
+                        book2Adapter = new Book2Adapter(list_book, getContext());
+
+                        recyBook_Popular.setAdapter(adapter);
+                        recyBook_New.setAdapter(book2Adapter);
+                    }
+                },1000);
+            }
+            if(bundle.containsKey(CATEGORY_LIST)){
+                getCategory();
+            } else{
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getCategory();
+                        categoryAdapter = new CategoryAdapter(list_category, getContext());
+                        recyCategory.setAdapter(categoryAdapter);
+                    }
+                },1000);
+            }
+        }
+
+        //getBooks();
+        //getCategory();
 
         adapter = new BookAdapter(list_book, getContext());
         book2Adapter = new Book2Adapter(list_book, getContext());
@@ -95,7 +129,32 @@ public class HomeFragment extends Fragment {
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
+    public void getBooks() {
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(BOOK_LIST)) {
+            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
+            adapter = new BookAdapter(list_book, getContext());
+            book2Adapter = new Book2Adapter(list_book, getContext());
+
+            recyBook_Popular.setAdapter(adapter);
+            recyBook_New.setAdapter(book2Adapter);
+
+            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+        }
+    }
+
+    public void getCategory() {
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(CATEGORY_LIST)) {
+            list_category = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+
+            categoryAdapter = new CategoryAdapter(list_category, getContext());
+
+            recyCategory.setAdapter(categoryAdapter);
+            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
+        }
+    }
 
 
 /*
@@ -150,21 +209,5 @@ public class HomeFragment extends Fragment {
 
  */
 
-    public void getBooks() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
-        }
-    }
-
-    public void getCategory() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            list_category = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-
-            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
-        }
-    }
 }
