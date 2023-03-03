@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
-    public void createSnackBar(View v, String msg){
+    public void createSnackBar(View v, String msg) {
         Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
         snackbar.setAction("Dismiss", new View.OnClickListener() {
             @Override
@@ -31,15 +31,15 @@ public class Utils {
         snackbar.show();
     }
 
-    public String priceToString(double price){
+    public String priceToString(double price) {
 
         Locale locale = new Locale("vi", "VN");
         NumberFormat priceFormat = NumberFormat.getCurrencyInstance(locale);
 
-        return  priceFormat.format(price);
+        return priceFormat.format(price);
     }
 
-    public Date SringToDate(String date){
+    public Date SringToDate(String date) {
         try {
             Date date1 = new SimpleDateFormat("YYYY-mm-dd").parse(date);
             return date1;
@@ -49,27 +49,27 @@ public class Utils {
         }
     }
 
-    public boolean checkEmailFormat(String email){
+    public boolean checkEmailFormat(String email) {
         String pattern = "^(.+)@(\\S+)$";
         return email.matches(pattern);
     }
 
-    public boolean isNumeric(String toNum){
+    public boolean isNumeric(String toNum) {
         try {
             int newNum = Integer.parseInt(toNum);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public Bitmap loadImageFromURL(String link){
+    public Bitmap loadImageFromURL(String link) {
         URL url;
         Bitmap bmp = null;
-        try{
+        try {
             url = new URL(link);
             bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return bmp;

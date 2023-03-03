@@ -1,9 +1,11 @@
 package com.example.baostore.adapters;
 
+import static com.example.baostore.Constant.Constants.*;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textview.MaterialTextView;
 
-import java.net.URL;
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
@@ -49,8 +49,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Book book = list.get(position);
 
-        Utils utils = new Utils();
-        String price = utils.priceToString(book.getPrice());
+        String price = new Utils().priceToString(book.getPrice());
 
         holder.tvTitle.setText(book.getTitle());
         holder.tvPrice.setText(price);
@@ -60,7 +59,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = loadImageFromURL(book.getUrl());
+                Bitmap bitmap = new Utils().loadImageFromURL(book.getUrl());
                 holder.ivBook.post(new Runnable() {
                     @Override
                     public void run() {
@@ -76,6 +75,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, book.getTitle(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
+
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(BOOK_ID, book.getBookID());
+                bundle.putString(BOOK_TITLE, book.getTitle());
+                bundle.putDouble(BOOK_PRICE, book.getPrice());
+                bundle.putInt(BOOK_QUANTITY, book.getQuantity());
+                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryID());
+                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorID());
+                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
+                bundle.putString(BOOK_URL, book.getUrl());
+
+                intent.putExtras(bundle);
+
+
+                view.getContext().startActivity(intent);
+
             }
         });
     }
@@ -84,7 +102,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public int getItemCount() {
         return list.size();
     }
-
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -99,22 +116,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             ivBook = itemView.findViewById(R.id.product_image);
         }
     }
-
-
-    private Bitmap loadImageFromURL(String link) {
-
-
-        URL url;
-        Bitmap bmp = null;
-        try{
-            url = new URL(link);
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return bmp;
-    }
-
 
 
 }

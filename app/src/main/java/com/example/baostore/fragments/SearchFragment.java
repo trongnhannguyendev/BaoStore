@@ -1,38 +1,27 @@
 package com.example.baostore.fragments;
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.ApiUrl;
-import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.TempBookDAO;
+import com.example.baostore.DAOs.BookDAO;
 import com.example.baostore.R;
 import com.example.baostore.adapters.Book2Adapter;
-import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Book;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class SearchFragment extends Fragment {
@@ -41,6 +30,9 @@ public class SearchFragment extends Fragment {
     List<Book> searchList;
     RecyclerView recyBook_search;
     Book2Adapter adapter;
+    BookDAO dao;
+    int searchCode = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,10 +42,17 @@ public class SearchFragment extends Fragment {
         recyBook_search = v.findViewById(R.id.recyBook_search);
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        dao = new BookDAO(getContext());
         list_book = new ArrayList<>();
         searchList = new ArrayList<>();
 
+        adapter = new Book2Adapter(searchList, getContext());
+        recyBook_search.setAdapter(adapter);
+
         getBooks();
+
+
+
         svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -62,8 +61,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String text = newText;
-                filter(text);
+                filterByTitle(newText);
                 return false;
             }
         });
@@ -73,70 +71,62 @@ public class SearchFragment extends Fragment {
 
     }
 
-    void filter(String find){
+    void filterByTitle(String find) {
         searchList.clear();
-        Log.d("----------------------",find);
+        Log.d("----------------------", find);
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
             find = find.toLowerCase();
-            if(book.getTitle().toLowerCase().contains(find)){
+            if (book.getTitle().toLowerCase().contains(find)) {
                 searchList.add(book);
+
             }
         }
-        adapter = new Book2Adapter(searchList,getContext());
+        adapter = new Book2Adapter(searchList, getContext());
+        recyBook_search.setAdapter(adapter);
+
+    }
+
+    void filterByCategory(int categoryID){
+        searchList.clear();
+        Log.d("----------------------", categoryID+"");
+        for (int i = 0; i < list_book.size(); i++) {
+            Book book;
+            book = list_book.get(i);
+            if (book.getCategoryID() == categoryID) {
+                searchList.add(book);
+
+            }
+        }
+        adapter = new Book2Adapter(searchList, getContext());
         recyBook_search.setAdapter(adapter);
 
     }
 
     public void getBooks() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-        ApiService service = retrofit.create(ApiService.class);
+            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
 
-
-        Call<Result> call = service.getbook();
-        call.enqueue(new Callback<Result>() {
-                         @Override
-                         public void onResponse(Call<Result> call, Response<Result> response) {
-                             JsonElement element = response.body().getData();
-                             JsonArray myArr = element.getAsJsonArray();
-
-                             Log.d("------------------------", myArr.size()+"");
-                             for(JsonElement jsonElement: myArr){
-                                 JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                 int bookID = jsonObject.get("bookid").getAsInt();
-                                 String title = jsonObject.get("title").getAsString();
-                                 double price = jsonObject.get("price").getAsDouble();
-                                 String url = jsonObject.get("url").getAsString();
-
-                                 Book book = new Book(bookID,title, price,url);
-                                 Log.d("--------------------",book.getTitle());
-                                 list_book.add(book);
+            searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+            Log.d("------------------SearchFragment", searchCode+"");
+            switch (searchCode) {
+                case 0:
+                    adapter = new Book2Adapter(list_book, getContext());
+                    recyBook_search.setAdapter(adapter);
+                    break;
+                case 1:
+                    int categoryID = bundle.getInt(CATEGORY_ID);
+                    Log.d("------------------SearchFragment", categoryID+"");
+                    filterByCategory(categoryID);
+                    break;
 
 
+            }
 
-                             }
-
-
-                             adapter = new Book2Adapter(list_book,getContext());
-
-                             recyBook_search.setAdapter(adapter);
-
-                             adapter.notifyDataSetChanged();
-
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<Result> call, Throwable t) {
-                             Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------",t.toString());
-                         }
-                     }
-        );
+        }
     }
 }

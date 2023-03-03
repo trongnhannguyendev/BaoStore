@@ -1,6 +1,8 @@
 package com.example.baostore.models;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private int bookID;
     private String title;
     private int totalPage;
@@ -14,7 +16,8 @@ public class Book {
     private int state;
     private String url;
 
-    public Book(){}
+    public Book() {
+    }
 
     public Book(int bookID, String title, double price, String url) {
         this.bookID = bookID;

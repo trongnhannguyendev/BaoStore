@@ -1,12 +1,14 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,56 +16,53 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.ApiUrl;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
-import com.example.baostore.Api.SharedPrefManager;
-import com.example.baostore.DAOs.TempUserDAO;
+import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     TextView tvRegister;
     MotionButton btnLogin;
-    EditText edEmail,edPassword;
-    TempUserDAO tempUserDAO;
+    EditText edEmail, edPassword;
+    UserDAO userDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // khởi tạo DAO
+        userDAO = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
 
-        // Kiem tra da dang nhap truoc do
-        if(SharedPrefManager.getInstance(this).isLoggedIn()){
-            finish();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-        }
 
         // Chuyển màn hình Register
-        tvRegister=findViewById(R.id.tvRegister);
+        tvRegister = findViewById(R.id.tvRegister);
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
         });
 
         // Xử lí Đăng nhập
-        btnLogin=findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
-        tempUserDAO = new TempUserDAO(this, this);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,63 +70,77 @@ public class LoginActivity extends AppCompatActivity {
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
 
+                login(email, password);
 
-
-                tempUserDAO.login(email, password);
             }
         });
     }
 
-    /*
-    private void login(){
-        String email = edEmail.getText().toString().trim();
-        String password = edPassword.getText().toString().trim();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService service = retrofit.create(ApiService.class);
+    // Đăng nhập
+    public void login(String email, String password) {
+        ApiService service = new GetRetrofit().getRetrofit();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("email",email);
-        jsonObject.addProperty("password",password);
+        jsonObject.addProperty(USER_EMAIL, email);
+        jsonObject.addProperty(USER_PASSWORD, password);
 
         Call<Result> call = service.userLogin(jsonObject);
 
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                try {
-                    if (!response.body().getError()) {
-                        Log.d("-------------", response.body().getError()+"");
-                        Log.d("-------------", response.body().getMessage()+"");
-                        Log.d("-------------", response.body().getResponseCode()+"");
-                        if(response.body().getResponseCode() == 1) {
-                            SharedPrefManager.getInstance(getApplicationContext()).userLogin(response.body().getUser());
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        } else{
-                            Toast.makeText(LoginActivity.this, response.body().getMessage()+"", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.d("-------------", response.body().getError()+"");
-                        Log.d("-------------", response.body().getMessage()+"");
-                    }
-                } catch (Exception e){
-                    Toast.makeText(LoginActivity.this, "Cant get response body error", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+
+                Log.d("-------------", response.body().getError() + "");
+                Log.d("-------------", response.body().getMessage() + "");
+                Log.d("-------------", response.body().getResponseCode() + "");
+                int responseCode = response.body().getResponseCode();
+
+                if (responseCode == RESPONSE_OKAY) {
+                    // Chuyển dữ liệu thành Json Array
+                    JsonElement element = response.body().getData();
+                    JsonArray array = element.getAsJsonArray();
+                    JsonObject object = array.get(0).getAsJsonObject();
+
+                    // Lưu dữ liệu vào sharedPreference
+                    userDAO.saveLoginInfo(object);
+
+                    // chuyển qua MainActivity
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+                    // thông báo lỗi
+                    Toast.makeText(LoginActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                Log.d("-------------", t.getMessage()+"");
+                Log.d("-------------", t.getMessage() + "");
                 Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
             }
         });
     }
-*/
+
+
+    // Nhấn back 2 lần để thoát app
+    boolean canExit = false;
+
+    @Override
+    public void onBackPressed() {
+        if (canExit) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            canExit = !canExit;
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    canExit = false;
+                }
+            }, 1000);
+        }
+    }
 
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.LoginActivity;
@@ -21,7 +22,7 @@ import com.example.baostore.models.User;
 
 
 public class ProfileFragment extends Fragment {
-    LinearLayout btnUserInfor, btnChangePass;
+    LinearLayout btnUserInfor, btnChangePass, btnToCartHistory;
     MotionButton btnLogOut;
     TextView tvFullname;
     @Override
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
         // ánh xạ
         btnUserInfor=view.findViewById(R.id.btnUserInfor);
         btnChangePass = view.findViewById(R.id.btnChangePass_profile);
+        btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
         tvFullname.setText(user.getFullname());
@@ -49,6 +51,11 @@ public class ProfileFragment extends Fragment {
 
         btnChangePass.setOnClickListener(v ->{
             Intent i = new Intent(getActivity(), ChangePassActivity.class);
+            startActivity(i);
+        });
+
+        btnToCartHistory.setOnClickListener(v ->{
+            Intent i = new Intent(getActivity(), BuyHistoryActivity.class);
             startActivity(i);
         });
 

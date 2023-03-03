@@ -1,41 +1,70 @@
 package com.example.baostore.activities;
 
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
+import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
+import com.example.baostore.DAOs.BookDAO;
+import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.fragments.HomeFragment;
 import com.example.baostore.fragments.ProfileFragment;
 import com.example.baostore.fragments.SearchFragment;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.baostore.models.Book;
+import com.example.baostore.models.Category;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     Toolbar myToolbar;
-     ImageView imgBack;
-     TextView tvTitleHeader;
-     Fragment fragment;
+    ImageView imgBack;
+    TextView tvTitleHeader;
+    BookDAO dao;
+    CategoryDAO categoryDAO;
+    Fragment fragment;
+    ProgressBar progressBar;
+    Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dao = new BookDAO(this);
+        categoryDAO = new CategoryDAO(this);
+        bundle = new Bundle();
+        bundle.putInt(BOOK_SEARCH_CODE, 0);
+
+        progressBar = findViewById(R.id.progressBar_Main);
 
         // header
         tvTitleHeader = findViewById(R.id.title);
@@ -58,7 +87,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Thêm HomeFragment vào FrameLayout
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
+        fragment = new HomeFragment();
+        loadCategoryToFragment(fragment);
+        loadBooksToFragment(fragment);
+
 
         // Title toolbar
 
@@ -67,14 +99,26 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.Home:
-
-                    tvTitleHeader.setText("Trang chủ");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
+                    progressBar.setVisibility(View.VISIBLE);
+                    fragment = new HomeFragment();
+                    if(bundle == null){
+                        loadCategoryToFragment(fragment);
+                        loadBooksToFragment(fragment);
+                    } else{
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
                     return true;
                 case R.id.Search:
-
                     tvTitleHeader.setText("Tìm kiếm");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SearchFragment()).commit();
+                    fragment = new SearchFragment();
+                    if(bundle == null){
+                        loadBooksToFragment(fragment);
+                    } else{
+                        fragment.setArguments(bundle);
+                        loadSearchFragment(fragment,0,0);
+                    }
                     return true;
                 case R.id.Cart:
 
@@ -89,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-
 
 
         //
@@ -117,6 +160,116 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+    }
+
+
+    public void loadBooksToFragment(Fragment fragment) {
+        ApiService service = new GetRetrofit().getRetrofit();
+
+
+        Call<Result> call = service.getbook();
+        call.enqueue(new Callback<Result>() {
+                         @Override
+                         public void onResponse(Call<Result> call, Response<Result> response) {
+                             JsonElement element = response.body().getData();
+                             JsonArray myArr = element.getAsJsonArray();
+
+                             List<Book> list = new ArrayList<>();
+                             list = dao.getData(myArr);
+
+                             bundle.putSerializable(BOOK_LIST, (Serializable) list);
+                             progressBar.setVisibility(View.INVISIBLE);
+
+                             fragment.setArguments(bundle);
+                             loadFragment(fragment);
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<Result> call, Throwable t) {
+                             Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
+                             Log.d("----------------------", t.toString());
+                         }
+                     }
+        );
+    }
+
+    public void loadCategoryToFragment(Fragment fragment){
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<Result> call = service.getCategories();
+
+
+        call.enqueue(new Callback<Result>() {
+                         @Override
+                         public void onResponse(Call<Result> call, Response<Result> response) {
+                             int responseCode = response.body().getResponseCode();
+                             if (responseCode == 1) {
+                                 JsonElement element = response.body().getData();
+                                 JsonArray myArr = element.getAsJsonArray();
+                                 List<Category> categoryList = new ArrayList<>();
+                                 categoryList = categoryDAO.getData(myArr);
+
+                                 Log.d("-----------------Main", categoryList.get(0).getCategoryName());
+                                 bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
+
+                                 fragment.setArguments(bundle);
+                                 loadFragment(fragment);
+
+                             }
+
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<Result> call, Throwable t) {
+                             Toast.makeText(MainActivity.this, "An error has occured", Toast.LENGTH_LONG).show();
+                             Log.d("----------------------", t.toString());
+                         }
+                     }
+        );
+    }
+
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+    }
+
+    public void loadSearchFragment(Fragment fragment, int searchCode, int categoryID) {
+
+        bundle.putInt(BOOK_SEARCH_CODE, searchCode);
+        bundle.putInt(CATEGORY_ID, categoryID);
+        fragment.setArguments(bundle);
+
+        Log.d("--------------------MAIN", searchCode+"");
+        Log.d("--------------------MAIN", categoryID+"");
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+    }
+
+    public void setSearchSelection(){
+        bottomNavigationView.setSelectedItemId(R.id.Search);
+    }
+    // Nhấn back 2 lần để thoát app
+    boolean canExit = false;
+
+    @Override
+    public void onBackPressed() {
+        if (canExit) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            canExit = !canExit;
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    canExit = false;
+                }
+            }, 1000);
+        }
 
 
     }

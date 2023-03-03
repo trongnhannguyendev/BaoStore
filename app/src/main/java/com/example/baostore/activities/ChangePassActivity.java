@@ -32,12 +32,13 @@ public class ChangePassActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     EditText edOldPass, edNewPass, edReNewPass;
     Button btnChangePass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_pass);
         // header
-        tvTitleHeader=findViewById(R.id.title);
+        tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Thay đổi mật khẩu");
 
         edOldPass = findViewById(R.id.edOldPass_cp);
@@ -45,9 +46,9 @@ public class ChangePassActivity extends AppCompatActivity {
         edReNewPass = findViewById(R.id.edReNewPass_cp);
         btnChangePass = findViewById(R.id.btnChangePass_cp);
 
-        btnChangePass.setOnClickListener(view ->{
+        btnChangePass.setOnClickListener(view -> {
 
-        changePass();
+            changePass();
 
 
         });
@@ -55,20 +56,19 @@ public class ChangePassActivity extends AppCompatActivity {
     }
 
 
-
-    private void changePass(){
+    private void changePass() {
         boolean hasError = false;
 
         String oldPass = edOldPass.getText().toString().trim();
         String newPass = edNewPass.getText().toString().trim();
         String reNewPass = edReNewPass.getText().toString().trim();
 
-        if(!newPass.equals(reNewPass)){
+        if (!newPass.equals(reNewPass)) {
             Toast.makeText(this, getResources().getString(R.string.pass_not_equal_repass), Toast.LENGTH_SHORT).show();
             return;
         }
-        if(oldPass.isEmpty() || newPass.isEmpty()){
-            Toast.makeText(this, getResources().getString(R.string.no_pass)+"", Toast.LENGTH_SHORT).show();
+        if (oldPass.isEmpty() || newPass.isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.no_pass) + "", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -83,9 +83,8 @@ public class ChangePassActivity extends AppCompatActivity {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("email",user.getEmail());
-        jsonObject.addProperty("password",oldPass);
-
+        jsonObject.addProperty("email", user.getEmail());
+        jsonObject.addProperty("password", oldPass);
 
 
         Call<Result> loginCall = service.userLogin(jsonObject);
@@ -93,19 +92,19 @@ public class ChangePassActivity extends AppCompatActivity {
         loginCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                if(response.body().getResponseCode() == 1){
+                if (response.body().getResponseCode() == 1) {
 
 
                     JsonObject updateObj = new JsonObject();
-                    updateObj.addProperty("email",user.getEmail());
-                    updateObj.addProperty("password",newPass);
+                    updateObj.addProperty("email", user.getEmail());
+                    updateObj.addProperty("password", newPass);
                     Call<Result> updateCall = service.updatePassword(updateObj);
                     updateCall.enqueue(new Callback<Result>() {
                         @Override
                         public void onResponse(Call<Result> call, Response<Result> response) {
                             int responseCode = response.body().getResponseCode();
-                            Log.d("-------------------",response.body().getMessage());
-                            if(responseCode == 1){
+                            Log.d("-------------------", response.body().getMessage());
+                            if (responseCode == 1) {
                                 Toast.makeText(ChangePassActivity.this, "update successful", Toast.LENGTH_SHORT).show();
 
                             }
@@ -116,7 +115,7 @@ public class ChangePassActivity extends AppCompatActivity {
 
                         }
                     });
-                } else{
+                } else {
                     Toast.makeText(ChangePassActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -128,12 +127,7 @@ public class ChangePassActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
-
-
 
 
 }
