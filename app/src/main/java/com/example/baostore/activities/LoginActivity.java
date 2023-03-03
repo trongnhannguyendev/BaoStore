@@ -8,6 +8,7 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // khởi tạo DAO
+        userDAO = new UserDAO(this);
+
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -58,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
-        userDAO = new UserDAO(this);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Đăng nhập
     public void login(String email, String password) {
         ApiService service = new GetRetrofit().getRetrofit();
 
@@ -84,20 +89,26 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
+
                 Log.d("-------------", response.body().getError() + "");
                 Log.d("-------------", response.body().getMessage() + "");
                 Log.d("-------------", response.body().getResponseCode() + "");
+                int responseCode = response.body().getResponseCode();
 
-                if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                if (responseCode == RESPONSE_OKAY) {
+                    // Chuyển dữ liệu thành Json Array
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
                     JsonObject object = array.get(0).getAsJsonObject();
+
+                    // Lưu dữ liệu vào sharedPreference
                     userDAO.saveLoginInfo(object);
 
+                    // chuyển qua MainActivity
                     finish();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
+                    // thông báo lỗi
                     Toast.makeText(LoginActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -121,6 +132,14 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
             canExit = !canExit;
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    canExit = false;
+                }
+            }, 1000);
         }
     }
 

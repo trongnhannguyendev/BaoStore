@@ -1,6 +1,12 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
+import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         dao = new BookDAO(this);
         categoryDAO = new CategoryDAO(this);
         bundle = new Bundle();
+        bundle.putInt(BOOK_SEARCH_CODE, 0);
 
         progressBar = findViewById(R.id.progressBar_Main);
 
@@ -110,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         loadBooksToFragment(fragment);
                     } else{
                         fragment.setArguments(bundle);
-                        loadFragment(fragment);
+                        loadSearchFragment(fragment,0,0);
                     }
                     return true;
                 case R.id.Cart:
@@ -171,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                              List<Book> list = new ArrayList<>();
                              list = dao.getData(myArr);
 
-                             bundle.putSerializable("BOOK_LIST", (Serializable) list);
+                             bundle.putSerializable(BOOK_LIST, (Serializable) list);
                              progressBar.setVisibility(View.INVISIBLE);
 
                              fragment.setArguments(bundle);
@@ -204,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                                  categoryList = categoryDAO.getData(myArr);
 
                                  Log.d("-----------------Main", categoryList.get(0).getCategoryName());
-                                 bundle.putSerializable("CATEGORY_LIST", (Serializable) categoryList);
+                                 bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
 
                                  fragment.setArguments(bundle);
                                  loadFragment(fragment);
@@ -229,7 +236,21 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
+    public void loadSearchFragment(Fragment fragment, int searchCode, int categoryID) {
 
+        bundle.putInt(BOOK_SEARCH_CODE, searchCode);
+        bundle.putInt(CATEGORY_ID, categoryID);
+        fragment.setArguments(bundle);
+
+        Log.d("--------------------MAIN", searchCode+"");
+        Log.d("--------------------MAIN", categoryID+"");
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+    }
+
+    public void setSearchSelection(){
+        bottomNavigationView.setSelectedItemId(R.id.Search);
+    }
     // Nhấn back 2 lần để thoát app
     boolean canExit = false;
 
@@ -240,6 +261,16 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
             canExit = !canExit;
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    canExit = false;
+                }
+            }, 1000);
         }
+
+
     }
 }

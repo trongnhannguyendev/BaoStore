@@ -1,6 +1,9 @@
 package com.example.baostore.fragments;
 
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -150,7 +153,7 @@ public class HomeFragment extends Fragment {
     public void getBooks() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable("BOOK_LIST");
+            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
         }
@@ -159,7 +162,7 @@ public class HomeFragment extends Fragment {
     public void getCategory() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            list_category = (List<Category>) bundle.getSerializable("CATEGORY_LIST");
+            list_category = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
 
             Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
         }
