@@ -175,8 +175,7 @@ public class MainActivity extends AppCompatActivity {
                              JsonElement element = response.body().getData();
                              JsonArray myArr = element.getAsJsonArray();
 
-                             List<Book> list = new ArrayList<>();
-                             list = dao.getData(myArr);
+                             List<Book> list = dao.getData(myArr);
 
                              bundle.putSerializable(BOOK_LIST, (Serializable) list);
                              progressBar.setVisibility(View.INVISIBLE);
@@ -207,8 +206,7 @@ public class MainActivity extends AppCompatActivity {
                              if (responseCode == 1) {
                                  JsonElement element = response.body().getData();
                                  JsonArray myArr = element.getAsJsonArray();
-                                 List<Category> categoryList = new ArrayList<>();
-                                 categoryList = categoryDAO.getData(myArr);
+                                 List<Category> categoryList = categoryDAO.getData(myArr);
 
                                  Log.d("-----------------Main", categoryList.get(0).getCategoryName());
                                  bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);

@@ -35,4 +35,7 @@ public class Constants {
     public static final String CATEGORY_NAME = "categoryName";
     public static final String CATEGORY_LIST = "categoryList";
 
+    // Cart
+    public static final String CART_QUANTITY = "quantity";
+
 }
