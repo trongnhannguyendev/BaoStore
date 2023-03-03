@@ -1,6 +1,7 @@
 package com.example.baostore.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
+import com.example.baostore.activities.DetailItemActivity;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.models.Category;
 
 import java.util.List;
@@ -44,6 +49,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, category.getCategoryName(), Toast.LENGTH_SHORT).show();
+
+
             }
         });
 

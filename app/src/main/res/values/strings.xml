@@ -7,9 +7,14 @@
     <string name="no_pass">Cần phải nhập mật khẩu</string>
     <string name="no_phonenumber">Cần phải nhập sđt</string>
     <string name="no_fullname">Cần phải nhập tên</string>
+
+    <string name="password_length">Mật khẩu phải > 6 ký tự</string>
     <string name="pass_not_equal_repass">Mật khẩu không trùng khớp</string>
+
+
     <string name="wrong_number_format">Phải là số</string>
     <string name="wrong_email_format">Không đúng dịnh dạng email</string>
+
     <string name="not_phone_number">SĐT gồm 10 số</string>
 
 </resources>

@@ -2,42 +2,28 @@ package com.example.baostore.fragments;
 
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.ApiUrl;
-import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.TempCategoryDAO;
+import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CategoryAdapter;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
     List<Book> list_book;
@@ -46,7 +32,7 @@ public class HomeFragment extends Fragment {
     BookAdapter adapter;
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
-    TempCategoryDAO tempCategoryDAO;
+    CategoryDAO categoryDAO;
     LinearLayout btnSearchNew, btnSearchPopular;
 
     @Override
@@ -63,15 +49,19 @@ public class HomeFragment extends Fragment {
         btnSearchNew = v.findViewById(R.id.btnSearchNew);
         btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
 
-        tempCategoryDAO = new TempCategoryDAO(getContext(), recyCategory);
+        categoryDAO = new CategoryDAO(getContext());
 
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        getBooks();
-        getCategory();
 
+        MainActivity activity = (MainActivity) getContext();
+        //activity.loadBooksToFragment(this);
+        getBooks();
+
+        //activity.loadCategoryToFragment(this);
+        getCategory();
 
         adapter = new BookAdapter(list_book, getContext());
         book2Adapter = new Book2Adapter(list_book, getContext());
@@ -82,7 +72,6 @@ public class HomeFragment extends Fragment {
         recyCategory.setAdapter(categoryAdapter);
 
 
-        tempCategoryDAO.getCategory();
 
         btnSearchNew.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
@@ -168,53 +157,11 @@ public class HomeFragment extends Fragment {
     }
 
     public void getCategory() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            list_category = (List<Category>) bundle.getSerializable("CATEGORY_LIST");
 
-        ApiService service = retrofit.create(ApiService.class);
-
-
-        Call<Result> call = service.getCategories();
-
-
-        call.enqueue(new Callback<Result>() {
-                         @Override
-                         public void onResponse(Call<Result> call, Response<Result> response) {
-                             int responseCode = response.body().getResponseCode();
-                             if (responseCode == 1) {
-                                 JsonElement element = response.body().getData();
-                                 JsonArray myArr = element.getAsJsonArray();
-
-
-                                 Log.d("------------------------", myArr.size() + "");
-                                 for (JsonElement jsonElement : myArr) {
-                                     JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                     int categoryID = jsonObject.get("categoryID").getAsInt();
-                                     String categoryName = jsonObject.get("categoryName").getAsString();
-
-                                     Category category = new Category(categoryID, categoryName);
-                                     Log.d("--------------------", category.getCategoryName());
-                                     list_category.add(category);
-
-                                 }
-
-                                 categoryAdapter = new CategoryAdapter(list_category, getContext());
-                                 recyCategory.setAdapter(categoryAdapter);
-
-                                 categoryAdapter.notifyDataSetChanged();
-                             }
-
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<Result> call, Throwable t) {
-                             Toast.makeText(getContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------", t.toString());
-                         }
-                     }
-        );
+            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
+        }
     }
 }

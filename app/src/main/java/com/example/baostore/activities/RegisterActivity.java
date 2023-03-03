@@ -60,11 +60,11 @@ public class RegisterActivity extends AppCompatActivity {
         edFullname = findViewById(R.id.edFullname_reg);
 
         btnRegister.setOnClickListener(view -> {
-            String email = edEmail.getText().toString();
-            String pass = edPass.getText().toString();
-            String pass_re = edRePass.getText().toString();
-            String phoneNumber = edPhoneNumber.getText().toString();
-            String fullname = edFullname.getText().toString();
+            String email = edEmail.getText().toString().trim();
+            String pass = edPass.getText().toString().trim();
+            String pass_re = edRePass.getText().toString().trim();
+            String phoneNumber = edPhoneNumber.getText().toString().trim();
+            String fullname = edFullname.getText().toString().trim();
 
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
                 register(email, pass, fullname, phoneNumber);
@@ -82,10 +82,10 @@ public class RegisterActivity extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_EMAIL, email);
 
-        Call<Result> call = service.checkUserEmailExist(jsonObject);
+        Call<Result> checkEmailCall = service.checkUserEmailExist(jsonObject);
 
 
-        call.enqueue(new Callback<Result>() {
+        checkEmailCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (!response.body().getError()) {
@@ -98,8 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
                     jsonObject1.addProperty(USER_PASSWORD, pass);
                     jsonObject1.addProperty(USER_FULL_NAME, fullname);
                     jsonObject1.addProperty(USER_PHONE_NUMBER, phoneNumber);
-
-                    Log.d("----------------------------", jsonObject1 + "");
 
                     Call<Result> regCall = service.registerUser(jsonObject1);
 
@@ -127,6 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Result> call, Throwable t) {
                             Log.d("-------------", t.getMessage() + "");
+                            Toast.makeText(RegisterActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -149,6 +148,8 @@ public class RegisterActivity extends AppCompatActivity {
         if (pass.isEmpty()) {
             edPass.setError(getResources().getString(R.string.no_pass));
             noError = false;
+        } else if (pass.length() <= 6) {
+            edPass.setError(getResources().getString(R.string.password_length));
         }
         if (!pass.equals(pass_re)) {
             edRePass.setError(getResources().getString(R.string.pass_not_equal_repass));
@@ -177,10 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
             edFullname.setError(getResources().getString(R.string.no_fullname));
             noError = false;
         }
-        if (noError) {
-            return true;
-        }
-        return false;
+        return noError;
     }
 }
 

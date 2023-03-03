@@ -17,12 +17,14 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.DAOs.BookDAO;
+import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.fragments.HomeFragment;
 import com.example.baostore.fragments.ProfileFragment;
 import com.example.baostore.fragments.SearchFragment;
 import com.example.baostore.models.Book;
+import com.example.baostore.models.Category;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -41,8 +43,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgBack;
     TextView tvTitleHeader;
     BookDAO dao;
+    CategoryDAO categoryDAO;
     Fragment fragment;
     ProgressBar progressBar;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dao = new BookDAO(this);
+        categoryDAO = new CategoryDAO(this);
+        bundle = new Bundle();
+
         progressBar = findViewById(R.id.progressBar_Main);
 
         // header
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Thêm HomeFragment vào FrameLayout
         fragment = new HomeFragment();
+        loadCategoryToFragment(fragment);
         loadBooksToFragment(fragment);
 
 
@@ -86,12 +94,24 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.Home:
                     progressBar.setVisibility(View.VISIBLE);
                     fragment = new HomeFragment();
-                    loadBooksToFragment(fragment);
+                    if(bundle == null){
+                        loadCategoryToFragment(fragment);
+                        loadBooksToFragment(fragment);
+                    } else{
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
                     return true;
                 case R.id.Search:
-
                     tvTitleHeader.setText("Tìm kiếm");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SearchFragment()).commit();
+                    fragment = new SearchFragment();
+                    if(bundle == null){
+                        loadBooksToFragment(fragment);
+                    } else{
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+                    }
                     return true;
                 case R.id.Cart:
 
@@ -151,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                              List<Book> list = new ArrayList<>();
                              list = dao.getData(myArr);
 
-                             Bundle bundle = new Bundle();
                              bundle.putSerializable("BOOK_LIST", (Serializable) list);
                              progressBar.setVisibility(View.INVISIBLE);
 
@@ -163,6 +182,41 @@ public class MainActivity extends AppCompatActivity {
                          @Override
                          public void onFailure(Call<Result> call, Throwable t) {
                              Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
+                             Log.d("----------------------", t.toString());
+                         }
+                     }
+        );
+    }
+
+    public void loadCategoryToFragment(Fragment fragment){
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<Result> call = service.getCategories();
+
+
+        call.enqueue(new Callback<Result>() {
+                         @Override
+                         public void onResponse(Call<Result> call, Response<Result> response) {
+                             int responseCode = response.body().getResponseCode();
+                             if (responseCode == 1) {
+                                 JsonElement element = response.body().getData();
+                                 JsonArray myArr = element.getAsJsonArray();
+                                 List<Category> categoryList = new ArrayList<>();
+                                 categoryList = categoryDAO.getData(myArr);
+
+                                 Log.d("-----------------Main", categoryList.get(0).getCategoryName());
+                                 bundle.putSerializable("CATEGORY_LIST", (Serializable) categoryList);
+
+                                 fragment.setArguments(bundle);
+                                 loadFragment(fragment);
+
+                             }
+
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<Result> call, Throwable t) {
+                             Toast.makeText(MainActivity.this, "An error has occured", Toast.LENGTH_LONG).show();
                              Log.d("----------------------", t.toString());
                          }
                      }
