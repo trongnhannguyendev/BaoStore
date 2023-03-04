@@ -1,9 +1,12 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
+import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
+import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.DAOs.BookDAO;
 import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
@@ -29,11 +33,14 @@ import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.fragments.HomeFragment;
 import com.example.baostore.fragments.ProfileFragment;
 import com.example.baostore.fragments.SearchFragment;
+import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
+import com.example.baostore.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         bundle.putInt(BOOK_SEARCH_CODE, 0);
 
         progressBar = findViewById(R.id.progressBar_Main);
+
+        loadUserAddresses();
 
         // header
         tvTitleHeader = findViewById(R.id.title);
@@ -228,6 +237,40 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    public void loadUserAddresses(){
+        ApiService service = new GetRetrofit().getRetrofit();
+        User user = SharedPrefManager.getInstance(this).getUser();
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(USER_ID, user.getUserID());
+
+        Call<Result> call = service.getAddressByUser(jsonObject);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
+                    JsonElement element = response.body().getData();
+                    JsonArray array = element.getAsJsonArray();
+                    JsonObject object = array.get(0).getAsJsonObject();
+                    Address address = new Address();
+                    address.setAddressLocation(object.get(ADDDRESS_LOCATION).getAsString());
+
+                    SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
+                    Log.d("--------MainActivity", object.get(ADDDRESS_LOCATION).getAsString());
+                } else{
+                    Toast.makeText(MainActivity.this, "Error found", Toast.LENGTH_SHORT).show();
+                    Log.d("------MainActivity", response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("-------------------------MainActivity", t.toString());
+            }
+        });
+    }
 
     public void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();

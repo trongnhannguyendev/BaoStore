@@ -38,4 +38,8 @@ public class Constants {
     // Cart
     public static final String CART_QUANTITY = "quantity";
 
+    // Address
+    public static final String ADDDRESS_ID = "addressid";
+    public static final String ADDDRESS_LOCATION = "location";
+
 }
