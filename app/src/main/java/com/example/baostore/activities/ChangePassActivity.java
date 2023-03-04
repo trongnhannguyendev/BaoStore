@@ -1,5 +1,9 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
+import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_PASSWORD;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
@@ -83,8 +87,8 @@ public class ChangePassActivity extends AppCompatActivity {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("email", user.getEmail());
-        jsonObject.addProperty("password", oldPass);
+        jsonObject.addProperty(USER_EMAIL, user.getEmail());
+        jsonObject.addProperty(USER_PASSWORD, oldPass);
 
 
         Call<Result> loginCall = service.userLogin(jsonObject);
@@ -92,12 +96,12 @@ public class ChangePassActivity extends AppCompatActivity {
         loginCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                if (response.body().getResponseCode() == 1) {
-
+                if (response.body().getResponseCode() == RESPONSE_OKAY) {
 
                     JsonObject updateObj = new JsonObject();
-                    updateObj.addProperty("email", user.getEmail());
-                    updateObj.addProperty("password", newPass);
+                    updateObj.addProperty(USER_EMAIL, user.getEmail());
+                    updateObj.addProperty(USER_PASSWORD, newPass);
+
                     Call<Result> updateCall = service.updatePassword(updateObj);
                     updateCall.enqueue(new Callback<Result>() {
                         @Override
@@ -106,6 +110,7 @@ public class ChangePassActivity extends AppCompatActivity {
                             Log.d("-------------------", response.body().getMessage());
                             if (responseCode == 1) {
                                 Toast.makeText(ChangePassActivity.this, "update successful", Toast.LENGTH_SHORT).show();
+                                finish();
 
                             }
                         }

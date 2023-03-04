@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.*;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
 public class SharedPrefManager {
@@ -12,6 +13,7 @@ public class SharedPrefManager {
     private static Context mCtx;
 
     private static final String SHARED_PREF_NAME = "userPref";
+    public static final String USER_ADDRESS = "address";
 
 
     private SharedPrefManager(Context context) {
@@ -61,5 +63,18 @@ public class SharedPrefManager {
         return true;
     }
 
+    public boolean saveUserAddressList(Address address){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_ADDRESS, address.getAddressLocation());
+        editor.apply();
+        return true;
+    }
 
+    public Address getUserAddressList(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        Address address = new Address();
+        address.setAddressLocation(sharedPreferences.getString(USER_ADDRESS, null));
+        return address;
+    }
 }

@@ -10,6 +10,10 @@ public class Address {
     private String isDefault;
     private int userID;
 
+    public Address(){
+
+    }
+
     public Address(int addressID, String addressLocation) {
         this.addressID = addressID;
         this.addressLocation = addressLocation;
