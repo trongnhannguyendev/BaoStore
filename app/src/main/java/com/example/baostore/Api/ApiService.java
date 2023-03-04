@@ -89,5 +89,11 @@ public interface ApiService {
     @GET("get-all-publishers.php")
     Call<Result> getPublishers();
 
+    // Cart
+    @POST("get-cart-by-userID.php")
+    Call<Result> getCartByUserID(
+            @Body JsonObject jsonObject
+    );
+
 
 }

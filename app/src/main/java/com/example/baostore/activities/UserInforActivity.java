@@ -1,7 +1,9 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.USER_ID;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,47 +77,11 @@ public class UserInforActivity extends AppCompatActivity {
     }
 
     public void getUserMainAddress() {
-        ApiService service = new GetRetrofit().getRetrofit();
+        Address address1 = SharedPrefManager.getInstance(this).getUserAddressList();
 
-        JsonObject jsonObject = new JsonObject();
-
-        int id = user.getUserID();
-        jsonObject.addProperty(USER_ID, id);
-        Log.d("----------------- Json object: ", jsonObject + "");
-
-        Call<Result> call = service.getAddressByUser(jsonObject);
-
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.d("-------------", response.body().getError() + "");
-                Log.d("-------------", response.body().getMessage() + "");
-                Log.d("-------------", response.body().getResponseCode() + "");
-
-                int responseCode = response.body().getResponseCode();
-                if (responseCode == 1) {
-                    JsonElement element = response.body().getData();
-                    JsonArray myArr = element.getAsJsonArray();
-                    JsonObject jsonObject1 = myArr.get(0).getAsJsonObject();
-
-                    int id = jsonObject1.get("addressid").getAsInt();
-                    String addressLocation = jsonObject1.get("location").getAsString();
-                    address = new Address(id, addressLocation);
-                    edAddress.setText(address.getAddressLocation());
+        edAddress.setText(address1.getAddressLocation());
 
 
-                } else {
-                    Toast.makeText(UserInforActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d("-------------", t.getMessage() + "");
-                Toast.makeText(UserInforActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 

@@ -4,21 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.models.User;
 
 public class CartInforActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     ImageView imgBack;
     private MotionButton btnConfirmCartInfor;
     private CardView cvIconProgress;
+
+    EditText edFullName, edPhoneNumber, edAddress, edEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,5 +59,17 @@ public class CartInforActivity extends AppCompatActivity {
 
             }
         });
+
+        // Load user
+        edFullName = findViewById(R.id.edFullName_cartinfo);
+        edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
+        edAddress = findViewById(R.id.edAddress_cartinfo);
+        edEmail = findViewById(R.id.edEmail_cartinfo);
+
+        User user = SharedPrefManager.getInstance(this).getUser();
+
+        edFullName  .setText(user.getFullname());
+        edPhoneNumber.setText(user.getPhoneNumber());
+        edEmail.setText(user.getEmail());
     }
 }

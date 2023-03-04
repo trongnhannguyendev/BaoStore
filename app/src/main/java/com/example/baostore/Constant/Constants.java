@@ -35,4 +35,11 @@ public class Constants {
     public static final String CATEGORY_NAME = "categoryName";
     public static final String CATEGORY_LIST = "categoryList";
 
+    // Cart
+    public static final String CART_QUANTITY = "quantity";
+
+    // Address
+    public static final String ADDDRESS_ID = "addressid";
+    public static final String ADDDRESS_LOCATION = "location";
+
 }
