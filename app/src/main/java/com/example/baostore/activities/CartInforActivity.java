@@ -55,8 +55,6 @@ public class CartInforActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
                 startActivity(i);
-
-
             }
         });
 
@@ -68,7 +66,7 @@ public class CartInforActivity extends AppCompatActivity {
 
         User user = SharedPrefManager.getInstance(this).getUser();
 
-        edFullName  .setText(user.getFullname());
+        edFullName.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhoneNumber());
         edEmail.setText(user.getEmail());
     }

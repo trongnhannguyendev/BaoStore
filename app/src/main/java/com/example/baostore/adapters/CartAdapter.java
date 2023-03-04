@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +51,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.tvTotalPrice.setText(totalPrice);
         holder.tvBookName.setText(cart.getTitle());
         holder.ivBook.setScaleType(ImageView.ScaleType.FIT_XY);
+        holder.edQuantity.setText(String.valueOf(quantity));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -63,6 +66,40 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             }
         });
         thread.start();
+
+        holder.ivDecrease.setOnClickListener(view ->{
+            int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
+            holder.ivIncrease.setClickable(true);
+            if(curQuantity<=1){
+                holder.ivDecrease.setClickable(false);
+            } else {
+                curQuantity--;
+                holder.edQuantity.setText(String.valueOf(curQuantity));
+                double currentPrice = cart.getPrice();
+                int newTotalPrice = (int) (currentPrice*curQuantity);
+                holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
+            }
+
+        });
+
+        holder.ivIncrease.setOnClickListener(view ->{
+            int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
+            holder.ivDecrease.setClickable(true);
+            if(curQuantity>=9){
+                holder.ivIncrease.setClickable(false);
+            } else {
+                curQuantity++;
+                holder.edQuantity.setText(String.valueOf(curQuantity));
+                double currentPrice = cart.getPrice();
+                int newTotalPrice = (int) (currentPrice*curQuantity);
+                holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
+            }
+        });
+
+        holder.ivCancel.setOnClickListener(view ->{
+            Toast.makeText(context, "Item deleted \n Insert code in", Toast.LENGTH_SHORT).show();
+        });
+
     }
 
     @Override
@@ -74,6 +111,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         public ImageView ivBook, ivCancel, ivDecrease, ivIncrease;
         public TextView tvBookName, tvBookPrice, tvTotalPrice;
+        public EditText edQuantity;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvBookName = itemView.findViewById(R.id.tvBookName_cart);
@@ -84,6 +122,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             ivDecrease = itemView.findViewById(R.id.ivDecrease_cart);
             ivIncrease = itemView.findViewById(R.id.ivIncrease_cart);
             ivCancel = itemView.findViewById(R.id.ivCancel_cart);
+
+            edQuantity = itemView.findViewById(R.id.edQuantity);
 
         }
     }

@@ -12,10 +12,6 @@ import static com.example.baostore.Constant.Constants.BOOK_URL;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.fragment.app.Fragment;
-
-import com.example.baostore.adapters.Book2Adapter;
-import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Book;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -25,11 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDAO {
-    BookAdapter adapter;
-    Book2Adapter book2Adapter;
-    private Context context;
-    Fragment fragment;
-    List<Book> list_book = new ArrayList<>();
+    private final Context context;
 
     public BookDAO(Context context) {
         this.context = context;
