@@ -17,4 +17,9 @@
 
     <string name="not_phone_number">SĐT gồm 10 số</string>
 
+
+    <string name="debug_login">----Login</string>
+    <string name="debug_register">----Login</string>
+    <string name="debug_Login">----Login</string>
+
 </resources>
