@@ -1,34 +1,18 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
-import static com.example.baostore.Constant.Constants.USER_ID;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UserInforActivity extends AppCompatActivity {
     private Toolbar toolbar;

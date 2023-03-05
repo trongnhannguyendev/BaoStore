@@ -51,7 +51,7 @@ public class BookDAO {
             book.setPublisherID(publisherID);
             book.setUrl(url);
 
-            Log.d("----------------BOOK", book.getTitle());
+            Log.d("----BOOK", book.getTitle());
             list.add(book);
         }
         return list;

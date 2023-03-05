@@ -1,10 +1,9 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
-import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -44,7 +43,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -133,12 +131,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.Cart:
 
                     tvTitleHeader.setText("Giỏ hàng");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new CartFragment()).commit();
+                    fragment = new CartFragment();
+                    loadFragment(fragment);
                     return true;
                 case R.id.User:
 
                     tvTitleHeader.setText("Người dùng");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProfileFragment()).commit();
+                    fragment = new ProfileFragment();
+                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -255,10 +255,10 @@ public class MainActivity extends AppCompatActivity {
                     JsonArray array = element.getAsJsonArray();
                     JsonObject object = array.get(0).getAsJsonObject();
                     Address address = new Address();
-                    address.setAddressLocation(object.get(ADDDRESS_LOCATION).getAsString());
+                    address.setAddressLocation(object.get(ADDRESS_LOCATION).getAsString());
 
                     SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
-                    Log.d("--------MainActivity", object.get(ADDDRESS_LOCATION).getAsString());
+                    Log.d("--------MainActivity", object.get(ADDRESS_LOCATION).getAsString());
                 } else{
                     Toast.makeText(MainActivity.this, "Error found", Toast.LENGTH_SHORT).show();
                     Log.d("------MainActivity", response.body().getMessage());
