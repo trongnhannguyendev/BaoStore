@@ -41,6 +41,7 @@ public class Constants {
 
     // Cart
     public static final String CART_QUANTITY = "quantity";
+    public static final String CART_TOTAL_PRICE = "carttotalprice";
 
     // Address
     public static final String ADDRESS_ID = "addressid";

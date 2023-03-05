@@ -26,6 +26,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
+import com.example.baostore.DAOs.AddressDAO;
 import com.example.baostore.DAOs.BookDAO;
 import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     BookDAO dao;
     CategoryDAO categoryDAO;
+    AddressDAO addressDAO;
     Fragment fragment;
     ProgressBar progressBar;
     Bundle bundle;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         dao = new BookDAO(this);
         categoryDAO = new CategoryDAO(this);
+        addressDAO = new AddressDAO();
         bundle = new Bundle();
         bundle.putInt(BOOK_SEARCH_CODE, 0);
 
@@ -253,14 +256,16 @@ public class MainActivity extends AppCompatActivity {
                 if(response.body().getResponseCode() == RESPONSE_OKAY){
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
-                    JsonObject object = array.get(0).getAsJsonObject();
+                    List<Address> addresses = addressDAO.getData(array);
+
+
                     Address address = new Address();
-                    address.setAddressLocation(object.get(ADDRESS_LOCATION).getAsString());
+                    address.setAddressLocation(addresses.get(0).getAddressLocation());
 
                     SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
-                    Log.d("--------MainActivity", object.get(ADDRESS_LOCATION).getAsString());
+                    Log.d("--------MainActivity", addresses.get(0).getAddressLocation());
                 } else{
-                    Toast.makeText(MainActivity.this, "Error found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("------MainActivity", response.body().getMessage());
                 }
             }

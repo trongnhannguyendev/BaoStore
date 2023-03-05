@@ -2,6 +2,8 @@ package com.example.baostore.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Cart;
 
 import java.util.List;
@@ -23,10 +28,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     private List<Cart> list;
     Context context;
+    CartFragment fragment;
 
-    public CartAdapter(List<Cart> list, Context context) {
+    public CartAdapter(List<Cart> list, Context context, CartFragment fragment) {
         this.list = list;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -42,6 +49,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Cart cart = list.get(position);
+
+        Bundle bundle = new Bundle();
 
         int quantity = cart.getQuantity();
         String price = new Utils().priceToString(cart.getPrice());
@@ -69,6 +78,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         holder.ivDecrease.setOnClickListener(view ->{
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
+            double oldPrice = cart.getPrice()*curQuantity;
             holder.ivIncrease.setClickable(true);
             if(curQuantity<=1){
                 holder.ivDecrease.setClickable(false);
@@ -79,11 +89,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
             }
-
+            double newPrice = cart.getPrice()*curQuantity;
+            Log.d("---CartAdapter", oldPrice+"");
+            Log.d("---CartAdapter", newPrice+"");
+            double updatePrice = newPrice - oldPrice;
+            fragment.updateTotalPrice(updatePrice);
         });
 
         holder.ivIncrease.setOnClickListener(view ->{
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
+            double oldPrice = cart.getPrice() * curQuantity;
             holder.ivDecrease.setClickable(true);
             if(curQuantity>=9){
                 holder.ivIncrease.setClickable(false);
@@ -94,6 +109,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
             }
+            double newPrice = cart.getPrice() * curQuantity;
+            double updatePrice = newPrice - oldPrice;
+            fragment.updateTotalPrice(updatePrice);
         });
 
         holder.ivCancel.setOnClickListener(view ->{
