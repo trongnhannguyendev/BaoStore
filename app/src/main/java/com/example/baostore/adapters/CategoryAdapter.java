@@ -56,7 +56,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 MainActivity mainActivity = (MainActivity) context;
                 SearchFragment fragment = new SearchFragment();
                 mainActivity.setSearchSelection();
-                mainActivity.loadSearchFragment(fragment,1, category.getCategoryID());
+                mainActivity.loadSearchFragment(fragment,1, String.valueOf(category.getCategoryID()));
                 Log.d("-------------------CategoryAdapter", category.getCategoryID()+"");
             }
         });

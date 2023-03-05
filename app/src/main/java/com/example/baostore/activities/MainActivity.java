@@ -2,6 +2,7 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         loadBooksToFragment(fragment);
                     } else{
                         fragment.setArguments(bundle);
-                        loadSearchFragment(fragment,0,0);
+                        loadSearchFragment(fragment,0,null);
                     }
                     return true;
                 case R.id.Cart:
@@ -277,14 +278,13 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
-    public void loadSearchFragment(Fragment fragment, int searchCode, int categoryID) {
+    public void loadSearchFragment(Fragment fragment, int searchCode, String find) {
 
         bundle.putInt(BOOK_SEARCH_CODE, searchCode);
-        bundle.putInt(CATEGORY_ID, categoryID);
+        bundle.putString(BOOK_SEARCH, find);
         fragment.setArguments(bundle);
 
         Log.d("--------------------MAIN", searchCode+"");
-        Log.d("--------------------MAIN", categoryID+"");
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
