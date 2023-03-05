@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -27,7 +28,9 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
+import com.example.baostore.DAOs.CartDAO;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.CartAdapter;
@@ -51,12 +54,18 @@ public class CartFragment extends Fragment {
     public List<Cart> list;
     public RecyclerView recyCart;
     public CartAdapter adapter;
+    public TextView tvTotalPrice;
+    public CartDAO cartDAO;
+    public double totalCartPrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
+        cartDAO = new CartDAO();
 
         // màu icon progress
         cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
@@ -101,34 +110,21 @@ public class CartFragment extends Fragment {
                 if(responseCode == RESPONSE_OKAY) {
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
-                    for(JsonElement element1 : array){
-                        JsonObject object = element1.getAsJsonObject();
-                        int userID = object.get(USER_ID).getAsInt();
-                        int bookID = object.get(BOOK_ID).getAsInt();
-                        int quantity = object.get(CART_QUANTITY).getAsInt();
-                        String title = object.get(BOOK_TITLE).getAsString();
-                        double price = object.get(BOOK_PRICE).getAsDouble();
-                        String url = object.get(BOOK_URL).getAsString();
+                    list = cartDAO.getData(array);
 
-                        Cart cart = new Cart();
+                    CartFragment fragment = (CartFragment) getParentFragment();
+                    adapter = new CartAdapter(list, getContext(), CartFragment.this);
 
-                        cart.setCartId(userID);
-                        cart.setBookID(bookID);
-                        cart.setQuantity(quantity);
-                        cart.setTitle(title);
-                        cart.setPrice(price);
-                        cart.setUrl(url);
-
-                        list.add(cart);
-
-                        Log.d("--------------------CartFrag", title);
-                    }
-                    adapter = new CartAdapter(list, getContext());
                     recyCart.setAdapter(adapter);
+                    totalCartPrice = 0;
+                    for (int i = 0; i < list.size(); i++) {
+                        totalCartPrice += list.get(i).getPrice() * list.get(i).getQuantity();
 
+                    }
+                    tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
                 }else{
-                    Log.d("----------------CartFragment", response.body().getMessage());
+                    Log.d("-----CartFragment", response.body().getMessage());
                 }
 
             }
@@ -138,5 +134,13 @@ public class CartFragment extends Fragment {
                 Log.d("----------------------CartFrag", t.toString());
             }
         });
+    }
+
+    public void updateTotalPrice(double updatePrice){
+        totalCartPrice += updatePrice;
+        Log.d("---CartFragment", updatePrice+"");
+        Log.d("---CartFragment", totalCartPrice+"");
+        tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
+
     }
 }

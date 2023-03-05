@@ -1,9 +1,9 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.ADDDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
-import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -26,6 +26,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
+import com.example.baostore.DAOs.AddressDAO;
 import com.example.baostore.DAOs.BookDAO;
 import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
@@ -43,7 +44,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     BookDAO dao;
     CategoryDAO categoryDAO;
+    AddressDAO addressDAO;
     Fragment fragment;
     ProgressBar progressBar;
     Bundle bundle;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         dao = new BookDAO(this);
         categoryDAO = new CategoryDAO(this);
+        addressDAO = new AddressDAO();
         bundle = new Bundle();
         bundle.putInt(BOOK_SEARCH_CODE, 0);
 
@@ -126,18 +128,20 @@ public class MainActivity extends AppCompatActivity {
                         loadBooksToFragment(fragment);
                     } else{
                         fragment.setArguments(bundle);
-                        loadSearchFragment(fragment,0,0);
+                        loadSearchFragment(fragment,0,null);
                     }
                     return true;
                 case R.id.Cart:
 
                     tvTitleHeader.setText("Giỏ hàng");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new CartFragment()).commit();
+                    fragment = new CartFragment();
+                    loadFragment(fragment);
                     return true;
                 case R.id.User:
 
                     tvTitleHeader.setText("Người dùng");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProfileFragment()).commit();
+                    fragment = new ProfileFragment();
+                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -252,14 +256,16 @@ public class MainActivity extends AppCompatActivity {
                 if(response.body().getResponseCode() == RESPONSE_OKAY){
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
-                    JsonObject object = array.get(0).getAsJsonObject();
+                    List<Address> addresses = addressDAO.getData(array);
+
+
                     Address address = new Address();
-                    address.setAddressLocation(object.get(ADDDRESS_LOCATION).getAsString());
+                    address.setAddressLocation(addresses.get(0).getAddressLocation());
 
                     SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
-                    Log.d("--------MainActivity", object.get(ADDDRESS_LOCATION).getAsString());
+                    Log.d("--------MainActivity", addresses.get(0).getAddressLocation());
                 } else{
-                    Toast.makeText(MainActivity.this, "Error found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("------MainActivity", response.body().getMessage());
                 }
             }
@@ -277,14 +283,13 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
-    public void loadSearchFragment(Fragment fragment, int searchCode, int categoryID) {
+    public void loadSearchFragment(Fragment fragment, int searchCode, String find) {
 
         bundle.putInt(BOOK_SEARCH_CODE, searchCode);
-        bundle.putInt(CATEGORY_ID, categoryID);
+        bundle.putString(BOOK_SEARCH, find);
         fragment.setArguments(bundle);
 
         Log.d("--------------------MAIN", searchCode+"");
-        Log.d("--------------------MAIN", categoryID+"");
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }

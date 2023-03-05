@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
@@ -37,8 +39,11 @@ public class HomeFragment extends Fragment {
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
     CategoryDAO categoryDAO;
-    LinearLayout btnSearchNew, btnSearchPopular;
+    LinearLayout btnSearchNew, btnSearchPopular, btnSearch_home;
+    EditText edSearch;
+    ImageView ivSearch;
     Bundle bundle;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +58,8 @@ public class HomeFragment extends Fragment {
         recyCategory = v.findViewById(R.id.recyCategory);
         btnSearchNew = v.findViewById(R.id.btnSearchNew);
         btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
+        edSearch = v.findViewById(R.id.edSearch_home);
+        ivSearch = v.findViewById(R.id.ibSearch_home);
 
         categoryDAO = new CategoryDAO(getContext());
 
@@ -118,6 +125,24 @@ public class HomeFragment extends Fragment {
         btnSearchPopular.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
             loadFragment(fragment);
+        });
+
+        ivSearch.setOnClickListener(view ->{
+            String find = edSearch.getText().toString();
+            MainActivity activity = (MainActivity) getContext();
+            Fragment fragment = new SearchFragment();
+            activity.setSearchSelection();
+            if(find.isEmpty()){
+                activity.loadSearchFragment(fragment,0,null);
+                Log.d("---------HomeFrag", "0");
+            } else{
+                activity.loadSearchFragment(fragment,2, find);
+                Log.d("---------HomeFrag", "2");
+                Log.d("---------HomeFrag", "find");
+            }
+
+
+
         });
 
 
