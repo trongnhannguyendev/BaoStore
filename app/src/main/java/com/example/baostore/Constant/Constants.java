@@ -9,6 +9,9 @@ public class Constants {
     public static final int RESPONSE_SERVER_DOWN = 4;
     public static final int RESPONSE_UPDATE_FAILED = 5;
 
+    // SharedPreference
+    public static final String SHARED_PREF_NAME = "userPref";
+
     // User
     public static final String USER_ID = "userID";
     public static final String USER_EMAIL = "email";
@@ -26,6 +29,7 @@ public class Constants {
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
     public static final String BOOK_LIST = "bookList";
+    public static final String BOOK_SEARCH = "bookSeach";
 
     // SearchCode
     public static final String BOOK_SEARCH_CODE = "searchcode";

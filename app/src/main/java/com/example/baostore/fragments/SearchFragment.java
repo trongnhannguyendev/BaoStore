@@ -1,6 +1,7 @@
 package com.example.baostore.fragments;
 
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 
@@ -119,10 +120,14 @@ public class SearchFragment extends Fragment {
                     recyBook_search.setAdapter(adapter);
                     break;
                 case 1:
-                    int categoryID = bundle.getInt(CATEGORY_ID);
+                    int categoryID = Integer.parseInt(bundle.getString(BOOK_SEARCH));
+
                     Log.d("------------------SearchFragment", categoryID+"");
                     filterByCategory(categoryID);
                     break;
+                case 2:
+                    String find = bundle.getString(BOOK_SEARCH);
+                    filterByTitle(find);
 
 
             }

@@ -19,15 +19,18 @@
         android:paddingBottom="5dp">
 
         <EditText
+            android:id="@+id/edSearch_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:hint="Bạn muốn tìm gì ?"
             android:lines="1"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <ImageView
+            android:id="@+id/ibSearch_home"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_search"
