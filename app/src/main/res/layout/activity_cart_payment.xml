@@ -85,6 +85,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvFullname_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -110,6 +111,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvPhoneNumber_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -135,6 +137,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvAddress_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -161,6 +164,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvOrderDate_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -187,6 +191,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvNote_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -227,6 +232,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/bookPrice_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -245,6 +251,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -253,6 +260,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/tvShipPrice_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -284,6 +292,7 @@
                             android:textSize="16dp" />
 
                         <TextView
+                            android:id="@+id/totalPrice_cpayment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

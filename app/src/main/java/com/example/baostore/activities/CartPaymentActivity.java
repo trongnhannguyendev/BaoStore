@@ -1,21 +1,21 @@
 package com.example.baostore.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.example.baostore.R;
 
 public class CartPaymentActivity extends AppCompatActivity {
     private LinearLayout btn_hide_show, layout_hide_show;
     ImageView img_funcpayment_arrow;
-    TextView tvTitleHeader;
+    TextView tvTitleHeader, tvFullname, tvPhoneNumber, tvAddress,
+            tvOrderDate, tvNote, tvBookPrice, tvShipPrice, tvTotalPrice;
     ImageView imgBack;
     private CardView cvIconProgress;
 
@@ -24,6 +24,26 @@ public class CartPaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_payment);
 
+        tvFullname = findViewById(R.id.tvFullname_cpayment);
+        tvPhoneNumber = findViewById(R.id.tvPhoneNumber_cpayment);
+        tvAddress = findViewById(R.id.tvAddress_cpayment);
+        tvOrderDate = findViewById(R.id.tvOrderDate_cpayment);
+        tvNote = findViewById(R.id.tvNote_cpayment);
+        tvBookPrice = findViewById(R.id.tvBookPrice_cart);
+        tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
+        tvTotalPrice = findViewById(R.id.tvTotalPrice_cart);
+
+        /*
+        Order order = new Order();
+        tvFullname.setText(order.getFullname());
+        tvPhoneNumber.setText(order.getPhoneNumber());
+        tvAddress.setText(order.getAddress());
+        tvOrderDate.setText(order.getCreateDate().toString());
+        tvNote.setText(order.getNote());
+        //tvBookPrice.setText(null);
+        //tvShipPrice.setText(null);
+        tvTotalPrice.setText(String.valueOf(order.getOrderTotal()));
+         */
 
         // màu icon progress
         cvIconProgress = findViewById(R.id.cvProgress_3);

@@ -70,15 +70,6 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
-    /* NOT AVAILABLE - NO CODE YET
-
-    @POST("get-books-by-search-key.php")
-    Call<Result> getBookBySearchKey(
-            @Body JsonObject jsonObject
-    );
-
-     */
-
     // Category
 
     @GET("get-all-categories.php")
