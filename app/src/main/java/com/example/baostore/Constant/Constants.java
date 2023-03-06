@@ -13,11 +13,11 @@ public class Constants {
     public static final String SHARED_PREF_NAME = "userPref";
 
     // User
-    public static final String USER_ID = "userID";
+    public static final String USER_ID = "userid";
     public static final String USER_EMAIL = "email";
     public static final String USER_PASSWORD = "password";
-    public static final String USER_FULL_NAME = "fullName";
-    public static final String USER_PHONE_NUMBER = "phoneNumber";
+    public static final String USER_FULL_NAME = "fullname";
+    public static final String USER_PHONE_NUMBER = "phonenumber";
 
     // Book
     public static final String BOOK_ID = "bookid";
@@ -31,12 +31,14 @@ public class Constants {
     public static final String BOOK_LIST = "bookList";
     public static final String BOOK_SEARCH = "bookSeach";
 
+    public static final String IMAGE_URL = "url";
+
     // SearchCode
     public static final String BOOK_SEARCH_CODE = "searchcode";
 
     // Category
-    public static final String CATEGORY_ID = "categoryID";
-    public static final String CATEGORY_NAME = "categoryName";
+    public static final String CATEGORY_ID = "categoryid";
+    public static final String CATEGORY_NAME = "categoryname";
     public static final String CATEGORY_LIST = "categoryList";
 
     // Cart
