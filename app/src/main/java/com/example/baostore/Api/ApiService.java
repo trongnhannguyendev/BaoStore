@@ -65,10 +65,11 @@ public interface ApiService {
     @GET("get-all-book.php")
     Call<Result> getbook();
 
-    @POST("get-books-by-category.php")
-    Call<Result> getBookByCategory(
+    @POST("get-image-by-bookid.php")
+    Call<Result> getImagesByBookID(
             @Body JsonObject jsonObject
     );
+
 
     // Category
 
@@ -81,7 +82,7 @@ public interface ApiService {
     Call<Result> getPublishers();
 
     // Cart
-    @POST("get-cart-by-userID.php")
+    @POST("get-cart-by-user.php")
     Call<Result> getCartByUserID(
             @Body JsonObject jsonObject
     );
