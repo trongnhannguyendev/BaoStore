@@ -100,13 +100,13 @@ public class CartFragment extends Fragment {
         User user = SharedPrefManager.getInstance(getContext()).getUser();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_ID, user.getUserID());
-
         Call<Result> call = service.getCartByUserID(jsonObject);
 
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 int responseCode = response.body().getResponseCode();
+                Log.d("---CartFrag", responseCode+"");
                 if(responseCode == RESPONSE_OKAY) {
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
@@ -134,6 +134,7 @@ public class CartFragment extends Fragment {
                 Log.d("----------------------CartFrag", t.toString());
             }
         });
+
     }
 
     public void updateTotalPrice(double updatePrice){

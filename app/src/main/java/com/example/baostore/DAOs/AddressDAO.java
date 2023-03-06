@@ -3,6 +3,8 @@ package com.example.baostore.DAOs;
 import static com.example.baostore.Constant.Constants.ADDRESS_ID;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 
+import android.util.Log;
+
 import com.example.baostore.models.Address;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

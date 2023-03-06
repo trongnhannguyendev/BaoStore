@@ -247,9 +247,9 @@ public class MainActivity extends AppCompatActivity {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_ID, user.getUserID());
+        Log.d("---UserID", user.getUserID()+"");
 
         Call<Result> call = service.getAddressByUser(jsonObject);
-
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("-------------------------MainActivity", t.toString());
             }
         });
+
     }
 
     public void loadFragment(Fragment fragment) {
