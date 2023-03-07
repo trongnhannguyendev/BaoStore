@@ -121,7 +121,9 @@ public class DetailItemActivity extends AppCompatActivity {
                 if(responseCode == RESPONSE_OKAY){
                     Toast.makeText(DetailItemActivity.this, "Item added", Toast.LENGTH_SHORT).show();
                     finish();
-
+                } else{
+                    Toast.makeText(DetailItemActivity.this, "Item already in cart!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
