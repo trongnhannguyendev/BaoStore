@@ -87,5 +87,14 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("delete-cart.php")
+    Call<Result> deleteCart(
+            @Body JsonObject jsonObject
+    );
+
+    @POST("insert-cart.php")
+    Call<Result> insertCart(
+            @Body JsonObject jsonObject
+    );
 
 }
