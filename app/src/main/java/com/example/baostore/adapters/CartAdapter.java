@@ -149,12 +149,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     if(responseCode == RESPONSE_OKAY){
                         Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
                         MainActivity activity = (MainActivity) context;
-                        activity.loadFragment(fragment);
+                        Fragment fragment1 = new CartFragment();
+                        activity.loadFragment(fragment1);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
+                    Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                    Log.d("--CartAdapter", t.toString());
 
                 }
             });

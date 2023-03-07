@@ -92,4 +92,9 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("insert-cart.php")
+    Call<Result> insertCart(
+            @Body JsonObject jsonObject
+    );
+
 }
