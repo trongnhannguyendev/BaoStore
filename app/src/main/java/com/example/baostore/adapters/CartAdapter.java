@@ -1,6 +1,7 @@
 package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.CART_QUANTITY;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
 
@@ -102,7 +103,37 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 double currentPrice = cart.getPrice();
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
+
+                User user = SharedPrefManager.getInstance(context).getUser();
+
+                ApiService service = new GetRetrofit().getRetrofit();
+                JsonObject object = new JsonObject();
+                object.addProperty(USER_ID, user.getUserID());
+                object.addProperty(BOOK_ID, cart.getBookID());
+                object.addProperty(CART_QUANTITY, curQuantity);
+                Call<Result> call = service.updateCartQuantity(object);
+                call.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(Call<Result> call, Response<Result> response) {
+                        int responseCode = response.body().getResponseCode();
+                        if(responseCode == RESPONSE_OKAY){
+                            Toast.makeText(context, "Update quantity successful", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result> call, Throwable t) {
+                        Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                        Log.d("----Cartadapter", t.toString());
+                    }
+                });
             }
+
+
+
             double newPrice = cart.getPrice()*curQuantity;
             double updatePrice = newPrice - oldPrice;
             fragment.updateTotalPrice(updatePrice);
@@ -120,6 +151,33 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 double currentPrice = cart.getPrice();
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
+
+                User user = SharedPrefManager.getInstance(context).getUser();
+
+                ApiService service = new GetRetrofit().getRetrofit();
+                JsonObject object = new JsonObject();
+                object.addProperty(USER_ID, user.getUserID());
+                object.addProperty(BOOK_ID, cart.getBookID());
+                object.addProperty(CART_QUANTITY, curQuantity);
+                Call<Result> call = service.updateCartQuantity(object);
+                call.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(Call<Result> call, Response<Result> response) {
+                        int responseCode = response.body().getResponseCode();
+                        if(responseCode == RESPONSE_OKAY){
+                            Toast.makeText(context, "Update quantity successful", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result> call, Throwable t) {
+                        Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                        Log.d("----Cartadapter", t.toString());
+                    }
+                });
             }
             double newPrice = cart.getPrice() * curQuantity;
             double updatePrice = newPrice - oldPrice;
