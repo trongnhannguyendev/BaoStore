@@ -1,5 +1,9 @@
 package com.example.baostore.adapters;
 
+import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
+import static com.example.baostore.Constant.Constants.USER_ID;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,14 +17,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
+import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Cart;
+import com.example.baostore.models.User;
+import com.google.gson.JsonObject;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
@@ -88,8 +104,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
             }
             double newPrice = cart.getPrice()*curQuantity;
-            Log.d("---CartAdapter", oldPrice+"");
-            Log.d("---CartAdapter", newPrice+"");
             double updatePrice = newPrice - oldPrice;
             fragment.updateTotalPrice(updatePrice);
         });
@@ -113,7 +127,37 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
 
         holder.ivCancel.setOnClickListener(view ->{
-            Toast.makeText(context, "Item deleted \n Insert code in", Toast.LENGTH_SHORT).show();
+
+
+            JsonObject object=  new JsonObject();
+            User user = SharedPrefManager.getInstance(context).getUser();
+            int id = user.getUserID();
+
+            object.addProperty(USER_ID, id);
+            object.addProperty(BOOK_ID,cart.getBookID());
+
+            Log.d("---CartAdapter", id+"");
+            Log.d("---CartAdapter", cart.getBookID()+"");
+
+            ApiService service = new GetRetrofit().getRetrofit();
+            Call<Result> call = service.deleteCart(object);
+
+            call.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    int responseCode = response.body().getResponseCode();
+                    if(responseCode == RESPONSE_OKAY){
+                        Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
+                        MainActivity activity = (MainActivity) context;
+                        activity.loadFragment(fragment);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
         });
 
     }
