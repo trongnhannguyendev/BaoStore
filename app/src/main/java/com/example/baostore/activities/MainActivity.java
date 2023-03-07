@@ -291,8 +291,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
 
         Log.d("--------------------MAIN", searchCode+"");
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+       loadFragment(fragment);
     }
 
     public void setSearchSelection(){
