@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
@@ -279,6 +280,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     public void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
@@ -297,6 +300,8 @@ public class MainActivity extends AppCompatActivity {
     public void setSearchSelection(){
         bottomNavigationView.setSelectedItemId(R.id.Search);
     }
+
+
     // Nhấn back 2 lần để thoát app
     boolean canExit = false;
 
