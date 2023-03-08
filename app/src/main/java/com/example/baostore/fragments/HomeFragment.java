@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
     CategoryDAO categoryDAO;
+    MainActivity activity;
     LinearLayout btnSearchNew, btnSearchPopular, btnSearch_home;
     EditText edSearch;
     ImageView ivSearch;
@@ -68,8 +69,7 @@ public class HomeFragment extends Fragment {
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
 
-        //MainActivity activity = (MainActivity) getContext();
-        //activity.loadBooksToFragment(this);
+
 
         bundle = getArguments();
         if(bundle!= null){
@@ -104,8 +104,6 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        //getBooks();
-        //getCategory();
 
         adapter = new BookAdapter(list_book, getContext());
         book2Adapter = new Book2Adapter(list_book, getContext());
@@ -115,21 +113,21 @@ public class HomeFragment extends Fragment {
         recyBook_New.setAdapter(book2Adapter);
         recyCategory.setAdapter(categoryAdapter);
 
-
+        activity = (MainActivity) getContext();
 
         btnSearchNew.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
-            loadFragment(fragment);
+
+            activity.loadFragment(fragment);
         });
 
         btnSearchPopular.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
-            loadFragment(fragment);
+            activity.loadFragment(fragment);
         });
 
         ivSearch.setOnClickListener(view ->{
             String find = edSearch.getText().toString();
-            MainActivity activity = (MainActivity) getContext();
             Fragment fragment = new SearchFragment();
             activity.setSearchSelection();
             if(find.isEmpty()){
