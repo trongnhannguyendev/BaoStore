@@ -51,6 +51,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -142,7 +143,12 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
                     fragment = new CartFragment();
-                    loadUserAddresses(fragment);
+                    if(bundle == null || !bundle.containsKey(ADDRESS_LIST)) {
+                        loadUserAddresses(fragment);
+                    } else{
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+                    }
                     return true;
                 case R.id.User:
                     progressBar.setVisibility(View.VISIBLE);
@@ -265,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     JsonArray array = element.getAsJsonArray();
-                    List<Address> addressList = addressDAO.getData(array);
+                    List<Address> addressList = new ArrayList<>();
 
                     for(JsonElement element1: array){
                         JsonObject object = element1.getAsJsonObject();

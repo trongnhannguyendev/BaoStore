@@ -42,13 +42,22 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-
             android:background="@drawable/custom_form_2"
             android:drawableStart="@drawable/ic_phone"
             android:drawablePadding="10dp"
             android:text="0123456789"
             android:paddingLeft="8dp"
             android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/spnAddress_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_form_2"
+            android:drawablePadding="10dp"
+            android:paddingLeft="8dp"
+            android:layout_marginBottom="20dp"/>
+
 
         <EditText
             android:id="@+id/edAddress_info"
