@@ -1,6 +1,8 @@
 package com.example.baostore.fragments;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
@@ -33,7 +35,11 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.activities.UserInforActivity;
+import com.example.baostore.adapters.Book2Adapter;
+import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CartAdapter;
+import com.example.baostore.models.Address;
+import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.User;
 import com.google.gson.JsonArray;
@@ -57,6 +63,7 @@ public class CartFragment extends Fragment {
     public TextView tvTotalPrice;
     public CartDAO cartDAO;
     public double totalCartPrice;
+    public Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,10 +83,14 @@ public class CartFragment extends Fragment {
         btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        bundle = getArguments();
         btnConfirmCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CartInforActivity.class);
+                if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
+                    i.putExtras(bundle);
+                }
                 startActivity(i);
             }
         });
@@ -142,4 +153,6 @@ public class CartFragment extends Fragment {
         tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
     }
+
+
 }

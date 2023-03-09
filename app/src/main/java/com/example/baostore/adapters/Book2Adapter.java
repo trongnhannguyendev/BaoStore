@@ -83,10 +83,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, book.getTitle(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
-
 
                 Bundle bundle = new Bundle();
                 bundle.putInt(BOOK_ID, book.getBookID());

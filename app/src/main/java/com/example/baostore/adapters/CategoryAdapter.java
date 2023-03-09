@@ -45,13 +45,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, category.getCategoryName(), Toast.LENGTH_SHORT).show();
 
                 MainActivity mainActivity = (MainActivity) context;
                 SearchFragment fragment = new SearchFragment();
                 mainActivity.setSearchSelection();
                 mainActivity.loadSearchFragment(fragment,1, String.valueOf(category.getCategoryID()));
-                Log.d("-------------------CategoryAdapter", category.getCategoryID()+"");
+                Log.d(String.valueOf(R.string.debug_CartAdapter), category.getCategoryID()+"");
             }
         });
 

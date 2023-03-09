@@ -1,5 +1,7 @@
 package com.example.baostore.fragments;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ public class ProfileFragment extends Fragment {
     LinearLayout btnUserInfor, btnChangePass, btnToCartHistory;
     MotionButton btnLogOut;
     TextView tvFullname;
+    Bundle bundle;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,13 +41,20 @@ public class ProfileFragment extends Fragment {
         User user = SharedPrefManager.getInstance(getContext()).getUser();
         tvFullname.setText(user.getFullname());
 
+        bundle = getArguments();
+
 
         // xử lý thông tin cá nhân
         btnUserInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent(getActivity(), UserInforActivity.class);
+
+                if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
+                    i.putExtras(bundle);
+                }
+
+
                 startActivity(i);
             }
         });

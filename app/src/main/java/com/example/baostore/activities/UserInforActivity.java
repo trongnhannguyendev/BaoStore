@@ -1,5 +1,8 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +19,9 @@ import com.example.baostore.R;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserInforActivity extends AppCompatActivity {
     private Toolbar toolbar;
     TextView tvTitleHeader;
@@ -24,6 +30,7 @@ public class UserInforActivity extends AppCompatActivity {
     MotionButton btnConfirm;
     Address address;
     User user;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +45,24 @@ public class UserInforActivity extends AppCompatActivity {
 
         user = SharedPrefManager.getInstance(this).getUser();
 
-        getUserMainAddress();
+        bundle = getIntent().getExtras();
+        if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
+            List<Address> addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
+            for(Address address1: addressList){
+                if (address1 == addressList.get(0)){
+                    edAddress.setText(address1.getAddressLocation());
+                }
+                if(address1.getIsDefault() == 1){
+                    edAddress.setText(address1.getAddressLocation());
+                }
+
+            }
+        } else{
+            edAddress.setText("");
+        }
 
         edfullname.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhoneNumber());
-        //edAddress.setText(address.getAddressName());
         edEmail.setText(user.getEmail());
 
         //header
@@ -89,13 +109,7 @@ public class UserInforActivity extends AppCompatActivity {
     }
 
 
-    public void getUserMainAddress() {
-        Address address1 = SharedPrefManager.getInstance(this).getUserAddressList();
 
-        edAddress.setText(address1.getAddressLocation());
-
-
-    }
 
 
 }

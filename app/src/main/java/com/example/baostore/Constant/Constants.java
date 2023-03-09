@@ -49,6 +49,12 @@ public class Constants {
     // Address
     public static final String ADDRESS_ID = "addressid";
     public static final String ADDRESS_LOCATION = "location";
+    public static final String ADDRESS_WARD = "ward";
+    public static final String ADDRESS_DISTRICT = "district";
+    public static final String ADDRESS_CITY = "city";
+    public static final String ADDRESS_NAME = "addressname";
+    public static final String ADDRESS_DEFAULT = "isdefault";
+    public static final String ADDRESS_LIST = "addressList";
 
 
 

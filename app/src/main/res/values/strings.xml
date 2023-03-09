@@ -19,11 +19,13 @@
 
     <string name="debug_SplashActivity">---SplashActivity</string>
     <string name="debug_LoginActivity">---LoginActivity</string>
-    <string name="debug_RegisterActivity">---Register</string>
+    <string name="debug_RegisterActivity">---RegisterActivity</string>
 
     <string name="debug_MainActivity">---MainActivity</string>
     <string name="debug_CartAdapter">---CartAdapter</string>
     <string name="debug_CartFragment">---CartFragment</string>
     <string name="enqueue_failure">Something wrong happen</string>
+
+
 
 </resources>

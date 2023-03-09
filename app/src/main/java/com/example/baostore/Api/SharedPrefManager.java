@@ -60,19 +60,4 @@ public class SharedPrefManager {
         editor.apply();
         return true;
     }
-
-    public boolean saveUserAddressList(Address address){
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(ADDRESS_LOCATION, address.getAddressLocation());
-        editor.apply();
-        return true;
-    }
-
-    public Address getUserAddressList(){
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        Address address = new Address();
-        address.setAddressLocation(sharedPreferences.getString(ADDRESS_LOCATION, null));
-        return address;
-    }
 }
