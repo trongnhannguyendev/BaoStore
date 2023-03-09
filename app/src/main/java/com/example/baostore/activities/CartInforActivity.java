@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
+import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
 public class CartInforActivity extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class CartInforActivity extends AppCompatActivity {
     ImageView imgBack;
     private MotionButton btnConfirmCartInfor;
     private CardView cvIconProgress;
+    private Utils utils;
 
     EditText edFullName, edPhoneNumber, edAddress, edEmail;
 
@@ -65,9 +68,56 @@ public class CartInforActivity extends AppCompatActivity {
         edEmail = findViewById(R.id.edEmail_cartinfo);
 
         User user = SharedPrefManager.getInstance(this).getUser();
+        Address address = SharedPrefManager.getInstance(this).getUserAddressList();
 
         edFullName.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhoneNumber());
         edEmail.setText(user.getEmail());
+        edAddress.setText(address.getAddressLocation());
+
+
     }
+
+    public void saveReceiver(){
+        String email = edEmail.getText().toString().trim();
+        String phoneNumber = edPhoneNumber.getText().toString().trim();
+        String fullName = edFullName.getText().toString().trim();
+
+        if(checkError(email, phoneNumber, fullName)){
+            // TODO save to order detail
+
+        }
+    }
+
+     private boolean checkError(String email, String phoneNumber, String fullname) {
+        utils = new Utils();
+
+        boolean noError = true;
+
+        if (phoneNumber.isEmpty()) {
+            edPhoneNumber.setError(getResources().getString(R.string.no_phonenumber));
+            noError = false;
+        } else if (phoneNumber.length() != 10) {
+            edPhoneNumber.setError(getResources().getString(R.string.not_phone_number));
+            noError = false;
+        } else if (!utils.isNumeric(phoneNumber)) {
+            edPhoneNumber.setError(getResources().getString(R.string.wrong_number_format));
+            noError = false;
+        }
+
+        if (email.isEmpty()) {
+            edEmail.setError(getResources().getString(R.string.no_email));
+            noError = false;
+        } else if (!utils.checkEmailFormat(email)) {
+            edEmail.setError(getResources().getString(R.string.wrong_number_format));
+            noError = false;
+        }
+
+        if (fullname.isEmpty()) {
+            edFullName.setError(getResources().getString(R.string.no_fullname));
+            noError = false;
+        }
+        return noError;
+    }
+
 }

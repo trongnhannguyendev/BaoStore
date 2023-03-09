@@ -17,9 +17,13 @@
 
     <string name="not_phone_number">SĐT gồm 10 số</string>
 
+    <string name="debug_SplashActivity">---SplashActivity</string>
+    <string name="debug_LoginActivity">---LoginActivity</string>
+    <string name="debug_RegisterActivity">---Register</string>
 
-    <string name="debug_login">----Login</string>
-    <string name="debug_register">----Login</string>
-    <string name="debug_Login">----Login</string>
+    <string name="debug_MainActivity">---MainActivity</string>
+    <string name="debug_CartAdapter">---CartAdapter</string>
+    <string name="debug_CartFragment">---CartFragment</string>
+    <string name="enqueue_failure">Something wrong happen</string>
 
 </resources>

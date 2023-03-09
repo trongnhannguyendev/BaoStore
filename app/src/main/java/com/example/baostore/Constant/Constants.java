@@ -18,6 +18,7 @@ public class Constants {
     public static final String USER_PASSWORD = "password";
     public static final String USER_FULL_NAME = "fullname";
     public static final String USER_PHONE_NUMBER = "phonenumber";
+    public static final String USER_STATE = "state";
 
     // Book
     public static final String BOOK_ID = "bookid";

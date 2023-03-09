@@ -20,6 +20,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -70,7 +71,9 @@ public class LoginActivity extends AppCompatActivity {
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
 
-                login(email, password);
+                if(checkError(email, password)) {
+                    login(email, password);
+                }
 
             }
         });
@@ -89,14 +92,16 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-
-                Log.d("-------------", response.body().getError() + "");
-                Log.d("-------------", response.body().getMessage() + "");
-                Log.d("-------------", response.body().getResponseCode() + "");
+                // Lấy dữ liệu từ response
+                boolean callError = response.body().getError();
                 int responseCode = response.body().getResponseCode();
+                String callMsg = response.body().getMessage();
+                String showLog = new Utils().logEnqueueMsg(callError,responseCode,callMsg);
+
+                Log.d(getResources().getString(R.string.debug_LoginActivity), showLog);
 
                 if (responseCode == RESPONSE_OKAY) {
-                    // Chuyển dữ liệu thành Json Array
+                    // Chuyển dữ liệu thành JsonObject
                     JsonElement element = response.body().getData();
                     JsonArray array = element.getAsJsonArray();
                     JsonObject object = array.get(0).getAsJsonObject();
@@ -109,20 +114,32 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     // thông báo lỗi
-                    Toast.makeText(LoginActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Log.d("-------------", t.getMessage() + "");
-                Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Hãy thử lại sau", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private boolean checkError(String email, String password){
+        boolean hasError = true;
+        if(email.isEmpty()){
+            edEmail.setError(getResources().getString(R.string.no_email));
+            hasError = false;
+        }
+        if (password.isEmpty()){
+            edPassword.setError(getResources().getString(R.string.no_pass));
+            hasError = false;
+        }
+        return hasError;
+    }
 
-    // Nhấn back 2 lần để thoát app
+    // Nhấn quay lại 2 lần để thoát app
     boolean canExit = false;
 
     @Override
@@ -130,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         if (canExit) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nhấn lại để thoát app", Toast.LENGTH_SHORT).show();
             canExit = !canExit;
 
             Handler handler = new Handler();

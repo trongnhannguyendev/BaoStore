@@ -90,6 +90,7 @@
         android:gravity="center">
 
         <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnConfirm_UserInfor"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_1"

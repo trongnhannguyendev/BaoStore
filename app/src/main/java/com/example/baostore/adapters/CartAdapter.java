@@ -175,7 +175,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     @Override
                     public void onFailure(Call<Result> call, Throwable t) {
                         Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                        Log.d("----Cartadapter", t.toString());
+                        Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
                     }
                 });
             }
@@ -194,8 +194,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             object.addProperty(USER_ID, id);
             object.addProperty(BOOK_ID,cart.getBookID());
 
-            Log.d("---CartAdapter", id+"");
-            Log.d("---CartAdapter", cart.getBookID()+"");
+            Log.d(context.getResources().getString(R.string.debug_CartAdapter), id+"");
+            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookID()+"");
 
             ApiService service = new GetRetrofit().getRetrofit();
             Call<Result> call = service.deleteCart(object);
@@ -215,7 +215,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
                     Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                    Log.d("--CartAdapter", t.toString());
+                    Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
 
                 }
             });
