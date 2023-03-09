@@ -1,5 +1,7 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -17,12 +19,15 @@ import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
+import java.util.List;
+
 public class CartInforActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     ImageView imgBack;
     private MotionButton btnConfirmCartInfor;
     private CardView cvIconProgress;
     private Utils utils;
+    Bundle bundle;
 
     EditText edFullName, edPhoneNumber, edAddress, edEmail;
 
@@ -51,15 +56,9 @@ public class CartInforActivity extends AppCompatActivity {
             }
         });
 
-        // xử lý button
-        btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
-        btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
-                startActivity(i);
-            }
-        });
+
+
+
 
         // Load user
         edFullName = findViewById(R.id.edFullName_cartinfo);
@@ -68,25 +67,52 @@ public class CartInforActivity extends AppCompatActivity {
         edEmail = findViewById(R.id.edEmail_cartinfo);
 
         User user = SharedPrefManager.getInstance(this).getUser();
-        Address address = SharedPrefManager.getInstance(this).getUserAddressList();
+
+        bundle = getIntent().getExtras();
+        if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
+            List<Address> addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
+            for(Address address1: addressList){
+                if (address1 == addressList.get(0)){
+                    edAddress.setText(address1.getAddressLocation());
+                }
+                if(address1.getIsDefault() == 1){
+                    edAddress.setText(address1.getAddressLocation());
+                }
+
+            }
+        } else{
+            edAddress.setText("");
+        }
+
+
 
         edFullName.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhoneNumber());
         edEmail.setText(user.getEmail());
-        edAddress.setText(address.getAddressLocation());
 
+// xử lý button
+        btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
+        btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = edEmail.getText().toString().trim();
+                String phoneNumber = edPhoneNumber.getText().toString().trim();
+                String fullName = edFullName.getText().toString().trim();
+
+                if(checkError(email, phoneNumber, fullName)){
+                    saveReceiver(email, phoneNumber,fullName);
+                }
+
+                Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 
-    public void saveReceiver(){
-        String email = edEmail.getText().toString().trim();
-        String phoneNumber = edPhoneNumber.getText().toString().trim();
-        String fullName = edFullName.getText().toString().trim();
+    public void saveReceiver(String email, String phoneNumber, String fullName){
 
-        if(checkError(email, phoneNumber, fullName)){
-            // TODO save to order detail
 
-        }
     }
 
      private boolean checkError(String email, String phoneNumber, String fullname) {

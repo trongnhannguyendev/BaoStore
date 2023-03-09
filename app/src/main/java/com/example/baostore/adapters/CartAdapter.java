@@ -104,32 +104,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
 
-                User user = SharedPrefManager.getInstance(context).getUser();
-
-                ApiService service = new GetRetrofit().getRetrofit();
-                JsonObject object = new JsonObject();
-                object.addProperty(USER_ID, user.getUserID());
-                object.addProperty(BOOK_ID, cart.getBookID());
-                object.addProperty(CART_QUANTITY, curQuantity);
-                Call<Result> call = service.updateCartQuantity(object);
-                call.enqueue(new Callback<Result>() {
-                    @Override
-                    public void onResponse(Call<Result> call, Response<Result> response) {
-                        int responseCode = response.body().getResponseCode();
-                        if(responseCode == RESPONSE_OKAY){
-                            Toast.makeText(context, "Update quantity successful", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Result> call, Throwable t) {
-                        Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                        Log.d("----Cartadapter", t.toString());
-                    }
-                });
+                decreaseCartQuantity(cart);
             }
 
 
@@ -152,32 +127,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 int newTotalPrice = (int) (currentPrice*curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
 
-                User user = SharedPrefManager.getInstance(context).getUser();
-
-                ApiService service = new GetRetrofit().getRetrofit();
-                JsonObject object = new JsonObject();
-                object.addProperty(USER_ID, user.getUserID());
-                object.addProperty(BOOK_ID, cart.getBookID());
-                object.addProperty(CART_QUANTITY, curQuantity);
-                Call<Result> call = service.updateCartQuantity(object);
-                call.enqueue(new Callback<Result>() {
-                    @Override
-                    public void onResponse(Call<Result> call, Response<Result> response) {
-                        int responseCode = response.body().getResponseCode();
-                        if(responseCode == RESPONSE_OKAY){
-                            Toast.makeText(context, "Update quantity successful", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Result> call, Throwable t) {
-                        Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                        Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
-                    }
-                });
+                increaseCartQuantity(cart);
             }
             double newPrice = cart.getPrice() * curQuantity;
             double updatePrice = newPrice - oldPrice;
@@ -247,5 +197,55 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             edQuantity = itemView.findViewById(R.id.edQuantity);
 
         }
+    }
+
+    private void increaseCartQuantity(Cart cart){
+        User user = SharedPrefManager.getInstance(context).getUser();
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_ID, user.getUserID());
+        object.addProperty(BOOK_ID, cart.getBookID());
+        Call<Result> call = service.increaseCartQuantity(object);
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode != RESPONSE_OKAY){
+                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        });
+    }
+
+    private void decreaseCartQuantity(Cart cart){
+        User user = SharedPrefManager.getInstance(context).getUser();
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_ID, user.getUserID());
+        object.addProperty(BOOK_ID, cart.getBookID());
+        Call<Result> call = service.decreaseCartQuantity(object);
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode != RESPONSE_OKAY){
+                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        });
     }
 }

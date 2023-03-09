@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +35,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     List<Book> list_book;
     List<Category> list_category;
-    RecyclerView recyBook_Popular, recyBook_New, recyCategory;
+    RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
     BookAdapter adapter;
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
@@ -51,12 +52,17 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        NestedScrollView nestedScrollView = v.findViewById(R.id.myScrollView);
+        LinearLayout layout1 = v.findViewById(R.id.layout_category_1);
+        LinearLayout layout2 = v.findViewById(R.id.layout_category_2);
+
         list_book = new ArrayList<>();
         list_category = new ArrayList<>();
 
         recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
         recyBook_New = v.findViewById(R.id.recyBook_new);
         recyCategory = v.findViewById(R.id.recyCategory);
+        recyCategory1 = v.findViewById(R.id.recyCategory1);
         btnSearchNew = v.findViewById(R.id.btnSearchNew);
         btnSearchPopular = v.findViewById(R.id.btnSearchPopular);
         edSearch = v.findViewById(R.id.edSearch_home);
@@ -67,6 +73,7 @@ public class HomeFragment extends Fragment {
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyCategory1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
 
 
@@ -112,6 +119,7 @@ public class HomeFragment extends Fragment {
         recyBook_Popular.setAdapter(adapter);
         recyBook_New.setAdapter(book2Adapter);
         recyCategory.setAdapter(categoryAdapter);
+        recyCategory1.setAdapter(categoryAdapter);
 
         activity = (MainActivity) getContext();
 
@@ -141,6 +149,36 @@ public class HomeFragment extends Fragment {
 
 
 
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int[] location = new int[2];
+                layout2.getLocationOnScreen(location);
+//                int[] layoutLocation = new int[2];
+//                layout2.getLocationOnScreen(layoutLocation);
+//
+//                int[] scrollViewLocation = new int[2];
+//                nestedScrollView.getLocationOnScreen(scrollViewLocation);
+//
+//                int distanceFromLayoutTopToScrollViewTop = layoutLocation[1] - scrollViewLocation[1];
+
+
+
+                int y = location[1]-layout2.getHeight()-93;
+                Log.i("TAG",  "Y: "+y);
+                Log.i("TAG", "Show + "+scrollY);
+                if (y<=0){
+                    layout1.setVisibility(View.VISIBLE);
+
+
+                }
+                else {
+                    layout1.setVisibility(View.GONE);
+                    layout2.setVisibility(View.VISIBLE);
+                }
+            }
         });
 
 

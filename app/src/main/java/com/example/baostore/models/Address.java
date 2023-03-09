@@ -1,13 +1,15 @@
 package com.example.baostore.models;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private int addressID;
     private String addressLocation;
     private String ward;
     private String district;
     private String city;
     private String addressName;
-    private String isDefault;
+    private int isDefault;
     private int userID;
 
     public Address(){
@@ -19,7 +21,7 @@ public class Address {
         this.addressLocation = addressLocation;
     }
 
-    public Address(int addressID, String addressLocation, String ward, String district, String city, String addressName, String isDefault, int userID) {
+    public Address(int addressID, String addressLocation, String ward, String district, String city, String addressName, int isDefault, int userID) {
         this.addressID = addressID;
         this.addressLocation = addressLocation;
         this.ward = ward;
@@ -78,11 +80,11 @@ public class Address {
         this.addressName = addressName;
     }
 
-    public String getIsDefault() {
+    public int getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(String isDefault) {
+    public void setIsDefault(int isDefault) {
         this.isDefault = isDefault;
     }
 

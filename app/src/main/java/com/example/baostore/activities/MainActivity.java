@@ -1,5 +1,13 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_CITY;
+import static com.example.baostore.Constant.Constants.ADDRESS_DEFAULT;
+import static com.example.baostore.Constant.Constants.ADDRESS_DISTRICT;
+import static com.example.baostore.Constant.Constants.ADDRESS_ID;
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
+import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
@@ -74,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar_Main);
 
-        loadUserAddresses();
 
         // header
         tvTitleHeader = findViewById(R.id.title);
@@ -135,13 +142,13 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
                     fragment = new CartFragment();
-                    loadFragment(fragment);
+                    loadUserAddresses(fragment);
                     return true;
                 case R.id.User:
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Người dùng");
                     fragment = new ProfileFragment();
-                    loadFragment(fragment);
+                    loadUserAddresses(fragment);
                     return true;
             }
             return false;
@@ -241,13 +248,12 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void loadUserAddresses(){
+    public void loadUserAddresses(Fragment fragment){
         ApiService service = new GetRetrofit().getRetrofit();
         User user = SharedPrefManager.getInstance(this).getUser();
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_ID, user.getUserID());
-        Log.d("---UserID", user.getUserID()+"");
 
         Call<Result> call = service.getAddressByUser(jsonObject);
         call.enqueue(new Callback<Result>() {
@@ -255,16 +261,30 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if(response.body().getResponseCode() == RESPONSE_OKAY){
                     JsonElement element = response.body().getData();
-                    JsonArray array = element.getAsJsonArray();
-                    List<Address> addresses = addressDAO.getData(array);
-
-                    if(!addresses.isEmpty()) {
-                        Address address = new Address();
-                        address.setAddressLocation(addresses.get(0).getAddressLocation());
-
-                        SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
-                        Log.d(getResources().getString(R.string.debug_MainActivity), addresses.get(0).getAddressLocation());
+                    if(element.isJsonNull()){
+                        return;
                     }
+                    JsonArray array = element.getAsJsonArray();
+                    List<Address> addressList = addressDAO.getData(array);
+
+                    for(JsonElement element1: array){
+                        JsonObject object = element1.getAsJsonObject();
+                        Address address = new Address();
+                        address.setAddressID(object.get(ADDRESS_ID).getAsInt());
+                        address.setAddressLocation(object.get(ADDRESS_LOCATION).getAsString());
+                        address.setWard(object.get(ADDRESS_WARD).getAsString());
+                        address.setDistrict(object.get(ADDRESS_DISTRICT).getAsString());
+                        address.setCity(object.get(ADDRESS_CITY).getAsString());
+                        address.setAddressName(object.get(ADDRESS_NAME).getAsString());
+                        address.setIsDefault(object.get(ADDRESS_DEFAULT).getAsInt());
+                        addressList.add(address);
+                    }
+                    if(!addressList.isEmpty()){
+                        bundle.putSerializable(ADDRESS_LIST, (Serializable) addressList);
+                        fragment.setArguments(bundle);
+
+                    }
+                    loadFragment(fragment);
 
                 } else{
                     Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
