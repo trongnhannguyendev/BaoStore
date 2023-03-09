@@ -97,9 +97,18 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
-    @POST("update-cart-quantity.php")
-    Call<Result> updateCartQuantity(
+    @POST("get-minus-quantity-cart.php")
+    Call<Result> decreaseCartQuantity(
             @Body JsonObject jsonObject
     );
+
+    @POST("get-add-quantity-cart.php")
+    Call<Result> increaseCartQuantity(
+            @Body JsonObject jsonObject
+    );
+
+
+
+
 
 }

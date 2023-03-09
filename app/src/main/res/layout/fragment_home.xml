@@ -42,7 +42,12 @@
         android:visibility="gone"
         android:background="@color/white"
         android:layout_height="wrap_content">
-        <include layout="@layout/layout_category" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyCategory1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 

@@ -18,6 +18,7 @@ public class Constants {
     public static final String USER_PASSWORD = "password";
     public static final String USER_FULL_NAME = "fullname";
     public static final String USER_PHONE_NUMBER = "phonenumber";
+    public static final String USER_STATE = "state";
 
     // Book
     public static final String BOOK_ID = "bookid";
@@ -48,6 +49,12 @@ public class Constants {
     // Address
     public static final String ADDRESS_ID = "addressid";
     public static final String ADDRESS_LOCATION = "location";
+    public static final String ADDRESS_WARD = "ward";
+    public static final String ADDRESS_DISTRICT = "district";
+    public static final String ADDRESS_CITY = "city";
+    public static final String ADDRESS_NAME = "addressname";
+    public static final String ADDRESS_DEFAULT = "isdefault";
+    public static final String ADDRESS_LIST = "addressList";
 
 
 
