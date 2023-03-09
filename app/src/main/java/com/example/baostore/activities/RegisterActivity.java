@@ -26,16 +26,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText edEmail, edPass, edRePass, edPhoneNumber, edFullname;
+    EditText edEmail, edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
-    UserDAO dao;
+    UserDAO userDAO;
     Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        dao = new UserDAO(this);
+        userDAO = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -57,19 +57,17 @@ public class RegisterActivity extends AppCompatActivity {
         edPass = findViewById(R.id.edPassword_reg);
         edRePass = findViewById(R.id.edRePassword_reg);
         edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
-        edFullname = findViewById(R.id.edFullname_reg);
+        edFullName = findViewById(R.id.edFullName_reg);
 
         btnRegister.setOnClickListener(view -> {
             String email = edEmail.getText().toString().trim();
             String pass = edPass.getText().toString().trim();
             String pass_re = edRePass.getText().toString().trim();
             String phoneNumber = edPhoneNumber.getText().toString().trim();
-            String fullname = edFullname.getText().toString().trim();
+            String fullname = edFullName.getText().toString().trim();
 
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
                 register(email, pass, fullname, phoneNumber);
-            } else {
-                Toast.makeText(this, "Còn lỗi trong form", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -77,63 +75,66 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(String email, String pass, String fullname, String phoneNumber) {
+
         ApiService service = new GetRetrofit().getRetrofit();
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_EMAIL, email);
+        JsonObject emailObject = new JsonObject();
+        emailObject.addProperty(USER_EMAIL, email);
 
-        Call<Result> checkEmailCall = service.checkUserEmailExist(jsonObject);
-
-
+        Call<Result> checkEmailCall = service.checkUserEmailExist(emailObject);
         checkEmailCall.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                if (!response.body().getError()) {
-                    if (response.body().getResponseCode() == 1) {
-                        Toast.makeText(RegisterActivity.this, "Email already exist", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    JsonObject jsonObject1 = new JsonObject();
-                    jsonObject1.addProperty(USER_EMAIL, email);
-                    jsonObject1.addProperty(USER_PASSWORD, pass);
-                    jsonObject1.addProperty(USER_FULL_NAME, fullname);
-                    jsonObject1.addProperty(USER_PHONE_NUMBER, phoneNumber);
+                boolean callError = response.body().getError();
+                int responseCode = response.body().getResponseCode();
+                String callMsg = response.body().getMessage();
+                String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
+                Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
 
-                    Call<Result> regCall = service.registerUser(jsonObject1);
 
-                    regCall.enqueue(new Callback<Result>() {
-                        @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
-                            Log.d("-------------", response.body().getError() + "");
-                            Log.d("-------------", response.body().getMessage() + "");
-                            Log.d("-------------", response.body().getResponseCode() + "");
-
-                            int responseCode = response.body().getResponseCode();
-                            if (responseCode == RESPONSE_OKAY) {
-
-                                Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
-
-                                finish();
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-
-                            } else {
-                                Toast.makeText(RegisterActivity.this, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
-                            Log.d("-------------", t.getMessage() + "");
-                            Toast.makeText(RegisterActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (responseCode == 1) {
+                    Toast.makeText(RegisterActivity.this, "Email đã sử dụng!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                JsonObject userObject = new JsonObject();
+                userObject.addProperty(USER_EMAIL, email);
+                userObject.addProperty(USER_PASSWORD, pass);
+                userObject.addProperty(USER_FULL_NAME, fullname);
+                userObject.addProperty(USER_PHONE_NUMBER, phoneNumber);
+
+                Call<Result> regCall = service.registerUser(userObject);
+
+                regCall.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(Call<Result> call, Response<Result> response) {
+                        boolean callError = response.body().getError();
+                        int responseCode = response.body().getResponseCode();
+                        String callMsg = response.body().getMessage();
+                        String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
+                        Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
+
+                        if (responseCode == RESPONSE_OKAY) {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result> call, Throwable t) {
+                        Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
+                        Toast.makeText(RegisterActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                Log.d("-------------", t.getMessage() + "");
+                Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
 
             }
         });
@@ -144,12 +145,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         boolean noError = true;
 
-
         if (pass.isEmpty()) {
             edPass.setError(getResources().getString(R.string.no_pass));
             noError = false;
         } else if (pass.length() <= 6) {
             edPass.setError(getResources().getString(R.string.password_length));
+            noError = false;
         }
         if (!pass.equals(pass_re)) {
             edRePass.setError(getResources().getString(R.string.pass_not_equal_repass));
@@ -175,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (fullname.isEmpty()) {
-            edFullname.setError(getResources().getString(R.string.no_fullname));
+            edFullName.setError(getResources().getString(R.string.no_fullname));
             noError = false;
         }
         return noError;

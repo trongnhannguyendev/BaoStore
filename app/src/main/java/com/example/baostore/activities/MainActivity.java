@@ -1,6 +1,5 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
@@ -21,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Điều hướng navigation
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.Home:
                     progressBar.setVisibility(View.VISIBLE);
@@ -119,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
                     } else{
                         fragment.setArguments(bundle);
                         loadFragment(fragment);
-                        progressBar.setVisibility(View.INVISIBLE);
                     }
                     return true;
                 case R.id.Search:
+                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
                     if(bundle == null){
@@ -131,15 +129,16 @@ public class MainActivity extends AppCompatActivity {
                         fragment.setArguments(bundle);
                         loadSearchFragment(fragment,0,null);
                     }
+                    progressBar.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.Cart:
-
+                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
                     fragment = new CartFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.User:
-
+                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Người dùng");
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
@@ -259,22 +258,24 @@ public class MainActivity extends AppCompatActivity {
                     JsonArray array = element.getAsJsonArray();
                     List<Address> addresses = addressDAO.getData(array);
 
+                    if(!addresses.isEmpty()) {
+                        Address address = new Address();
+                        address.setAddressLocation(addresses.get(0).getAddressLocation());
 
-                    Address address = new Address();
-                    address.setAddressLocation(addresses.get(0).getAddressLocation());
+                        SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
+                        Log.d(getResources().getString(R.string.debug_MainActivity), addresses.get(0).getAddressLocation());
+                    }
 
-                    SharedPrefManager.getInstance(MainActivity.this).saveUserAddressList(address);
-                    Log.d("--------MainActivity", addresses.get(0).getAddressLocation());
                 } else{
                     Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("------MainActivity", response.body().getMessage());
+                    Log.d(getResources().getString(R.string.debug_MainActivity), response.body().getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                Log.d("-------------------------MainActivity", t.toString());
+                Log.d(getResources().getString(R.string.debug_MainActivity), t.toString());
             }
         });
 
@@ -285,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     public void loadSearchFragment(Fragment fragment, int searchCode, String find) {
@@ -293,8 +295,10 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(BOOK_SEARCH, find);
         fragment.setArguments(bundle);
 
-        Log.d("--------------------MAIN", searchCode+"");
-       loadFragment(fragment);
+        Log.d(getResources().getString(R.string.debug_MainActivity), searchCode+"");
+        loadFragment(fragment);
+        progressBar.setVisibility(View.INVISIBLE);
+
     }
 
     public void setSearchSelection(){

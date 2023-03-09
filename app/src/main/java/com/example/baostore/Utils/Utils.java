@@ -1,18 +1,12 @@
 package com.example.baostore.Utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import com.example.baostore.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +67,10 @@ public class Utils {
             e.printStackTrace();
         }
         return bmp;
+    }
+
+    public String logEnqueueMsg(boolean callError, int responseCode, String callMsg){
+        return "\nerror: "+callError+"\nResponse code: " +responseCode+ "\nMessage: "+callMsg;
     }
 
 

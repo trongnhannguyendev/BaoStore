@@ -5,9 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.R;
 
@@ -17,6 +19,7 @@ public class CartPaymentActivity extends AppCompatActivity {
     TextView tvTitleHeader, tvFullname, tvPhoneNumber, tvAddress,
             tvOrderDate, tvNote, tvBookPrice, tvShipPrice, tvTotalPrice;
     ImageView imgBack;
+    MotionButton btnConfirm;
     private CardView cvIconProgress;
 
     @Override
@@ -32,7 +35,13 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvBookPrice = findViewById(R.id.tvBookPrice_cart);
         tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
         tvTotalPrice = findViewById(R.id.tvTotalPrice_cart);
+        btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
+        btnConfirm.setOnClickListener(view ->{
+            finish();
+        });
+
+        // TODO get order detail
         /*
         Order order = new Order();
         tvFullname.setText(order.getFullname());
@@ -44,6 +53,9 @@ public class CartPaymentActivity extends AppCompatActivity {
         //tvShipPrice.setText(null);
         tvTotalPrice.setText(String.valueOf(order.getOrderTotal()));
          */
+
+
+
 
         // màu icon progress
         cvIconProgress = findViewById(R.id.cvProgress_3);

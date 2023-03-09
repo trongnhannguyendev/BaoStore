@@ -15,6 +15,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DetailOrderItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DetailItemActivity"
             android:exported="false" />
         <activity
