@@ -4,9 +4,14 @@ import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +21,7 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
@@ -28,6 +34,8 @@ public class UserInforActivity extends AppCompatActivity {
     ImageView imgBack;
     EditText edfullname, edPhoneNumber, edAddress, edEmail;
     MotionButton btnConfirm;
+    Spinner spnAddress;
+    List<Address> addressList;
     Address address;
     User user;
     Bundle bundle;
@@ -42,29 +50,33 @@ public class UserInforActivity extends AppCompatActivity {
         edAddress = findViewById(R.id.edAddress_info);
         edEmail = findViewById(R.id.edMail_info);
         btnConfirm = findViewById(R.id.btnConfirm_UserInfor);
+        spnAddress = findViewById(R.id.spnAddress_info);
+
 
         user = SharedPrefManager.getInstance(this).getUser();
 
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
-            List<Address> addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
+            addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for(Address address1: addressList){
-                if (address1 == addressList.get(0)){
-                    edAddress.setText(address1.getAddressLocation());
-                }
-                if(address1.getIsDefault() == 1){
-                    edAddress.setText(address1.getAddressLocation());
-                }
-
+                Log.d("----UserInforActivity", address1.getAddressLocation());
             }
-        } else{
-            edAddress.setText("");
+            Log.d("---",addressList.toString());
+
+            AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
+            spnAddress.setAdapter(adapter);
+
         }
+
+
+
+
 
         edfullname.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhoneNumber());
         edEmail.setText(user.getEmail());
-
+        edAddress.setText("");
+        edAddress.setEnabled(false);
         //header
         tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Thông tin cá nhân");
