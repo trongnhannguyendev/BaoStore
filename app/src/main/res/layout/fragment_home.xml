@@ -121,17 +121,10 @@
                     android:orientation="horizontal"
                     android:paddingRight="20dp">
 
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyBook_Popular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
 
                 </LinearLayout>
