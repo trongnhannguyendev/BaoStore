@@ -79,38 +79,8 @@ public class HomeFragment extends Fragment {
 
 
         bundle = getArguments();
-        if(bundle!= null){
-            if(bundle.containsKey(BOOK_LIST)){
-                getBooks();
-            } else{
-                Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getBooks();
-                        adapter = new BookAdapter(list_book, getContext());
-                        book2Adapter = new Book2Adapter(list_book, getContext());
-
-                        recyBook_Popular.setAdapter(adapter);
-                        recyBook_New.setAdapter(book2Adapter);
-                    }
-                },1000);
-            }
-            if(bundle.containsKey(CATEGORY_LIST)){
-                getCategory();
-            } else{
-                Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getCategory();
-                        categoryAdapter = new CategoryAdapter(list_category, getContext());
-                        recyCategory.setAdapter(categoryAdapter);
-                    }
-                },1000);
-            }
-        }
-
+        getBooks();
+        getCategory();
 
         adapter = new BookAdapter(list_book, getContext());
         book2Adapter = new Book2Adapter(list_book, getContext());
@@ -202,6 +172,16 @@ public class HomeFragment extends Fragment {
             recyBook_New.setAdapter(book2Adapter);
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+        } else {
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getBooks();
+                    categoryAdapter = new CategoryAdapter(list_category, getContext());
+                    recyCategory.setAdapter(categoryAdapter);
+                }
+            }, 1000);
         }
     }
 
@@ -214,7 +194,19 @@ public class HomeFragment extends Fragment {
 
             recyCategory.setAdapter(categoryAdapter);
             Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
-        }
+        }else{
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getCategory();
+                    categoryAdapter = new CategoryAdapter(list_category, getContext());
+                    recyCategory.setAdapter(categoryAdapter);
+                }
+            },1000);
+
+
+    }
     }
 
 

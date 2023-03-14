@@ -68,11 +68,14 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                turnEditingOff();
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
 
                 if(checkError(email, password)) {
                     login(email, password);
+                } else{
+                    turnEditingOn();
                 }
 
             }
@@ -116,10 +119,12 @@ public class LoginActivity extends AppCompatActivity {
                     // thông báo lỗi
                     Toast.makeText(LoginActivity.this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 }
+                turnEditingOn();
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
+                turnEditingOn();
                 Log.d("-------------", t.getMessage() + "");
                 Toast.makeText(LoginActivity.this, "Hãy thử lại sau", Toast.LENGTH_SHORT).show();
             }
@@ -139,6 +144,20 @@ public class LoginActivity extends AppCompatActivity {
         return hasError;
     }
 
+    private void turnEditingOff(){
+        edEmail.setEnabled(false);
+        edPassword.setEnabled(false);
+        btnLogin.setEnabled(false);
+        tvRegister.setEnabled(false);
+    }
+
+    private void turnEditingOn(){
+        edEmail.setEnabled(true);
+        edPassword.setEnabled(true);
+        btnLogin.setEnabled(true);
+        tvRegister.setEnabled(true);
+    }
+
     // Nhấn quay lại 2 lần để thoát app
     boolean canExit = false;
 
@@ -147,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
         if (canExit) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Nhấn lại để thoát app", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.msg_exit_app, Toast.LENGTH_SHORT).show();
             canExit = !canExit;
 
             Handler handler = new Handler();
