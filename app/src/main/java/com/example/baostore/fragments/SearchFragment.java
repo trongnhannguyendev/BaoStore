@@ -3,7 +3,6 @@ package com.example.baostore.fragments;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
-import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -53,7 +52,6 @@ public class SearchFragment extends Fragment {
         getBooks();
 
 
-
         svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -70,6 +68,34 @@ public class SearchFragment extends Fragment {
         return v;
 
 
+    }
+
+    void filter(String find, int findCode, double maxPrice) {
+        switch (findCode){
+            // No filter
+            case 0:
+                adapter = new Book2Adapter(list_book, getContext());
+                recyBook_search.setAdapter(adapter);
+                break;
+            //Title
+            case 1:
+                filterByTitle(find);
+                break;
+            // Category
+            case 2:
+                filterByCategoryID(Integer.parseInt(find));
+                break;
+            // Price
+            case 3:
+                filterByPrice(Double.parseDouble(find));
+                break;
+            // Price range
+            case 4:
+                filterByPriceRange(Double.parseDouble(find), maxPrice);
+                break;
+
+
+        }
     }
 
     void filterByTitle(String find) {
@@ -89,9 +115,38 @@ public class SearchFragment extends Fragment {
 
     }
 
-    void filterByCategory(int categoryID){
+    void filterByPrice(double find) {
         searchList.clear();
-        Log.d("----------------------", categoryID+"");
+        Log.d("----------------------", find+"");
+        for (int i = 0; i < list_book.size(); i++) {
+            Book book;
+            book = list_book.get(i);
+            if (book.getPrice() == find) {
+                searchList.add(book);
+            }
+        }
+        adapter = new Book2Adapter(searchList, getContext());
+        recyBook_search.setAdapter(adapter);
+    }
+
+    void filterByPriceRange(double lowest, double highest) {
+        searchList.clear();
+        for (int i = 0; i < list_book.size(); i++) {
+            Book book;
+            book = list_book.get(i);
+            double minPrice = lowest;
+            double maxPrice = highest;
+            if (book.getPrice() >= minPrice && book.getPrice() <= maxPrice) {
+                searchList.add(book);
+            }
+        }
+        adapter = new Book2Adapter(searchList, getContext());
+        recyBook_search.setAdapter(adapter);
+    }
+
+    void filterByCategoryID(int categoryID) {
+        searchList.clear();
+        Log.d("----------------------", categoryID + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
@@ -105,6 +160,8 @@ public class SearchFragment extends Fragment {
 
     }
 
+
+
     public void getBooks() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -113,7 +170,7 @@ public class SearchFragment extends Fragment {
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
 
             searchCode = bundle.getInt(BOOK_SEARCH_CODE);
-            Log.d("------------------SearchFragment", searchCode+"");
+            Log.d("------------------SearchFragment", searchCode + "");
             switch (searchCode) {
                 case 0:
                     adapter = new Book2Adapter(list_book, getContext());
@@ -122,8 +179,8 @@ public class SearchFragment extends Fragment {
                 case 1:
                     int categoryID = Integer.parseInt(bundle.getString(BOOK_SEARCH));
 
-                    Log.d("------------------SearchFragment", categoryID+"");
-                    filterByCategory(categoryID);
+                    Log.d("------------------SearchFragment", categoryID + "");
+                    filterByCategoryID(categoryID);
                     break;
                 case 2:
                     String find = bundle.getString(BOOK_SEARCH);

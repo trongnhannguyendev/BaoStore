@@ -40,7 +40,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
-
     private List<Cart> list;
     Context context;
     CartFragment fragment;
@@ -65,11 +64,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Cart cart = list.get(position);
 
-        Bundle bundle = new Bundle();
 
         int quantity = cart.getQuantity();
         String price = new Utils().priceToString(cart.getPrice());
-        String totalPrice = new Utils().priceToString(quantity*cart.getPrice());
+        String totalPrice = new Utils().priceToString(quantity * cart.getPrice());
 
         holder.tvBookPrice.setText(price);
         holder.tvTotalPrice.setText(totalPrice);
@@ -91,61 +89,57 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
         thread.start();
 
-        holder.ivDecrease.setOnClickListener(view ->{
+        holder.ivDecrease.setOnClickListener(view -> {
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
-            double oldPrice = cart.getPrice()*curQuantity;
+            double oldPrice = cart.getPrice() * curQuantity;
             holder.ivIncrease.setClickable(true);
-            if(curQuantity<=1){
+            if (curQuantity <= 1) {
                 holder.ivDecrease.setClickable(false);
             } else {
                 curQuantity--;
                 holder.edQuantity.setText(String.valueOf(curQuantity));
                 double currentPrice = cart.getPrice();
-                int newTotalPrice = (int) (currentPrice*curQuantity);
+                int newTotalPrice = (int) (currentPrice * curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
 
                 decreaseCartQuantity(cart);
             }
 
 
-
-            double newPrice = cart.getPrice()*curQuantity;
-            double updatePrice = newPrice - oldPrice;
-            fragment.updateTotalPrice(updatePrice);
-        });
-
-        holder.ivIncrease.setOnClickListener(view ->{
-            int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
-            double oldPrice = cart.getPrice() * curQuantity;
-            holder.ivDecrease.setClickable(true);
-            if(curQuantity>=9){
-                holder.ivIncrease.setClickable(false);
-            } else {
-                curQuantity++;
-                holder.edQuantity.setText(String.valueOf(curQuantity));
-                double currentPrice = cart.getPrice();
-                int newTotalPrice = (int) (currentPrice*curQuantity);
-                holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
-
-                increaseCartQuantity(cart);
-            }
             double newPrice = cart.getPrice() * curQuantity;
             double updatePrice = newPrice - oldPrice;
             fragment.updateTotalPrice(updatePrice);
         });
 
-        holder.ivCancel.setOnClickListener(view ->{
+        holder.ivIncrease.setOnClickListener(view -> {
+            int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
+            double oldPrice = cart.getPrice() * curQuantity;
+            holder.ivDecrease.setClickable(true);
+
+            curQuantity++;
+            holder.edQuantity.setText(String.valueOf(curQuantity));
+            double currentPrice = cart.getPrice();
+            int newTotalPrice = (int) (currentPrice * curQuantity);
+            holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
+
+            increaseCartQuantity(cart);
+            double newPrice = cart.getPrice() * curQuantity;
+            double updatePrice = newPrice - oldPrice;
+            fragment.updateTotalPrice(updatePrice);
+        });
+
+        holder.ivCancel.setOnClickListener(view -> {
 
 
-            JsonObject object=  new JsonObject();
+            JsonObject object = new JsonObject();
             User user = SharedPrefManager.getInstance(context).getUser();
             int id = user.getUserID();
 
             object.addProperty(USER_ID, id);
-            object.addProperty(BOOK_ID,cart.getBookID());
+            object.addProperty(BOOK_ID, cart.getBookID());
 
-            Log.d(context.getResources().getString(R.string.debug_CartAdapter), id+"");
-            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookID()+"");
+            Log.d(context.getResources().getString(R.string.debug_CartAdapter), id + "");
+            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookID() + "");
 
             ApiService service = new GetRetrofit().getRetrofit();
             Call<Result> call = service.deleteCart(object);
@@ -154,7 +148,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
                     int responseCode = response.body().getResponseCode();
-                    if(responseCode == RESPONSE_OKAY){
+                    if (responseCode == RESPONSE_OKAY) {
                         Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
                         MainActivity activity = (MainActivity) context;
                         Fragment fragment1 = new CartFragment();
@@ -178,11 +172,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         return list.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView ivBook, ivCancel, ivDecrease, ivIncrease;
         public TextView tvBookName, tvBookPrice, tvTotalPrice;
         public EditText edQuantity;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvBookName = itemView.findViewById(R.id.tvBookName_cart);
@@ -199,7 +194,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         }
     }
 
-    private void increaseCartQuantity(Cart cart){
+    private void increaseCartQuantity(Cart cart) {
         User user = SharedPrefManager.getInstance(context).getUser();
 
         ApiService service = new GetRetrofit().getRetrofit();
@@ -211,7 +206,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 int responseCode = response.body().getResponseCode();
-                if(responseCode != RESPONSE_OKAY){
+                if (responseCode != RESPONSE_OKAY) {
                     Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -224,7 +219,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
     }
 
-    private void decreaseCartQuantity(Cart cart){
+    private void decreaseCartQuantity(Cart cart) {
         User user = SharedPrefManager.getInstance(context).getUser();
 
         ApiService service = new GetRetrofit().getRetrofit();
@@ -236,7 +231,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 int responseCode = response.body().getResponseCode();
-                if(responseCode != RESPONSE_OKAY){
+                if (responseCode != RESPONSE_OKAY) {
                     Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
                 }
             }

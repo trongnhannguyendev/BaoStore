@@ -2,7 +2,12 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
+import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 
+import android.app.Service;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,14 +24,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserInforActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -103,25 +116,93 @@ public class UserInforActivity extends AppCompatActivity {
                 Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
             } else{
                 if(!fullName.equals(user.getFullname())){
-                    //TODO update fullname
-                    Toast.makeText(this, "Fullname updated", Toast.LENGTH_SHORT).show();
+                    updateFullName(fullName);
                 }
-                if(!phoneNumber.equals(user.getPhoneNumber())){
-                    // TODO update phone number
-                    Toast.makeText(this, "phone number updated", Toast.LENGTH_SHORT).show();
+                if(!phoneNumber.equals(user.getPhoneNumber())  && phoneNumber.length() == 10){
+                    updatePhoneNumber(phoneNumber);
                 }
                 // TODO add update address list
 
                 if(!email.equals(user.getEmail())){
-                    // TODO update email
-                    Toast.makeText(this, "Email updated", Toast.LENGTH_SHORT).show();
+                    updateEmail(email);
                 }
             }
         });
     }
 
+    public void updateEmail(String newEmail){
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_EMAIL, newEmail);
 
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<Result> call = service.updateEmail(object);
 
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode == RESPONSE_OKAY){
+                    Toast.makeText(UserInforActivity.this, "Update email completed!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
+            }
+        });
+
+    }
+
+    public void updatePhoneNumber(String newPhoneNumber){
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_PHONE_NUMBER, newPhoneNumber);
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<Result> call = service.updatePhoneNumber(object);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode == RESPONSE_OKAY){
+                    Toast.makeText(UserInforActivity.this, "Update phone number completed!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
+            }
+        });
+
+    }
+
+    public void updateFullName(String newFullName){
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_FULL_NAME, newFullName);
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<Result> call = service.updateFullname(object);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode == RESPONSE_OKAY){
+                    Toast.makeText(UserInforActivity.this, "Update full name completed!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
+            }
+        });
+
+    }
 
 }

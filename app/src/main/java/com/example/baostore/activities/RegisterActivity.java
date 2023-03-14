@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Đăng ký
+        // Ánh xạ
         btnRegister = findViewById(R.id.btnRegister);
         edEmail = findViewById(R.id.edEmail_reg);
         edPass = findViewById(R.id.edPassword_reg);
@@ -59,15 +59,22 @@ public class RegisterActivity extends AppCompatActivity {
         edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
         edFullName = findViewById(R.id.edFullName_reg);
 
+
+        // Đăng ký
         btnRegister.setOnClickListener(view -> {
+            turnEditingOff();
+            // Lấy dữ liệu
             String email = edEmail.getText().toString().trim();
             String pass = edPass.getText().toString().trim();
             String pass_re = edRePass.getText().toString().trim();
             String phoneNumber = edPhoneNumber.getText().toString().trim();
             String fullname = edFullName.getText().toString().trim();
 
+            // Chạy đăng ký nếu không có lỗi
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
                 register(email, pass, fullname, phoneNumber);
+            } else{
+                turnEditingOn();
             }
 
         });
@@ -75,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(String email, String pass, String fullname, String phoneNumber) {
-
         ApiService service = new GetRetrofit().getRetrofit();
 
         JsonObject emailObject = new JsonObject();
@@ -91,18 +97,21 @@ public class RegisterActivity extends AppCompatActivity {
                 String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
                 Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
 
-
+                // Hủy nếu email tồn tại
                 if (responseCode == 1) {
                     Toast.makeText(RegisterActivity.this, "Email đã sử dụng!", Toast.LENGTH_SHORT).show();
+                    turnEditingOn();
                     return;
                 }
 
+                // Lưu người dùng nếu email không tồn tại
                 JsonObject userObject = new JsonObject();
                 userObject.addProperty(USER_EMAIL, email);
                 userObject.addProperty(USER_PASSWORD, pass);
                 userObject.addProperty(USER_FULL_NAME, fullname);
                 userObject.addProperty(USER_PHONE_NUMBER, phoneNumber);
 
+                // Gọi đăng ký
                 Call<Result> regCall = service.registerUser(userObject);
 
                 regCall.enqueue(new Callback<Result>() {
@@ -114,11 +123,13 @@ public class RegisterActivity extends AppCompatActivity {
                         String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
                         Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
 
+
                         if (responseCode == RESPONSE_OKAY) {
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                             finish();
                             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                         } else {
+                            turnEditingOn();
                             Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                         }
 
@@ -126,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Result> call, Throwable t) {
+                        turnEditingOn();
                         Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
                         Toast.makeText(RegisterActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
                     }
@@ -134,6 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
+                turnEditingOn();
                 Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
 
             }
@@ -181,10 +194,28 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return noError;
     }
+
+    public void turnEditingOff(){
+        edEmail.setEnabled(false);
+        edPass.setEnabled(false);
+        edRePass.setEnabled(false);
+        edPhoneNumber.setEnabled(false);
+        edFullName.setEnabled(false);
+        btnRegister.setEnabled(false);
+        btnCancel.setEnabled(false);
+
+    }
+
+    public void turnEditingOn(){
+        edEmail.setEnabled(true);
+        edPass.setEnabled(true);
+        edRePass.setEnabled(true);
+        edPhoneNumber.setEnabled(true);
+        edFullName.setEnabled(true);
+        btnRegister.setEnabled(true);
+        btnCancel.setEnabled(true);
+    }
 }
-
-
-
 
 
 
