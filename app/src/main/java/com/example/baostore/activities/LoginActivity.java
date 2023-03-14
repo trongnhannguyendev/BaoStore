@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView tvRegister;
+    TextView tvRegister, tvForgotPass;
     MotionButton btnLogin;
     EditText edEmail, edPassword;
     UserDAO userDAO;
@@ -57,6 +57,11 @@ public class LoginActivity extends AppCompatActivity {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
+        });
+
+        tvForgotPass = findViewById(R.id.tvForgotPass);
+        tvForgotPass.setOnClickListener(view ->{
+            // TODO: send email verification and change pass
         });
 
         // Xử lí Đăng nhập

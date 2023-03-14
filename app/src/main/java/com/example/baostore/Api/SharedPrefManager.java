@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.*;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.baostore.Utils.AppConstant;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
@@ -59,5 +60,28 @@ public class SharedPrefManager {
         editor.clear();
         editor.apply();
         return true;
+    }
+
+    public static void setUserLoginToken(String token) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AppConstant.USER_LOGIN_TOKEN, token).apply();
+    }
+
+    public static String getUserLoginToken() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(AppConstant.USER_LOGIN_TOKEN, null);
+    }
+
+    public static void setUserLoginState(Boolean state) {
+        // xet trang thai dang nhap user
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(AppConstant.IS_USER_LOGIN, state).apply();
+    }
+
+    public static boolean getUserLoginState() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(AppConstant.IS_USER_LOGIN, false);
     }
 }

@@ -2,6 +2,10 @@ package com.example.baostore.Constant;
 
 public class Constants {
 
+    // URL
+    public static final String API_SERVER_HOST_ADDRESS = "http://127.0.0.1";
+    public static final String API_SERVER_PORT_NUMBER = "8888";
+
     // Response
     public static final int RESPONSE_NOT_OKAY = 0;
     public static final int RESPONSE_OKAY = 1;

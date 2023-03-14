@@ -68,6 +68,7 @@ public class CartInforActivity extends AppCompatActivity {
 
         User user = SharedPrefManager.getInstance(this).getUser();
 
+        // Đổ địa chỉ
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
             List<Address> addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);

@@ -23,6 +23,7 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
+import com.example.baostore.testapi.AppHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -51,6 +52,8 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AppHelper.pushNotification(SplashActivity.this,"Thông báo","Đăng nhập");
+
                 checkSaveUser();
 
             }
@@ -65,6 +68,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             i = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(i);
+
         }
 
         ApiService service = new GetRetrofit().getRetrofit();
