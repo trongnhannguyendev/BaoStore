@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "255788209447",
+    "project_id": "baostore-67b0e",
+    "storage_bucket": "baostore-67b0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255788209447:android:531a80687766d9e9aac502",
+        "android_client_info": {
+          "package_name": "com.example.baostore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255788209447-jso75ouhue6caq3o69rloidqs584md9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2sVknK6Zdoqa17BowsV-ME47lItmiaUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255788209447-jso75ouhue6caq3o69rloidqs584md9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
