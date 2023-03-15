@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
         tvForgotPass = findViewById(R.id.tvForgotPass);
         tvForgotPass.setOnClickListener(view ->{
-            // TODO: send email verification and change pass
+            Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(i);
         });
 
         // Xử lí Đăng nhập

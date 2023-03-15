@@ -20,45 +20,67 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     EditText edEmail, edPass, edRePass;
     MotionButton btnConfirm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         edEmail = findViewById(R.id.edEmail_forgotPass);
-        edPass =  findViewById(R.id.ednewPass_forgotPass);
+        edPass = findViewById(R.id.ednewPass_forgotPass);
         edRePass = findViewById(R.id.edReNewPass_forgotPass);
         btnConfirm = findViewById(R.id.btnChangePass_forgotPass);
 
-        btnConfirm.setOnClickListener(view ->{
-            String email = edEmail.getText().toString();
+        // Change password
 
-            // TODO: add url
-            ActionCodeSettings actionCodeSettings =
-                    ActionCodeSettings.newBuilder()
-                            .setHandleCodeInApp(true)
-                            .setUrl("sth")
-                            .setAndroidPackageName(
-                                    "com.example.baostore",
-                                    true, /* installIfNotAvailable */
-                                    "12"    /* minimumVersion */)
-                            .build();
+        btnConfirm.setOnClickListener(view -> {
+            String email = edEmail.getText().toString().trim();
+            String pass = edPass.getText().toString().trim();
+            String rePass = edRePass.getText().toString().trim();
 
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            auth.sendSignInLinkToEmail(email, actionCodeSettings)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("--ForgotPasswordActivity", "Email sent.");
+            if (!checkError(email, pass, rePass)) {
+                // TODO: add url
+                ActionCodeSettings actionCodeSettings =
+                        ActionCodeSettings.newBuilder()
+                                .setHandleCodeInApp(true)
+                                .setUrl("sth")
+                                .setAndroidPackageName(
+                                        "com.example.baostore",
+                                        true, /* installIfNotAvailable */
+                                        "12"    /* minimumVersion */)
+                                .build();
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.sendSignInLinkToEmail(email, actionCodeSettings)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("--ForgotPasswordActivity", "Email sent.");
+                                }
                             }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("--ForgotPasswordActivity", "Error signing in with email link");
-                        }
-                    });
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("--ForgotPasswordActivity", "Error signing in with email link");
+                            }
+                        });
+            }
         });
+    }
 
+    public boolean checkError(String email, String pass, String rePass) {
+        boolean hasError = false;
+        if (email.isEmpty()) {
+            edEmail.setError(getResources().getString(R.string.no_email));
+            hasError = true;
+        }
+        if (pass.isEmpty()) {
+            edPass.setError(getResources().getString(R.string.no_pass));
+            hasError = true;
+        } else if (!pass.equals(rePass)) {
+            edRePass.setError(getResources().getString(R.string.pass_not_equal_repass));
+            hasError = true;
+        }
+        return hasError;
     }
 }
