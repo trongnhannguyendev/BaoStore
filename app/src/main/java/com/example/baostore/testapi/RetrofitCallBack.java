@@ -1,33 +1,23 @@
 package com.example.baostore.testapi;
 
-import static com.example.baostore.Constant.Constants.RESPONSE_NOT_OKAY;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
-import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
-import static com.example.baostore.Constant.Constants.USER_PASSWORD;
-import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.Constant.Constants.USER_STATE;
 
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
-import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
+import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.models.User;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -36,8 +26,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetrofitCallBack {
+    static ApiService service = new GetRetrofit().getRetrofit();
     public static void checkLogin(Context context, JsonObject jsonObject){
-        ApiService service = new GetRetrofit().getRetrofit();
 
         LoginActivity loginActivity = (LoginActivity) context;
 
@@ -85,7 +75,6 @@ public class RetrofitCallBack {
 
         }
 
-        ApiService service = new GetRetrofit().getRetrofit();
 
         JsonObject emailObj = new JsonObject();
         emailObj.addProperty(USER_EMAIL, user.getEmail());
@@ -144,5 +133,57 @@ public class RetrofitCallBack {
             }
         });
 
+    }
+
+    public static void userRegister(Context context,JsonObject object) {
+        RegisterActivity activity = (RegisterActivity) context;
+
+        JsonObject emailObject = new JsonObject();
+        emailObject.addProperty(USER_EMAIL, object.get(USER_EMAIL).getAsString());
+
+        Call<UserResponse> checkEmailCall = service.checkUserEmailExist(emailObject);
+        checkEmailCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+
+                // Hủy nếu email tồn tại
+                if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                    Toast.makeText(context, "Email đã sử dụng!", Toast.LENGTH_SHORT).show();
+                    activity.turnEditingOn();
+                    return;
+                }
+                // Gọi đăng ký
+                Call<UserResponse> regCall = service.registerUser(object);
+
+                regCall.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                            Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            activity.finish();
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                        } else {
+                            activity.turnEditingOn();
+                            Toast.makeText(context, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        activity.turnEditingOn();
+                        Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
+                        Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                activity.turnEditingOn();
+                Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
+
+            }
+        });
     }
 }

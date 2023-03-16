@@ -18,7 +18,7 @@ public interface ApiService {
     );
 
     @POST("register-user.php")
-    Call<Result> registerUser(
+    Call<UserResponse> registerUser(
             @Body JsonObject jsonObject
     );
 

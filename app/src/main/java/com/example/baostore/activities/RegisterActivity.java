@@ -1,6 +1,7 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.testapi.RetrofitCallBack.userRegister;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -73,6 +74,13 @@ public class RegisterActivity extends AppCompatActivity {
             // Chạy đăng ký nếu không có lỗi
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
                 //register(email, pass, fullname, phoneNumber);
+                JsonObject object = new JsonObject();
+                object.addProperty(USER_EMAIL,email);
+                object.addProperty(USER_PASSWORD,pass);
+                object.addProperty(USER_PHONE_NUMBER,phoneNumber);
+                object.addProperty(USER_FULL_NAME, fullname);
+
+                userRegister(RegisterActivity.this, object);
             } else{
                 turnEditingOn();
             }
