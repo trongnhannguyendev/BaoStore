@@ -1,33 +1,24 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.*;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.utils.widget.MotionButton;
+import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_PASSWORD;
+import static com.example.baostore.testapi.RetrofitCallBack.checkLogin;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.MotionButton;
+
 import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
-import com.example.baostore.Utils.Utils;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     TextView tvRegister, tvForgotPass;
@@ -79,64 +70,22 @@ public class LoginActivity extends AppCompatActivity {
                 String password = edPassword.getText().toString().trim();
 
                 if(checkError(email, password)) {
-                    login(email, password);
+
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty(USER_EMAIL, email);
+                    jsonObject.addProperty(USER_PASSWORD, password);
+
+                    checkLogin(LoginActivity.this, jsonObject);
                 } else{
                     turnEditingOn();
+
                 }
 
             }
         });
     }
 
-    // Đăng nhập
-    public void login(String email, String password) {
-        ApiService service = new GetRetrofit().getRetrofit();
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_EMAIL, email);
-        jsonObject.addProperty(USER_PASSWORD, password);
-
-        Call<Result> call = service.userLogin(jsonObject);
-
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                // Lấy dữ liệu từ response
-                boolean callError = response.body().getError();
-                int responseCode = response.body().getResponseCode();
-                String callMsg = response.body().getMessage();
-                String showLog = new Utils().logEnqueueMsg(callError,responseCode,callMsg);
-
-                Log.d(getResources().getString(R.string.debug_LoginActivity), showLog);
-
-                if (responseCode == RESPONSE_OKAY) {
-                    // Chuyển dữ liệu thành JsonObject
-                    JsonElement element = response.body().getData();
-                    JsonArray array = element.getAsJsonArray();
-                    JsonObject object = array.get(0).getAsJsonObject();
-
-                    // Lưu dữ liệu vào sharedPreference
-                    userDAO.saveLoginInfo(object);
-
-                    // chuyển qua MainActivity
-                    finish();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                } else {
-                    // thông báo lỗi
-                    Toast.makeText(LoginActivity.this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-                }
-                turnEditingOn();
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                turnEditingOn();
-                Log.d("-------------", t.getMessage() + "");
-                Toast.makeText(LoginActivity.this, "Hãy thử lại sau", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    // Kiểm tra dl nhập vào
     private boolean checkError(String email, String password){
         boolean hasError = true;
         if(email.isEmpty()){
@@ -150,14 +99,14 @@ public class LoginActivity extends AppCompatActivity {
         return hasError;
     }
 
-    private void turnEditingOff(){
+    public void turnEditingOff(){
         edEmail.setEnabled(false);
         edPassword.setEnabled(false);
         btnLogin.setEnabled(false);
         tvRegister.setEnabled(false);
     }
 
-    private void turnEditingOn(){
+    public void turnEditingOn(){
         edEmail.setEnabled(true);
         edPassword.setEnabled(true);
         btnLogin.setEnabled(true);

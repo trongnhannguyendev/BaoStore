@@ -1,5 +1,6 @@
 package com.example.baostore.Api;
 
+import com.example.baostore.testapi.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -12,7 +13,7 @@ public interface ApiService {
     // USER
 
     @POST("check-login.php")
-    Call<Result> userLogin(
+    Call<UserResponse> userLogin(
             @Body JsonObject jsonObject
     );
 
@@ -22,7 +23,7 @@ public interface ApiService {
     );
 
     @POST("check-email-exists-email.php")
-    Call<Result> checkUserEmailExist(
+    Call<UserResponse> checkUserEmailExist(
             @Body JsonObject jsonObject
     );
 

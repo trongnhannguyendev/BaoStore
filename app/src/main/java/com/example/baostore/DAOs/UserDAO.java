@@ -29,7 +29,7 @@ public class UserDAO {
         String fullName = object.get(USER_FULL_NAME).getAsString();
         String phonenumber = object.get(USER_PHONE_NUMBER).getAsString();
         user = new User();
-        user.setUserID(userID);
+        user.setUserid(userID);
         user.setEmail(email);
         user.setFullname(fullName);
         user.setPhoneNumber(phonenumber);

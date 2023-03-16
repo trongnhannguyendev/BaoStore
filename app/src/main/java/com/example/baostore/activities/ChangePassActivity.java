@@ -90,7 +90,7 @@ public class ChangePassActivity extends AppCompatActivity {
         jsonObject.addProperty(USER_EMAIL, user.getEmail());
         jsonObject.addProperty(USER_PASSWORD, oldPass);
 
-
+/*
         Call<Result> loginCall = service.userLogin(jsonObject);
 
         loginCall.enqueue(new Callback<Result>() {
@@ -132,6 +132,8 @@ public class ChangePassActivity extends AppCompatActivity {
         });
 
 
+
+ */
     }
 
 

@@ -133,7 +133,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
             JsonObject object = new JsonObject();
             User user = SharedPrefManager.getInstance(context).getUser();
-            int id = user.getUserID();
+            int id = user.getUserid();
 
             object.addProperty(USER_ID, id);
             object.addProperty(BOOK_ID, cart.getBookID());
@@ -199,7 +199,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         ApiService service = new GetRetrofit().getRetrofit();
         JsonObject object = new JsonObject();
-        object.addProperty(USER_ID, user.getUserID());
+        object.addProperty(USER_ID, user.getUserid());
         object.addProperty(BOOK_ID, cart.getBookID());
         Call<Result> call = service.increaseCartQuantity(object);
         call.enqueue(new Callback<Result>() {
@@ -224,7 +224,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         ApiService service = new GetRetrofit().getRetrofit();
         JsonObject object = new JsonObject();
-        object.addProperty(USER_ID, user.getUserID());
+        object.addProperty(USER_ID, user.getUserid());
         object.addProperty(BOOK_ID, cart.getBookID());
         Call<Result> call = service.decreaseCartQuantity(object);
         call.enqueue(new Callback<Result>() {

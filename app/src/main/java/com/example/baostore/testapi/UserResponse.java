@@ -1,31 +1,36 @@
 package com.example.baostore.testapi;
 
 import com.example.baostore.models.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class UserResponse {
-    private int respone_code;
+    @SerializedName("respone_code")
+    private int responseCode;
+    @SerializedName("error")
     private String error;
+    @SerializedName("message")
     private String message;
+    @SerializedName("data")
     private List<User> data;
 
     public UserResponse() {
     }
 
-    public UserResponse(int respone_code, String error, String message, List<User> data) {
-        this.respone_code = respone_code;
+    public UserResponse(int responseCode, String error, String message, List<User> data) {
+        this.responseCode = responseCode;
         this.error = error;
         this.message = message;
         this.data = data;
     }
 
-    public int getRespone_code() {
-        return respone_code;
+    public int getResponseCode() {
+        return responseCode;
     }
 
-    public void setRespone_code(int respone_code) {
-        this.respone_code = respone_code;
+    public void setResponseCode(int respone_code) {
+        this.responseCode = respone_code;
     }
 
     public String getError() {

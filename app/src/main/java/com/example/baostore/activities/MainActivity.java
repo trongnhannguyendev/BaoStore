@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         User user = SharedPrefManager.getInstance(this).getUser();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserID());
+        jsonObject.addProperty(USER_ID, user.getUserid());
 
         Call<Result> call = service.getAddressByUser(jsonObject);
         call.enqueue(new Callback<Result>() {

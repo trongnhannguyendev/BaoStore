@@ -108,7 +108,7 @@ public class DetailItemActivity extends AppCompatActivity {
     public void addCart(Bundle bundle,ApiService service){
         JsonObject object = new JsonObject();
         User user = SharedPrefManager.getInstance(this).getUser();
-        int id = user.getUserID();
+        int id = user.getUserid();
         object.addProperty(USER_ID, id);
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
         object.addProperty(CART_QUANTITY, 1);

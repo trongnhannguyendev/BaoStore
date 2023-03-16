@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Chạy đăng ký nếu không có lỗi
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
-                register(email, pass, fullname, phoneNumber);
+                //register(email, pass, fullname, phoneNumber);
             } else{
                 turnEditingOn();
             }
@@ -80,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+/*
 
     public void register(String email, String pass, String fullname, String phoneNumber) {
         ApiService service = new GetRetrofit().getRetrofit();
@@ -152,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+*/
 
     private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();

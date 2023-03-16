@@ -110,7 +110,7 @@ public class CartFragment extends Fragment {
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserID());
+        jsonObject.addProperty(USER_ID, user.getUserid());
         Call<Result> call = service.getCartByUserID(jsonObject);
 
         call.enqueue(new Callback<Result>() {
