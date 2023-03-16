@@ -3,7 +3,7 @@ package com.example.baostore.models;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    private int bookID;
+    private int bookid;
     private String title;
     private int totalPage;
     private String description;
@@ -19,15 +19,15 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(int bookID, String title, double price, String url) {
-        this.bookID = bookID;
+    public Book(int bookid, String title, double price, String url) {
+        this.bookid = bookid;
         this.title = title;
         this.price = price;
         this.url = url;
     }
 
-    public Book(int bookID, String title, double price, int quantity, int categoryID, int authorID, int publisherID, String url) {
-        this.bookID = bookID;
+    public Book(int bookid, String title, double price, int quantity, int categoryID, int authorID, int publisherID, String url) {
+        this.bookid = bookid;
         this.title = title;
         this.price = price;
         this.quantity = quantity;
@@ -37,8 +37,8 @@ public class Book implements Serializable {
         this.url = url;
     }
 
-    public Book(int bookID, String title, int totalPage, String description, String releaseDate, double price, int quantity, int categoryID, int authorID, int publisherID, int state, String url) {
-        this.bookID = bookID;
+    public Book(int bookid, String title, int totalPage, String description, String releaseDate, double price, int quantity, int categoryID, int authorID, int publisherID, int state, String url) {
+        this.bookid = bookid;
         this.title = title;
         this.totalPage = totalPage;
         this.description = description;
@@ -52,12 +52,12 @@ public class Book implements Serializable {
         this.url = url;
     }
 
-    public int getBookID() {
-        return bookID;
+    public int getbookid() {
+        return bookid;
     }
 
-    public void setBookID(int bookID) {
-        this.bookID = bookID;
+    public void setbookid(int bookid) {
+        this.bookid = bookid;
     }
 
     public String getTitle() {

@@ -42,7 +42,7 @@ public class BookDAO {
             String url = jsonObject.get(BOOK_URL).getAsString();
 
             Book book = new Book();
-            book.setBookID(bookID);
+            book.setbookid(bookID);
             book.setTitle(title);
             book.setPrice(price);
             book.setQuantity(quantity);

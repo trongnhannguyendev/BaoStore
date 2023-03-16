@@ -14,6 +14,7 @@ import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         // Thêm HomeFragment vào FrameLayout
         fragment = new HomeFragment();
         loadCategoryToFragment(fragment);
-        loadBooksToFragment(fragment);
+        bookGetAll(this, bundle, progressBar, fragment);
 
 
         // Title toolbar
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new HomeFragment();
                     if(bundle == null){
                         loadCategoryToFragment(fragment);
-                        loadBooksToFragment(fragment);
+                        bookGetAll(this, bundle, progressBar, fragment);
                     } else{
                         fragment.setArguments(bundle);
                         loadFragment(fragment);
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
                     if(bundle == null){
-                        loadBooksToFragment(fragment);
+                        bookGetAll(this, bundle, progressBar, fragment);
                     } else{
                         fragment.setArguments(bundle);
                         loadSearchFragment(fragment,0,null);
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void loadBooksToFragment(Fragment fragment) {
+    /*public void loadBooksToFragment(Fragment fragment) {
         ApiService service = new GetRetrofit().getRetrofit();
 
 
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                          }
                      }
         );
-    }
+    }*/
 
     public void loadCategoryToFragment(Fragment fragment){
         ApiService service = new GetRetrofit().getRetrofit();

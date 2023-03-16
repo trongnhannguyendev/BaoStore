@@ -1,24 +1,37 @@
 package com.example.baostore.testapi;
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
+import com.example.baostore.models.Book;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.UserResponse;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -185,5 +198,32 @@ public class RetrofitCallBack {
 
             }
         });
+    }
+
+    public static void bookGetAll(Context context, Bundle bundle, ProgressBar progressBar, Fragment fragment){
+        ApiService service = new GetRetrofit().getRetrofit();
+        MainActivity activity = (MainActivity) context;
+
+        Call<BookResponse> call = service.getbook();
+        call.enqueue(new Callback<BookResponse>() {
+                         @Override
+                         public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                             List<Book> list = response.body().getData();
+
+                             bundle.putSerializable(BOOK_LIST, (Serializable) list);
+                             progressBar.setVisibility(View.INVISIBLE);
+
+                             fragment.setArguments(bundle);
+                             activity.loadFragment(fragment);
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<BookResponse> call, Throwable t) {
+                             Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                             Log.d("----------------------", t.toString());
+                         }
+                     }
+        );
     }
 }

@@ -137,6 +137,7 @@ public class DetailItemActivity extends AppCompatActivity {
     public void loadImages(Bundle bundle, ApiService service){
         JsonObject object = new JsonObject();
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
+        Log.d("---DetailItemActivity", "Bookid: "+bundle.get(BOOK_ID));
         Call<Result> call = service.getImagesByBookID(object);
         call.enqueue(new Callback<Result>() {
             @Override

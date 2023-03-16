@@ -77,7 +77,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID, book.getBookID());
+                bundle.putInt(BOOK_ID, book.getbookid());
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
@@ -86,6 +86,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
                 bundle.putString(BOOK_URL, book.getUrl());
 
+                Log.d("--BookAdapter", book.getbookid()+"");
                 intent.putExtras(bundle);
 
 

@@ -1,6 +1,7 @@
 package com.example.baostore.Api;
 
-import com.example.baostore.testapi.UserResponse;
+import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -64,7 +65,7 @@ public interface ApiService {
 
     //BOOK
     @GET("get-all-book.php")
-    Call<Result> getbook();
+    Call<BookResponse> getbook();
 
     @POST("get-image-by-bookid.php")
     Call<Result> getImagesByBookID(

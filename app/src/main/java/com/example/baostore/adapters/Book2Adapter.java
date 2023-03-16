@@ -86,7 +86,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID, book.getBookID());
+                bundle.putInt(BOOK_ID, book.getbookid());
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
