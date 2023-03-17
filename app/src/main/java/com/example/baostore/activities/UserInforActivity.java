@@ -1,21 +1,16 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 
-import android.app.Service;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +29,6 @@ import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -72,7 +66,7 @@ public class UserInforActivity extends AppCompatActivity {
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
             addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for(Address address1: addressList){
-                Log.d("----UserInforActivity", address1.getAddressLocation());
+                Log.d("----UserInforActivity", address1.getLocation());
             }
             Log.d("---",addressList.toString());
 

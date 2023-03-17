@@ -3,8 +3,6 @@ package com.example.baostore.DAOs;
 import static com.example.baostore.Constant.Constants.ADDRESS_ID;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 
-import android.util.Log;
-
 import com.example.baostore.models.Address;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -24,8 +22,8 @@ public class AddressDAO {
         for(JsonElement element: array){
             JsonObject object = element.getAsJsonObject();
             Address address = new Address();
-            address.setAddressID(object.get(ADDRESS_ID).getAsInt());
-            address.setAddressLocation(object.get(ADDRESS_LOCATION).getAsString());
+            address.setAddressid(object.get(ADDRESS_ID).getAsInt());
+            address.setLocation(object.get(ADDRESS_LOCATION).getAsString());
             list.add(address);
         }
         return  list;

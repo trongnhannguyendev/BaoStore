@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
             categoryAdapter = new CategoryAdapter(list_category, getContext());
 
             recyCategory.setAdapter(categoryAdapter);
-            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
+            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryname());
         }else{
             Handler h = new Handler();
             h.postDelayed(new Runnable() {

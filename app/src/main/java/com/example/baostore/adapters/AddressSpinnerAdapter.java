@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.example.baostore.R;
 import com.example.baostore.models.Address;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddressSpinnerAdapter extends ArrayAdapter<Address> {
@@ -31,7 +30,7 @@ public class AddressSpinnerAdapter extends ArrayAdapter<Address> {
         }
         TextView tvAddressLocation =convertView.findViewById(R.id.tvAddress_spnItem);
         Address address = getItem(position);
-        tvAddressLocation.setText(address.getAddressLocation());
+        tvAddressLocation.setText(address.getLocation());
         return convertView;
     }
 
@@ -45,7 +44,7 @@ public class AddressSpinnerAdapter extends ArrayAdapter<Address> {
         ImageView ivDelete = convertView.findViewById(R.id.ivAddress_spnItemEdit);
         Address address = getItem(position);
 
-        tvAddressLocation.setText(address.getAddressLocation());
+        tvAddressLocation.setText(address.getLocation());
 
         return convertView;
     }

@@ -3,27 +3,27 @@ package com.example.baostore.models;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    private int categoryID;
-    private String categoryName;
+    private int categoryid;
+    private String categoryname;
 
-    public Category(int categoryID, String categoryName) {
-        this.categoryID = categoryID;
-        this.categoryName = categoryName;
+    public Category(int categoryid, String categoryname) {
+        this.categoryid = categoryid;
+        this.categoryname = categoryname;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public int getCategoryid() {
+        return categoryid;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public void setCategoryid(int categoryid) {
+        this.categoryid = categoryid;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCategoryname() {
+        return categoryname;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryname(String categoryname) {
+        this.categoryname = categoryname;
     }
 }

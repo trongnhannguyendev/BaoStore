@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,9 +80,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
-                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryID());
-                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorID());
-                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
+                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryid());
+                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorid());
+                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
                 bundle.putString(BOOK_URL, book.getUrl());
 
                 Log.d("--BookAdapter", book.getbookid()+"");

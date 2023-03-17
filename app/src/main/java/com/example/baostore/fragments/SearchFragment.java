@@ -71,30 +71,34 @@ public class SearchFragment extends Fragment {
     }
 
     void filter(String find, int findCode, double maxPrice) {
-        switch (findCode){
-            // No filter
-            case 0:
-                adapter = new Book2Adapter(list_book, getContext());
-                recyBook_search.setAdapter(adapter);
-                break;
-            //Title
-            case 1:
-                filterByTitle(find);
-                break;
-            // Category
-            case 2:
-                filterByCategoryID(Integer.parseInt(find));
-                break;
-            // Price
-            case 3:
-                filterByPrice(Double.parseDouble(find));
-                break;
-            // Price range
-            case 4:
-                filterByPriceRange(Double.parseDouble(find), maxPrice);
-                break;
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
+            switch (findCode) {
+                // No filter
+                case 0:
+                    adapter = new Book2Adapter(list_book, getContext());
+                    recyBook_search.setAdapter(adapter);
+                    break;
+                //Title
+                case 1:
+                    filterByTitle(find);
+                    break;
+                // Category
+                case 2:
+                    filterByCategoryID(Integer.parseInt(find));
+                    break;
+                // Price
+                case 3:
+                    filterByPrice(Double.parseDouble(find));
+                    break;
+                // Price range
+                case 4:
+                    filterByPriceRange(Double.parseDouble(find), maxPrice);
+                    break;
 
+            }
         }
     }
 
@@ -117,7 +121,7 @@ public class SearchFragment extends Fragment {
 
     void filterByPrice(double find) {
         searchList.clear();
-        Log.d("----------------------", find+"");
+        Log.d("----------------------", find + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
@@ -150,8 +154,11 @@ public class SearchFragment extends Fragment {
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
-            if (book.getCategoryID() == categoryID) {
+            Log.d("---", "filterByCategoryID: " + categoryID);
+            Log.d("---", "filterByCategoryID: " + book.getCategoryid());
+            if (book.getCategoryid() == categoryID) {
                 searchList.add(book);
+
 
             }
         }
@@ -159,7 +166,6 @@ public class SearchFragment extends Fragment {
         recyBook_search.setAdapter(adapter);
 
     }
-
 
 
     public void getBooks() {
@@ -170,7 +176,7 @@ public class SearchFragment extends Fragment {
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
 
             searchCode = bundle.getInt(BOOK_SEARCH_CODE);
-            Log.d("------------------SearchFragment", searchCode + "");
+            Log.d("------------------SearchFragment", "Search code: "+ searchCode );
             switch (searchCode) {
                 case 0:
                     adapter = new Book2Adapter(list_book, getContext());

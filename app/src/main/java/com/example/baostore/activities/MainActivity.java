@@ -15,6 +15,8 @@ import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
+import static com.example.baostore.testapi.RetrofitCallBack.categoryGetAll;
+import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Thêm HomeFragment vào FrameLayout
         fragment = new HomeFragment();
-        loadCategoryToFragment(fragment);
         bookGetAll(this, bundle, progressBar, fragment);
+        categoryGetAll(this, bundle, progressBar, fragment);
 
 
         // Title toolbar
@@ -120,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.Home:
                     progressBar.setVisibility(View.VISIBLE);
                     fragment = new HomeFragment();
-                    if(bundle == null){
-                        loadCategoryToFragment(fragment);
+                    if(bundle == null || !bundle.containsKey(CATEGORY_LIST)){
+                        categoryGetAll(this, bundle, progressBar, fragment);
                         bookGetAll(this, bundle, progressBar, fragment);
                     } else{
                         fragment.setArguments(bundle);
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
-                    if(bundle == null){
+                    if(bundle == null || !bundle.containsKey(BOOK_LIST)){
                         bookGetAll(this, bundle, progressBar, fragment);
                     } else{
                         fragment.setArguments(bundle);
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     tvTitleHeader.setText("Giỏ hàng");
                     fragment = new CartFragment();
                     if(bundle == null || !bundle.containsKey(ADDRESS_LIST)) {
-                        loadUserAddresses(fragment);
+                        userAddressGetAll(this, bundle, fragment);
                     } else{
                         fragment.setArguments(bundle);
                         loadFragment(fragment);
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Người dùng");
                     fragment = new ProfileFragment();
-                    loadUserAddresses(fragment);
+                    userAddressGetAll(this, bundle, fragment);
                     return true;
             }
             return false;
@@ -190,126 +192,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    /*public void loadBooksToFragment(Fragment fragment) {
-        ApiService service = new GetRetrofit().getRetrofit();
-
-
-        Call<Result> call = service.getbook();
-        call.enqueue(new Callback<Result>() {
-                         @Override
-                         public void onResponse(Call<Result> call, Response<Result> response) {
-                             JsonElement element = response.body().getData();
-                             JsonArray myArr = element.getAsJsonArray();
-
-                             List<Book> list = dao.getData(myArr);
-
-                             bundle.putSerializable(BOOK_LIST, (Serializable) list);
-                             progressBar.setVisibility(View.INVISIBLE);
-
-                             fragment.setArguments(bundle);
-                             loadFragment(fragment);
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<Result> call, Throwable t) {
-                             Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------", t.toString());
-                         }
-                     }
-        );
-    }*/
-
-    public void loadCategoryToFragment(Fragment fragment){
-        ApiService service = new GetRetrofit().getRetrofit();
-        Call<Result> call = service.getCategories();
-
-
-        call.enqueue(new Callback<Result>() {
-                         @Override
-                         public void onResponse(Call<Result> call, Response<Result> response) {
-                             int responseCode = response.body().getResponseCode();
-                             if (responseCode == 1) {
-                                 JsonElement element = response.body().getData();
-                                 JsonArray myArr = element.getAsJsonArray();
-                                 List<Category> categoryList = categoryDAO.getData(myArr);
-
-                                 Log.d("-----------------Main", categoryList.get(0).getCategoryName());
-                                 bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
-
-                                 fragment.setArguments(bundle);
-                                 loadFragment(fragment);
-
-                             }
-
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<Result> call, Throwable t) {
-                             Toast.makeText(MainActivity.this, "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------", t.toString());
-                         }
-                     }
-        );
-    }
-
-    public void loadUserAddresses(Fragment fragment){
-        ApiService service = new GetRetrofit().getRetrofit();
-        User user = SharedPrefManager.getInstance(this).getUser();
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserid());
-
-        Call<Result> call = service.getAddressByUser(jsonObject);
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                if(response.body().getResponseCode() == RESPONSE_OKAY){
-                    JsonElement element = response.body().getData();
-                    if(element.isJsonNull()){
-                        return;
-                    }
-                    JsonArray array = element.getAsJsonArray();
-                    List<Address> addressList = new ArrayList<>();
-
-                    for(JsonElement element1: array){
-                        JsonObject object = element1.getAsJsonObject();
-                        Address address = new Address();
-                        address.setAddressID(object.get(ADDRESS_ID).getAsInt());
-                        address.setAddressLocation(object.get(ADDRESS_LOCATION).getAsString());
-                        address.setWard(object.get(ADDRESS_WARD).getAsString());
-                        address.setDistrict(object.get(ADDRESS_DISTRICT).getAsString());
-                        address.setCity(object.get(ADDRESS_CITY).getAsString());
-                        address.setAddressName(object.get(ADDRESS_NAME).getAsString());
-                        address.setIsDefault(object.get(ADDRESS_DEFAULT).getAsInt());
-                        addressList.add(address);
-                    }
-                    if(!addressList.isEmpty()){
-                        bundle.putSerializable(ADDRESS_LIST, (Serializable) addressList);
-                        fragment.setArguments(bundle);
-
-                    }
-                    loadFragment(fragment);
-
-                } else{
-                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d(getResources().getString(R.string.debug_MainActivity), response.body().getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                Log.d(getResources().getString(R.string.debug_MainActivity), t.toString());
-            }
-        });
-
-    }
-
-
-
     public void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
@@ -322,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(BOOK_SEARCH, find);
         fragment.setArguments(bundle);
 
-        Log.d(getResources().getString(R.string.debug_MainActivity), searchCode+"");
+        Log.d(String.valueOf(R.string.debug_MainActivity), "Search code: "+ searchCode);
         loadFragment(fragment);
         progressBar.setVisibility(View.INVISIBLE);
 

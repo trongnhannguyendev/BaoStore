@@ -12,14 +12,12 @@ import static com.example.baostore.Constant.Constants.BOOK_URL;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +27,6 @@ import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
 
-import java.net.URL;
 import java.util.List;
 
 public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
@@ -90,9 +87,9 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
-                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryID());
-                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorID());
-                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
+                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryid());
+                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorid());
+                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
                 bundle.putString(BOOK_URL, book.getUrl());
 
                 intent.putExtras(bundle);

@@ -1,6 +1,8 @@
 package com.example.baostore.Api;
 
+import com.example.baostore.responses.AddressResponse;
 import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
@@ -29,7 +31,7 @@ public interface ApiService {
     );
 
     @POST("get-all-address-by-user.php")
-    Call<Result> getAddressByUser(
+    Call<AddressResponse> getAddressByUser(
             @Body JsonObject jsonObject
     );
 
@@ -76,7 +78,7 @@ public interface ApiService {
     // Category
 
     @GET("get-all-categories.php")
-    Call<Result> getCategories();
+    Call<CategoryResponse> getCategories();
 
     // Publisher
 

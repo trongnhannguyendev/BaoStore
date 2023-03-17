@@ -46,9 +46,9 @@ public class BookDAO {
             book.setTitle(title);
             book.setPrice(price);
             book.setQuantity(quantity);
-            book.setCategoryID(categoryID);
-            book.setAuthorID(authorID);
-            book.setPublisherID(publisherID);
+            book.setCategoryid(categoryID);
+            book.setAuthorid(authorID);
+            book.setPublisherid(publisherID);
             book.setUrl(url);
 
             Log.d("----BOOK", book.getTitle());

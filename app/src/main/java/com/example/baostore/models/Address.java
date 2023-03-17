@@ -3,49 +3,49 @@ package com.example.baostore.models;
 import java.io.Serializable;
 
 public class Address implements Serializable {
-    private int addressID;
-    private String addressLocation;
+    private int addressid;
+    private String location;
     private String ward;
     private String district;
     private String city;
-    private String addressName;
-    private int isDefault;
-    private int userID;
+    private String addressname;
+    private int isdefault;
+    private int userid;
 
     public Address(){
 
     }
 
-    public Address(int addressID, String addressLocation) {
-        this.addressID = addressID;
-        this.addressLocation = addressLocation;
+    public Address(int addressid, String location) {
+        this.addressid = addressid;
+        this.location = location;
     }
 
-    public Address(int addressID, String addressLocation, String ward, String district, String city, String addressName, int isDefault, int userID) {
-        this.addressID = addressID;
-        this.addressLocation = addressLocation;
+    public Address(int addressid, String location, String ward, String district, String city, String addressname, int isdefault, int userid) {
+        this.addressid = addressid;
+        this.location = location;
         this.ward = ward;
         this.district = district;
         this.city = city;
-        this.addressName = addressName;
-        this.isDefault = isDefault;
-        this.userID = userID;
+        this.addressname = addressname;
+        this.isdefault = isdefault;
+        this.userid = userid;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public int getAddressid() {
+        return addressid;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
+    public void setAddressid(int addressid) {
+        this.addressid = addressid;
     }
 
-    public String getAddressLocation() {
-        return addressLocation;
+    public String getLocation() {
+        return location;
     }
 
-    public void setAddressLocation(String addressLocation) {
-        this.addressLocation = addressLocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getWard() {
@@ -72,27 +72,27 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public String getAddressName() {
-        return addressName;
+    public String getAddressname() {
+        return addressname;
     }
 
-    public void setAddressName(String addressName) {
-        this.addressName = addressName;
+    public void setAddressname(String addressname) {
+        this.addressname = addressname;
     }
 
-    public int getIsDefault() {
-        return isDefault;
+    public int getIsdefault() {
+        return isdefault;
     }
 
-    public void setIsDefault(int isDefault) {
-        this.isDefault = isDefault;
+    public void setIsdefault(int isdefault) {
+        this.isdefault = isdefault;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 }

@@ -1,8 +1,18 @@
 package com.example.baostore.testapi;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_CITY;
+import static com.example.baostore.Constant.Constants.ADDRESS_DEFAULT;
+import static com.example.baostore.Constant.Constants.ADDRESS_DISTRICT;
+import static com.example.baostore.Constant.Constants.ADDRESS_ID;
+import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
+import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,22 +26,26 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
+import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
+import com.example.baostore.models.Category;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.AddressResponse;
 import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -225,5 +239,71 @@ public class RetrofitCallBack {
                          }
                      }
         );
+    }
+
+    public static void categoryGetAll(Context context, Bundle bundle, ProgressBar progressBar, Fragment fragment){
+        Call<CategoryResponse> call = service.getCategories();
+        MainActivity activity = (MainActivity) context;
+        call.enqueue(new Callback<CategoryResponse>() {
+                         @Override
+                         public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                             if (response.body().getResponseCode() == 1) {
+                                 List<Category> categoryList = response.body().getData();
+
+                                 Log.d("-----------------Main", categoryList.get(0).getCategoryname());
+                                 bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
+
+                                 fragment.setArguments(bundle);
+                                 activity.loadFragment(fragment);
+
+                             }
+
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                             Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                             Log.d("----------------------", t.toString());
+                         }
+                     }
+        );
+    }
+    
+    public static void userAddressGetAll(Context context, Bundle bundle,Fragment fragment){
+        MainActivity activity = (MainActivity) context;
+        User user = SharedPrefManager.getInstance(context).getUser();
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(USER_ID, user.getUserid());
+
+        Call<AddressResponse> call = service.getAddressByUser(jsonObject);
+        call.enqueue(new Callback<AddressResponse>() {
+            @Override
+            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
+
+                    List<Address> addressList = response.body().getData();
+
+                    if(!addressList.isEmpty()){
+                        bundle.putSerializable(ADDRESS_LIST, (Serializable) addressList);
+                        fragment.setArguments(bundle);
+
+                    }
+                    activity.loadFragment(fragment);
+
+                } else{
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(String.valueOf(R.string.debug_MainActivity), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d(String.valueOf(R.string.debug_MainActivity), t.toString());
+            }
+        });
+
     }
 }

@@ -74,10 +74,10 @@ public class CartInforActivity extends AppCompatActivity {
             List<Address> addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for(Address address1: addressList){
                 if (address1 == addressList.get(0)){
-                    edAddress.setText(address1.getAddressLocation());
+                    edAddress.setText(address1.getLocation());
                 }
-                if(address1.getIsDefault() == 1){
-                    edAddress.setText(address1.getAddressLocation());
+                if(address1.getIsdefault() == 1){
+                    edAddress.setText(address1.getLocation());
                 }
 
             }
