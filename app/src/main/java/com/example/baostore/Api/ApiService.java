@@ -94,8 +94,8 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
-    @POST("delete-cart.php")
-    Call<Result> deleteCart(
+    @POST("get-remove-cart.php")
+    Call<CartResponse> deleteCart(
             @Body JsonObject jsonObject
     );
 
@@ -105,12 +105,12 @@ public interface ApiService {
     );
 
     @POST("get-minus-quantity-cart.php")
-    Call<Result> decreaseCartQuantity(
+    Call<CartResponse> decreaseCartQuantity(
             @Body JsonObject jsonObject
     );
 
     @POST("get-add-quantity-cart.php")
-    Call<Result> increaseCartQuantity(
+    Call<CartResponse> increaseCartQuantity(
             @Body JsonObject jsonObject
     );
 

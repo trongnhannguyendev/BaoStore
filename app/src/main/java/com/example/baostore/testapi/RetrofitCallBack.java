@@ -8,6 +8,7 @@ import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
 import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
+import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
@@ -69,12 +71,10 @@ import retrofit2.Response;
 
 public class RetrofitCallBack {
     static ApiService service = new GetRetrofit().getRetrofit();
-    public static void checkLogin(Context context, JsonObject jsonObject){
 
+    public static Callback<UserResponse> getCheckLogin(Context context){
         LoginActivity loginActivity = (LoginActivity) context;
-
-        Call<UserResponse> call = service.userLogin(jsonObject);
-        call.enqueue(new Callback<UserResponse>() {
+        Callback<UserResponse> checkLoginCallBack = new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 UserResponse userResponse = response.body();
@@ -102,31 +102,16 @@ public class RetrofitCallBack {
                 Log.d("-------------", t.getMessage() + "");
                 Toast.makeText(context, "Hãy thử lại sau", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        return checkLoginCallBack;
     }
 
-    public static void checkSaveUserSplash(Context context){
+    public static Callback<UserResponse> getCheckSaveUserSplash(Context context){
         SplashActivity activity = (SplashActivity)context;
-        User user = SharedPrefManager.getInstance(context).getUser();
-        Log.d("---sdrognp", user.getUserid() +" " + user.getFullname()+" " + user.getState());
-
-        if(!SharedPrefManager.getInstance(context).isLoggedIn()){
-            activity.finish();
-            Intent i = new Intent(context, LoginActivity.class);
-            context.startActivity(i);
-
-        }
-
-
-        JsonObject emailObj = new JsonObject();
-        emailObj.addProperty(USER_EMAIL, user.getEmail());
-
-        Call<UserResponse> emailCall = service.checkUserEmailExist(emailObj);
-
-        emailCall.enqueue(new Callback<UserResponse>() {
+        Callback<UserResponse> callback = new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
+                User user = SharedPrefManager.getInstance(context).getUser();
                 Intent i = new Intent(context, LoginActivity.class);
 
                 // Kiểm tra email có tồn tại trong server
@@ -137,12 +122,10 @@ public class RetrofitCallBack {
                     i = new Intent(context, MainActivity.class);
 
                     int state = user1.getState();
-                    String fullName = user1.getFullname();
-                    String phoneNumber = user1.getPhoneNumber();
 
                     // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
                     if(user.getUserid() != 0) {
-                        if (user.getFullname() != user1.getFullname() || user.getPhoneNumber() != user1.getPhoneNumber()) {
+                        if (!user.getFullname().equals(user1.getFullname()) || !user.getPhoneNumber().equals(user1.getPhoneNumber())) {
                             SharedPrefManager.getInstance(context).userLogin(user1);
                         }
                     }
@@ -173,8 +156,8 @@ public class RetrofitCallBack {
                 Toast.makeText(context, R.string.enqueue_failure, Toast.LENGTH_SHORT).show();
                 Log.d(String.valueOf(R.string.debug_SplashActivity), t.toString());
             }
-        });
-
+        };
+        return callback;
     }
 
     public static void userRegister(Context context,JsonObject object) {
@@ -227,6 +210,46 @@ public class RetrofitCallBack {
 
             }
         });
+    }
+
+    public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
+        RegisterActivity activity = (RegisterActivity) context;
+        Callback<UserResponse> callback = new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                Call<UserResponse> regCall = service.registerUser(object);
+
+                regCall.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                            Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            activity.finish();
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                        } else {
+                            activity.turnEditingOn();
+                            Toast.makeText(context, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        activity.turnEditingOn();
+                        Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
+                        Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+
+            }
+        };
+
+
+    return callback;
     }
 
     public static void bookGetAll(Context context, Bundle bundle, ProgressBar progressBar, Fragment fragment){
@@ -395,6 +418,70 @@ public class RetrofitCallBack {
             @Override
             public void onFailure(Call<BookImageResponse> call, Throwable t) {
                 Log.d("----DetailItemActivity", t.toString());
+            }
+        });
+    }
+
+    public static void cartDecreaseQuantity(Context context, JsonObject object){
+
+        Call<CartResponse> call = service.decreaseCartQuantity(object);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode != RESPONSE_OKAY) {
+                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        });
+    }
+
+    public static void cartIncreaseQuantity(Context context,JsonObject object){
+        Call<CartResponse> call = service.increaseCartQuantity(object);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode != RESPONSE_OKAY) {
+                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        });
+    }
+
+    public static void cartDelete(Context context, JsonObject object){
+        Call<CartResponse> call = service.deleteCart(object);
+
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode == RESPONSE_OKAY) {
+                    Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
+                    MainActivity activity = (MainActivity) context;
+                    context.startActivity(new Intent(context, MainActivity.class));
+                    Fragment fragment1 = new CartFragment();
+                    activity.loadFragment(fragment1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
+
             }
         });
     }

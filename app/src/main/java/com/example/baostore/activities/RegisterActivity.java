@@ -1,6 +1,7 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
 import static com.example.baostore.testapi.RetrofitCallBack.userRegister;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.example.baostore.Api.Result;
 import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -79,6 +81,11 @@ public class RegisterActivity extends AppCompatActivity {
                 object.addProperty(USER_PASSWORD,pass);
                 object.addProperty(USER_PHONE_NUMBER,phoneNumber);
                 object.addProperty(USER_FULL_NAME, fullname);
+
+                ApiService service = new GetRetrofit().getRetrofit();
+                Call<UserResponse> call = service.checkUserEmailExist(object);
+                call.enqueue(getUserRegister(RegisterActivity.this, object));
+
 
                 userRegister(RegisterActivity.this, object);
             } else{

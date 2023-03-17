@@ -2,7 +2,7 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
-import static com.example.baostore.testapi.RetrofitCallBack.checkLogin;
+import static com.example.baostore.testapi.RetrofitCallBack.getCheckLogin;
 
 import android.content.Intent;
 import android.os.Build;
@@ -16,9 +16,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
+
+import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
     TextView tvRegister, tvForgotPass;
@@ -75,7 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                     jsonObject.addProperty(USER_EMAIL, email);
                     jsonObject.addProperty(USER_PASSWORD, password);
 
-                    checkLogin(LoginActivity.this, jsonObject);
+                    ApiService service = new GetRetrofit().getRetrofit();
+                    Call<UserResponse> checkLogin = service.userLogin(jsonObject);
+                    checkLogin.enqueue(getCheckLogin(LoginActivity.this));
+
                 } else{
                     turnEditingOn();
 

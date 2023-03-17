@@ -5,7 +5,7 @@ import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.USER_STATE;
-import static com.example.baostore.testapi.RetrofitCallBack.checkSaveUserSplash;
+import static com.example.baostore.testapi.RetrofitCallBack.getCheckSaveUserSplash;
 
 import android.content.Intent;
 import android.os.Build;
@@ -24,6 +24,7 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.UserResponse;
 import com.example.baostore.testapi.AppHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -55,8 +56,24 @@ public class SplashActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AppHelper.pushNotification(SplashActivity.this,"Thông báo","Đăng nhập");
 
-                checkSaveUserSplash(SplashActivity.this);
+                User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
+                Log.d("---sdrognp", user.getUserid() +" " + user.getFullname()+" " + user.getState());
 
+                if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
+                    finish();
+                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(i);
+
+                } else {
+                    ApiService service = new GetRetrofit().getRetrofit();
+
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, user.getEmail());
+                    Call<UserResponse> call = service.checkUserEmailExist(object);
+
+                    call.enqueue(getCheckSaveUserSplash(SplashActivity.this));
+
+                }
             }
         });
 

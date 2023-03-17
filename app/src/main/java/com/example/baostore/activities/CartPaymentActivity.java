@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -32,9 +31,9 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress_cpayment);
         tvOrderDate = findViewById(R.id.tvOrderDate_cpayment);
         tvNote = findViewById(R.id.tvNote_cpayment);
-        tvBookPrice = findViewById(R.id.tvBookPrice_cart);
+        tvBookPrice = findViewById(R.id.tvBookPrice_itemcart);
         tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice_cart);
+        tvTotalPrice = findViewById(R.id.tvTotalPrice_itemcart);
         btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
         btnConfirm.setOnClickListener(view ->{

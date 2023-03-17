@@ -92,29 +92,22 @@ public class DetailItemActivity extends AppCompatActivity {
             recyImages.setAdapter(adapter);
 
         }
-        ApiService service = new GetRetrofit().getRetrofit();
 
 
-
-        btnAddToCart.setOnClickListener(view ->{
+        btnAddToCart.setOnClickListener(view -> {
             addCart(bundle);
         });
 
-        btnToPayment.setOnClickListener(view ->{
+        btnToPayment.setOnClickListener(view -> {
             addCart(bundle);
 
 
-
-
-
         });
-
-
 
 
     }
 
-    public void addCart(Bundle bundle){
+    public void addCart(Bundle bundle) {
         JsonObject object = new JsonObject();
         User user = SharedPrefManager.getInstance(this).getUser();
         int id = user.getUserid();
@@ -126,40 +119,6 @@ public class DetailItemActivity extends AppCompatActivity {
 
     }
 
-
-
-    /*public void loadImages(Bundle bundle, ApiService service){
-        JsonObject object = new JsonObject();
-        object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
-        Log.d("---DetailItemActivity", "Bookid: "+bundle.get(BOOK_ID));
-        Call<Result> call = service.getImagesByBookID(object);
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                JsonElement element = response.body().getData();
-                JsonArray array = element.getAsJsonArray();
-                for(JsonElement jsonElement : array){
-                    JsonObject object1 = jsonElement.getAsJsonObject();
-                    BookImage bookImage = new BookImage();
-                    bookImage.setUrl(object1.get(IMAGE_URL).getAsString());
-
-                    list.add(bookImage);
-                }
-                SnapHelper helper = new LinearSnapHelper();
-                helper.attachToRecyclerView(recyImages);
-
-                recyImages.setLayoutManager(new LinearLayoutManager(DetailItemActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                adapter = new BookImageAdapter(DetailItemActivity.this, list);
-                recyImages.setAdapter(adapter);
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d("----DetailItemActivity", t.toString());
-            }
-        });
-    }*/
 
 
 }

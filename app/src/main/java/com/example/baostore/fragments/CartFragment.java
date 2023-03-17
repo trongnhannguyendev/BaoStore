@@ -1,16 +1,7 @@
 package com.example.baostore.fragments;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-import static com.example.baostore.Constant.Constants.BOOK_ID;
-import static com.example.baostore.Constant.Constants.BOOK_LIST;
-import static com.example.baostore.Constant.Constants.BOOK_PRICE;
-import static com.example.baostore.Constant.Constants.BOOK_TITLE;
-import static com.example.baostore.Constant.Constants.BOOK_URL;
 import static com.example.baostore.Constant.Constants.CART_LIST;
-import static com.example.baostore.Constant.Constants.CART_QUANTITY;
-import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
-import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,33 +20,15 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
-import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.DAOs.CartDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
-import com.example.baostore.activities.UserInforActivity;
-import com.example.baostore.adapters.Book2Adapter;
-import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CartAdapter;
-import com.example.baostore.adapters.CategoryAdapter;
-import com.example.baostore.models.Address;
-import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
-import com.example.baostore.models.User;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class CartFragment extends Fragment {
@@ -111,49 +84,6 @@ public class CartFragment extends Fragment {
         return view;
     }
 
-   /* public void getCart(){
-        ApiService service = new GetRetrofit().getRetrofit();
-
-        User user = SharedPrefManager.getInstance(getContext()).getUser();
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserid());
-        Call<Result> call = service.getCartByUserID(jsonObject);
-
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
-                Log.d(getResources().getString(R.string.debug_CartFragment), responseCode+"");
-                if(responseCode == RESPONSE_OKAY) {
-                    JsonElement element = response.body().getData();
-                    JsonArray array = element.getAsJsonArray();
-                    list = cartDAO.getData(array);
-
-                    CartFragment fragment = (CartFragment) getParentFragment();
-                    adapter = new CartAdapter(list, getContext(), CartFragment.this);
-
-                    recyCart.setAdapter(adapter);
-                    totalCartPrice = 0;
-                    for (int i = 0; i < list.size(); i++) {
-                        totalCartPrice += list.get(i).getPrice() * list.get(i).getQuantity();
-
-                    }
-                    tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
-
-                }else{
-                    Log.d(getResources().getString(R.string.debug_CartFragment), response.body().getMessage());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d(getResources().getString(R.string.debug_CartFragment), t.toString());
-            }
-        });
-
-    }*/
-
     public void updateTotalPrice(double updatePrice){
         totalCartPrice += updatePrice;
         tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
@@ -164,8 +94,12 @@ public class CartFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(CART_LIST)) {
             list = (List<Cart>) bundle.getSerializable(CART_LIST);
+            for (int i = 0; i < list.size(); i++) {
+                totalCartPrice += list.get(i).getPrice() * list.get(i).getQuantity();
+            }
+            tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
-            adapter = new CartAdapter(list, getContext());
+            adapter = new CartAdapter(list, getContext(), this);
 
             recyCart.setAdapter(adapter);
 
