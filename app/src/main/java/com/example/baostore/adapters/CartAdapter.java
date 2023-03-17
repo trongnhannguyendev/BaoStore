@@ -1,13 +1,11 @@
 package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
-import static com.example.baostore.Constant.Constants.CART_QUANTITY;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +42,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     Context context;
     CartFragment fragment;
 
-    public CartAdapter(List<Cart> list, Context context, CartFragment fragment) {
+    public CartAdapter(List<Cart> list, Context context) {
         this.list = list;
         this.context = context;
-        this.fragment = fragment;
     }
 
     @NonNull
@@ -136,10 +133,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             int id = user.getUserid();
 
             object.addProperty(USER_ID, id);
-            object.addProperty(BOOK_ID, cart.getBookID());
+            object.addProperty(BOOK_ID, cart.getBookid());
 
             Log.d(context.getResources().getString(R.string.debug_CartAdapter), id + "");
-            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookID() + "");
+            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookid() + "");
 
             ApiService service = new GetRetrofit().getRetrofit();
             Call<Result> call = service.deleteCart(object);
@@ -200,7 +197,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         ApiService service = new GetRetrofit().getRetrofit();
         JsonObject object = new JsonObject();
         object.addProperty(USER_ID, user.getUserid());
-        object.addProperty(BOOK_ID, cart.getBookID());
+        object.addProperty(BOOK_ID, cart.getBookid());
         Call<Result> call = service.increaseCartQuantity(object);
         call.enqueue(new Callback<Result>() {
             @Override
@@ -225,7 +222,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         ApiService service = new GetRetrofit().getRetrofit();
         JsonObject object = new JsonObject();
         object.addProperty(USER_ID, user.getUserid());
-        object.addProperty(BOOK_ID, cart.getBookID());
+        object.addProperty(BOOK_ID, cart.getBookid());
         Call<Result> call = service.decreaseCartQuantity(object);
         call.enqueue(new Callback<Result>() {
             @Override

@@ -11,10 +11,12 @@ import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
+import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
+import static com.example.baostore.testapi.RetrofitCallBack.cartGetAllByID;
 import static com.example.baostore.testapi.RetrofitCallBack.categoryGetAll;
 import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         fragment = new HomeFragment();
         bookGetAll(this, bundle, progressBar, fragment);
         categoryGetAll(this, bundle, progressBar, fragment);
+        cartGetAllByID(this, fragment, bundle);
 
 
         // Title toolbar
@@ -146,8 +149,13 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
                     fragment = new CartFragment();
-                    if(bundle == null || !bundle.containsKey(ADDRESS_LIST)) {
-                        userAddressGetAll(this, bundle, fragment);
+                    if(bundle == null || !bundle.containsKey(ADDRESS_LIST) ||!bundle.containsKey(CART_LIST) ) {
+                        if(!bundle.containsKey(ADDRESS_LIST)) {
+                            userAddressGetAll(this, bundle, fragment);
+                        }
+                        if(!bundle.containsKey(CART_LIST)){
+                            cartGetAllByID(this, fragment, bundle);
+                        }
                     } else{
                         fragment.setArguments(bundle);
                         loadFragment(fragment);

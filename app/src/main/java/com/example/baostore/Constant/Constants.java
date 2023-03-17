@@ -34,6 +34,7 @@ public class Constants {
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
     public static final String BOOK_LIST = "bookList";
+    public static final String BOOK_IMAGE_LIST = "bookImageList";
     public static final String BOOK_SEARCH = "bookSeach";
 
     public static final String IMAGE_URL = "url";
@@ -49,6 +50,7 @@ public class Constants {
     // Cart
     public static final String CART_QUANTITY = "quantity";
     public static final String CART_TOTAL_PRICE = "carttotalprice";
+    public static final String CART_LIST = "cartList";
 
     // Address
     public static final String ADDRESS_ID = "addressid";
@@ -59,6 +61,7 @@ public class Constants {
     public static final String ADDRESS_NAME = "addressname";
     public static final String ADDRESS_DEFAULT = "isdefault";
     public static final String ADDRESS_LIST = "addressList";
+
 
 
 

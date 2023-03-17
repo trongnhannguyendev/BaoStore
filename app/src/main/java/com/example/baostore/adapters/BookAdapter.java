@@ -1,6 +1,7 @@
 package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -86,10 +88,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 bundle.putString(BOOK_URL, book.getUrl());
 
                 Log.d("--BookAdapter", book.getbookid()+"");
+
+                JsonObject object = new JsonObject();
+                object.addProperty(BOOK_ID, book.getbookid());
                 intent.putExtras(bundle);
+                BookImageGetAll(context, object,bundle,intent);
 
 
-                view.getContext().startActivity(intent);
+
 
             }
         });

@@ -1,6 +1,7 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
@@ -8,6 +9,8 @@ import static com.example.baostore.Constant.Constants.CART_QUANTITY;
 import static com.example.baostore.Constant.Constants.IMAGE_URL;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.testapi.RetrofitCallBack.cartAddItem;
+import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -80,6 +83,13 @@ public class DetailItemActivity extends AppCompatActivity {
             tvTitle.setText(title);
             tvPrice.setText(new Utils().priceToString(price));
 
+            list = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);
+            SnapHelper helper = new LinearSnapHelper();
+            helper.attachToRecyclerView(recyImages);
+
+            recyImages.setLayoutManager(new LinearLayoutManager(DetailItemActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            adapter = new BookImageAdapter(DetailItemActivity.this, list);
+            recyImages.setAdapter(adapter);
 
         }
         ApiService service = new GetRetrofit().getRetrofit();
@@ -87,11 +97,11 @@ public class DetailItemActivity extends AppCompatActivity {
 
 
         btnAddToCart.setOnClickListener(view ->{
-            addCart(bundle, service);
+            addCart(bundle);
         });
 
         btnToPayment.setOnClickListener(view ->{
-            addCart(bundle, service);
+            addCart(bundle);
 
 
 
@@ -99,42 +109,26 @@ public class DetailItemActivity extends AppCompatActivity {
 
         });
 
-        loadImages(bundle, service);
 
 
 
     }
 
-    public void addCart(Bundle bundle,ApiService service){
+    public void addCart(Bundle bundle){
         JsonObject object = new JsonObject();
         User user = SharedPrefManager.getInstance(this).getUser();
         int id = user.getUserid();
         object.addProperty(USER_ID, id);
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
         object.addProperty(CART_QUANTITY, 1);
-        Call<Result> call = service.insertCart(object);
+        cartAddItem(this, object);
 
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(DetailItemActivity.this, "Item added", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else{
-                    Toast.makeText(DetailItemActivity.this, "Item already in cart!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-
-            }
-        });
     }
 
-    public void loadImages(Bundle bundle, ApiService service){
+
+
+    /*public void loadImages(Bundle bundle, ApiService service){
         JsonObject object = new JsonObject();
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
         Log.d("---DetailItemActivity", "Bookid: "+bundle.get(BOOK_ID));
@@ -165,7 +159,7 @@ public class DetailItemActivity extends AppCompatActivity {
                 Log.d("----DetailItemActivity", t.toString());
             }
         });
-    }
+    }*/
 
 
 }

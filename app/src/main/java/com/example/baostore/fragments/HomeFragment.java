@@ -178,8 +178,6 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
                     getBooks();
-                    categoryAdapter = new CategoryAdapter(list_category, getContext());
-                    recyCategory.setAdapter(categoryAdapter);
                 }
             }, 1000);
         }
@@ -200,8 +198,6 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
                     getCategory();
-                    categoryAdapter = new CategoryAdapter(list_category, getContext());
-                    recyCategory.setAdapter(categoryAdapter);
                 }
             },1000);
 

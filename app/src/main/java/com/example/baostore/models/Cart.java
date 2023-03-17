@@ -1,9 +1,10 @@
 package com.example.baostore.models;
 
-public class Cart {
-    public int cartId;
-    public int userID;
-    public int bookID;
+import java.io.Serializable;
+
+public class Cart implements Serializable {
+    public int userid;
+    public int bookid;
     public int quantity;
     public String title;
     public double price;
@@ -13,28 +14,20 @@ public class Cart {
 
     }
 
-    public int getCartId() {
-        return cartId;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getBookid() {
+        return bookid;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public int getBookID() {
-        return bookID;
-    }
-
-    public void setBookID(int bookID) {
-        this.bookID = bookID;
+    public void setBookid(int bookid) {
+        this.bookid = bookid;
     }
 
     public int getQuantity() {

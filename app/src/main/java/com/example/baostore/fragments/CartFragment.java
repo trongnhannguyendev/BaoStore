@@ -6,12 +6,15 @@ import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
+import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CART_QUANTITY;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +41,7 @@ import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CartAdapter;
+import com.example.baostore.adapters.CategoryAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
@@ -84,6 +88,8 @@ public class CartFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         bundle = getArguments();
+
+
         btnConfirmCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +111,7 @@ public class CartFragment extends Fragment {
         return view;
     }
 
-    public void getCart(){
+   /* public void getCart(){
         ApiService service = new GetRetrofit().getRetrofit();
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
@@ -146,12 +152,33 @@ public class CartFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
     public void updateTotalPrice(double updatePrice){
         totalCartPrice += updatePrice;
         tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
+    }
+
+    public void getCart() {
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(CART_LIST)) {
+            list = (List<Cart>) bundle.getSerializable(CART_LIST);
+
+            adapter = new CartAdapter(list, getContext());
+
+            recyCart.setAdapter(adapter);
+
+            Log.d("---------------------------CartFrag", list.get(0).getTitle());
+        } else {
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getCart();
+                }
+            }, 1000);
+        }
     }
 
 

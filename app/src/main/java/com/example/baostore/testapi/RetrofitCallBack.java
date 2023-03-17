@@ -8,8 +8,11 @@ import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
 import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
+import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.IMAGE_URL;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -23,21 +26,33 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
+import com.example.baostore.adapters.BookImageAdapter;
+import com.example.baostore.adapters.CartAdapter;
+import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
+import com.example.baostore.models.BookImage;
+import com.example.baostore.models.Cart;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
+import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonArray;
@@ -305,5 +320,82 @@ public class RetrofitCallBack {
             }
         });
 
+    }
+
+    public static void cartGetAllByID(Context context, Fragment fragment, Bundle bundle){
+
+        User user = SharedPrefManager.getInstance(context).getUser();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(USER_ID, user.getUserid());
+        Call<CartResponse> call = service.getCartByUserID(jsonObject);
+
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                Log.d((String.valueOf(R.string.debug_CartFragment)), responseCode+"");
+                if(responseCode == RESPONSE_OKAY) {
+                    List<Cart> listCart = response.body().getData();
+
+                    if(!listCart.isEmpty()){
+                        bundle.putSerializable(CART_LIST, (Serializable) listCart);
+                        fragment.setArguments(bundle);
+
+                    }
+
+                }else{
+                    Log.d(String.valueOf(R.string.debug_CartFragment), response.body().getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Log.d(String.valueOf(R.string.debug_CartFragment), t.toString());
+            }
+        });
+    }
+
+    public static void cartAddItem(Context context, JsonObject object){
+        Call<CartResponse> call = service.insertCart(object);
+        DetailItemActivity activity = (DetailItemActivity) context;
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode == RESPONSE_OKAY){
+                    Toast.makeText(context, "Item added", Toast.LENGTH_SHORT).show();
+                    activity.finish();
+                    context.startActivity(new Intent(context, MainActivity.class));
+                } else{
+                    Toast.makeText(context, "Item already in cart!", Toast.LENGTH_SHORT).show();
+                    context.startActivity(new Intent(context, MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Toast.makeText(context, "Some wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("--DetailItem", "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public static void BookImageGetAll(Context context, JsonObject object, Bundle bundle, Intent intent){
+        Call<BookImageResponse> call = service.getImagesByBookID(object);
+        call.enqueue(new Callback<BookImageResponse>() {
+            @Override
+            public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                List<BookImage> imageList = response.body().getData();
+                bundle.putSerializable(BOOK_IMAGE_LIST, (Serializable) imageList);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                Log.d("----DetailItemActivity", t.toString());
+            }
+        });
     }
 }

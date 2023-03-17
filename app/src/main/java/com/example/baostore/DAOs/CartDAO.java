@@ -31,8 +31,7 @@ public class CartDAO {
 
             Cart cart = new Cart();
 
-            cart.setCartId(userID);
-            cart.setBookID(bookID);
+            cart.setBookid(bookID);
             cart.setQuantity(quantity);
             cart.setTitle(title);
             cart.setPrice(price);
