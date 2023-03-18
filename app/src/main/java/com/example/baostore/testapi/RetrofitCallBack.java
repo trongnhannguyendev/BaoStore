@@ -12,11 +12,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
@@ -342,10 +340,8 @@ public class RetrofitCallBack {
                 if(responseCode == RESPONSE_OKAY){
                     Toast.makeText(context, "Item added", Toast.LENGTH_SHORT).show();
                     activity.finish();
-                    context.startActivity(new Intent(context, MainActivity.class));
                 } else{
                     Toast.makeText(context, "Item already in cart!", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, MainActivity.class));
                 }
             }
 
@@ -377,7 +373,7 @@ public class RetrofitCallBack {
         });
     }
 
-    public static Callback<CartResponse> cartQuantity(Context context){
+    public static Callback<CartResponse> cartNoData(Context context){
         Callback<CartResponse> callback = new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
@@ -420,5 +416,27 @@ public class RetrofitCallBack {
 
             }
         });
+    }
+
+    public static Callback<CartResponse> cartDeleteItem(Context context){
+        Callback<CartResponse> callback = new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode == RESPONSE_OKAY) {
+                    Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
+                    MainActivity activity = (MainActivity) context;
+                    Fragment fragment1 = new CartFragment();
+                    activity.loadFragment(fragment1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
+            }
+        };
+        return callback;
     }
 }

@@ -2,8 +2,8 @@ package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.cartDelete;
-import static com.example.baostore.testapi.RetrofitCallBack.cartQuantity;
+import static com.example.baostore.testapi.RetrofitCallBack.cartDeleteItem;
+import static com.example.baostore.testapi.RetrofitCallBack.cartNoData;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -104,7 +104,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             if (curQuantity <= 1) {
                 holder.ivDecrease.setClickable(false);
             } else {
-                decreaseQuantity.clone().enqueue(RetrofitCallBack.cartQuantity(context));
+                decreaseQuantity.clone().enqueue(RetrofitCallBack.cartNoData(context));
                 curQuantity--;
                 holder.edQuantity.setText(String.valueOf(curQuantity));
                 double currentPrice = cart.getPrice();
@@ -121,7 +121,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         holder.ivIncrease.setOnClickListener(view -> {
 
-            addQuantity.clone().enqueue(RetrofitCallBack.cartQuantity(context));
+            addQuantity.clone().enqueue(RetrofitCallBack.cartNoData(context));
 
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
             double oldPrice = cart.getPrice() * curQuantity;
@@ -141,20 +141,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
 
         holder.ivCancel.setOnClickListener(view -> {
+            deleteCart.enqueue(cartDeleteItem(context));
 
-
-
-            JsonObject object1 = new JsonObject();
-            User user1 = SharedPrefManager.getInstance(context).getUser();
-            int id = user1.getUserid();
-
-            object1.addProperty(USER_ID, id);
-            object1.addProperty(BOOK_ID, cart.getBookid());
-
-            Log.d(context.getResources().getString(R.string.debug_CartAdapter), id + "");
-            Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookid() + "");
-
-            cartDelete(context, object1);
         });
 
     }
