@@ -29,7 +29,7 @@
                 android:background="#DADADA" />
 
             <TextView
-
+                android:id="@+id/tvOrderDate_detailorderitem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -151,6 +151,7 @@
                 android:textSize="16dp" />
 
             <TextView
+                android:id="@+id/tvTotalPrice_detailorderitem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -180,6 +181,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvPaymentType_orderhistoryitem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -214,6 +216,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvReceiverName_detailorder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -222,6 +225,7 @@
                     android:textSize="10dp" />
 
                 <TextView
+                    android:id="@+id/tvReceiverPhoneNumber_detailorder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -230,6 +234,7 @@
                     android:textSize="10dp" />
 
                 <TextView
+                    android:id="@+id/tvReceiverAddress_orderhistoryitem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"

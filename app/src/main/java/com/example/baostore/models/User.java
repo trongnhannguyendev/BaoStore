@@ -1,22 +1,23 @@
 package com.example.baostore.models;
 
 public class User {
-    private int userID;
+    private int userid;
     private String email;
     private String password;
     private String fullname;
-    private String phoneNumber;
+    private String phonenumber;
+    private int state;
 
 
     public User() {
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public String getEmail() {
@@ -43,11 +44,19 @@ public class User {
         this.fullname = fullname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

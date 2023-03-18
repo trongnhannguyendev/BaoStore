@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.DAOs.CategoryDAO;
 import com.example.baostore.R;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.adapters.Book2Adapter;
@@ -39,7 +38,6 @@ public class HomeFragment extends Fragment {
     BookAdapter adapter;
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
-    CategoryDAO categoryDAO;
     MainActivity activity;
     LinearLayout btnSearchNew, btnSearchPopular, btnSearch_home;
     EditText edSearch;
@@ -68,7 +66,6 @@ public class HomeFragment extends Fragment {
         edSearch = v.findViewById(R.id.edSearch_home);
         ivSearch = v.findViewById(R.id.ibSearch_home);
 
-        categoryDAO = new CategoryDAO(getContext());
 
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -178,8 +175,6 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
                     getBooks();
-                    categoryAdapter = new CategoryAdapter(list_category, getContext());
-                    recyCategory.setAdapter(categoryAdapter);
                 }
             }, 1000);
         }
@@ -193,15 +188,13 @@ public class HomeFragment extends Fragment {
             categoryAdapter = new CategoryAdapter(list_category, getContext());
 
             recyCategory.setAdapter(categoryAdapter);
-            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryName());
+            Log.d("---------------------------HomeFrag", list_category.get(0).getCategoryname());
         }else{
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     getCategory();
-                    categoryAdapter = new CategoryAdapter(list_category, getContext());
-                    recyCategory.setAdapter(categoryAdapter);
                 }
             },1000);
 

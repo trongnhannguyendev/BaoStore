@@ -1,41 +1,34 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edEmail, edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
-    UserDAO userDAO;
     Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userDAO = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -72,7 +65,18 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Chạy đăng ký nếu không có lỗi
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
-                register(email, pass, fullname, phoneNumber);
+                //register(email, pass, fullname, phoneNumber);
+                JsonObject object = new JsonObject();
+                object.addProperty(USER_EMAIL,email);
+                object.addProperty(USER_PASSWORD,pass);
+                object.addProperty(USER_PHONE_NUMBER,phoneNumber);
+                object.addProperty(USER_FULL_NAME, fullname);
+
+                ApiService service = new GetRetrofit().getRetrofit();
+                Call<UserResponse> call = service.checkUserEmailExist(object);
+                call.enqueue(getUserRegister(RegisterActivity.this, object));
+
+
             } else{
                 turnEditingOn();
             }
@@ -80,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+/*
 
     public void register(String email, String pass, String fullname, String phoneNumber) {
         ApiService service = new GetRetrofit().getRetrofit();
@@ -152,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+*/
 
     private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();

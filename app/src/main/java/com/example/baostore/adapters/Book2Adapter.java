@@ -8,29 +8,33 @@ import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
+import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
+import com.example.baostore.responses.BookImageResponse;
+import com.google.gson.JsonObject;
 
-import java.net.URL;
 import java.util.List;
+
+import retrofit2.Call;
 
 public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
 
@@ -86,19 +90,24 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID, book.getBookID());
+                bundle.putInt(BOOK_ID, book.getbookid());
                 bundle.putString(BOOK_TITLE, book.getTitle());
                 bundle.putDouble(BOOK_PRICE, book.getPrice());
                 bundle.putInt(BOOK_QUANTITY, book.getQuantity());
-                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryID());
-                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorID());
-                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherID());
+                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryid());
+                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorid());
+                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
                 bundle.putString(BOOK_URL, book.getUrl());
 
+
+
+                JsonObject object = new JsonObject();
+                object.addProperty(BOOK_ID, book.getbookid());
                 intent.putExtras(bundle);
 
-
-                view.getContext().startActivity(intent);
+                ApiService service =new GetRetrofit().getRetrofit();
+                Call<BookImageResponse> call = service.getImagesByBookID(object);
+                call.enqueue(BookImageGetAll(context,bundle,intent));
 
             }
         });

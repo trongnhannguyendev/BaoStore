@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.USER_STATE;
+import static com.example.baostore.testapi.RetrofitCallBack.getCheckSaveUserSplash;
 
 import android.content.Intent;
 import android.os.Build;
@@ -23,6 +24,8 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.UserResponse;
+import com.example.baostore.testapi.AppHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -51,88 +54,29 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkSaveUser();
+                AppHelper.pushNotification(SplashActivity.this,"Thông báo","Đăng nhập");
 
+                User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
+                Log.d("---sdrognp", user.getUserid() +" " + user.getFullname()+" " + user.getState());
+
+                if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
+                    finish();
+                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(i);
+
+                } else {
+                    ApiService service = new GetRetrofit().getRetrofit();
+
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, user.getEmail());
+                    Call<UserResponse> call = service.checkUserEmailExist(object);
+
+                    call.enqueue(getCheckSaveUserSplash(SplashActivity.this));
+
+                }
             }
         });
 
     }
 
-    private void checkSaveUser(){
-        User user = SharedPrefManager.getInstance(this).getUser();
-
-        if(!SharedPrefManager.getInstance(this).isLoggedIn()){
-            finish();
-            i = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(i);
-        }
-
-        ApiService service = new GetRetrofit().getRetrofit();
-
-        JsonObject emailObj = new JsonObject();
-        emailObj.addProperty(USER_EMAIL, user.getEmail());
-
-        Call<Result> emailCall = service.checkUserEmailExist(emailObj);
-
-        emailCall.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                // Lấy thông tin từ server
-                boolean callError = response.body().getError();
-                int responseCode = response.body().getResponseCode();
-                String callMsg = response.body().getMessage();
-                String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
-                Log.d(String.valueOf(R.string.debug_RegisterActivity), log);
-
-                i = new Intent(SplashActivity.this, LoginActivity.class);
-
-                // Kiểm tra email có tồn tại trong server
-                if(responseCode == 1) {
-                    JsonElement element = response.body().getData();
-                    JsonArray array = element.getAsJsonArray();
-                    JsonObject object = array.get(0).getAsJsonObject();
-
-                    i = new Intent(SplashActivity.this, MainActivity.class);
-
-                    int state = object.get(USER_STATE).getAsInt();
-                    String fullName = object.get(USER_FULL_NAME).getAsString();
-                    String phoneNumber = object.get(USER_PHONE_NUMBER).getAsString();
-
-                    // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
-                    if(!user.getFullname().equals(fullName) || !user.getPhoneNumber().equals(phoneNumber)){
-                        user.setFullname(fullName);
-                        user.setPhoneNumber(phoneNumber);
-
-                        SharedPrefManager.getInstance(SplashActivity.this).userLogin(user);
-                    }
-
-                    // Kiểm tra tình trạng tài khoản
-
-                    if (state != 1) {
-                        SharedPrefManager.getInstance(SplashActivity.this).logout();
-                        Toast.makeText(SplashActivity.this, "Tài khoản đã bị vô hiệu hóa", Toast.LENGTH_SHORT).show();
-                        i = new Intent(SplashActivity.this, LoginActivity.class);
-                    }
-
-
-                }
-
-                // Email không tồn tại
-                else{
-                    SharedPrefManager.getInstance(SplashActivity.this).logout();
-                    Toast.makeText(SplashActivity.this, "Email không tồn tại", Toast.LENGTH_SHORT).show();
-                    i = new Intent(SplashActivity.this, LoginActivity.class);
-                }
-                finish();
-                startActivity(i);
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Toast.makeText(SplashActivity.this, R.string.enqueue_failure, Toast.LENGTH_SHORT).show();
-                Log.d(String.valueOf(R.string.debug_SplashActivity), t.toString());
-            }
-        });
-
-    }
 }

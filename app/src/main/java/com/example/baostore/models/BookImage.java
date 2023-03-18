@@ -1,6 +1,8 @@
 package com.example.baostore.models;
 
-public class BookImage {
+import java.io.Serializable;
+
+public class BookImage implements Serializable {
     private String url;
 
     public BookImage() {

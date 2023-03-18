@@ -2,6 +2,10 @@ package com.example.baostore.Constant;
 
 public class Constants {
 
+    // URL
+    public static final String API_SERVER_HOST_ADDRESS = "http://127.0.0.1";
+    public static final String API_SERVER_PORT_NUMBER = "8888";
+
     // Response
     public static final int RESPONSE_NOT_OKAY = 0;
     public static final int RESPONSE_OKAY = 1;
@@ -30,6 +34,7 @@ public class Constants {
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
     public static final String BOOK_LIST = "bookList";
+    public static final String BOOK_IMAGE_LIST = "bookImageList";
     public static final String BOOK_SEARCH = "bookSeach";
 
     public static final String IMAGE_URL = "url";
@@ -45,6 +50,7 @@ public class Constants {
     // Cart
     public static final String CART_QUANTITY = "quantity";
     public static final String CART_TOTAL_PRICE = "carttotalprice";
+    public static final String CART_LIST = "cartList";
 
     // Address
     public static final String ADDRESS_ID = "addressid";
@@ -55,6 +61,7 @@ public class Constants {
     public static final String ADDRESS_NAME = "addressname";
     public static final String ADDRESS_DEFAULT = "isdefault";
     public static final String ADDRESS_LIST = "addressList";
+
 
 
 

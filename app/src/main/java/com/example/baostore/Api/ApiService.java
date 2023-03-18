@@ -1,5 +1,13 @@
 package com.example.baostore.Api;
 
+import com.example.baostore.models.BookImage;
+import com.example.baostore.models.User;
+import com.example.baostore.responses.AddressResponse;
+import com.example.baostore.responses.BookImageResponse;
+import com.example.baostore.responses.BookResponse;
+import com.example.baostore.responses.CartResponse;
+import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -12,42 +20,42 @@ public interface ApiService {
     // USER
 
     @POST("check-login.php")
-    Call<Result> userLogin(
+    Call<UserResponse> userLogin(
             @Body JsonObject jsonObject
     );
 
     @POST("register-user.php")
-    Call<Result> registerUser(
+    Call<UserResponse> registerUser(
             @Body JsonObject jsonObject
     );
 
     @POST("check-email-exists-email.php")
-    Call<Result> checkUserEmailExist(
+    Call<UserResponse> checkUserEmailExist(
             @Body JsonObject jsonObject
     );
 
     @POST("get-all-address-by-user.php")
-    Call<Result> getAddressByUser(
+    Call<AddressResponse> getAddressByUser(
             @Body JsonObject jsonObject
     );
 
     @POST("update-email.php")
-    Call<Result> updateEmail(
+    Call<UserResponse> updateEmail(
             @Body JsonObject jsonObject
     );
 
     @POST("update-full-name.php")
-    Call<Result> updateFullname(
+    Call<UserResponse> updateFullname(
             @Body JsonObject jsonObject
     );
 
     @POST("update-password.php")
-    Call<Result> updatePassword(
+    Call<UserResponse> updatePassword(
             @Body JsonObject jsonObject
     );
 
     @POST("update-phone-number.php")
-    Call<Result> updatePhoneNumber(
+    Call<UserResponse> updatePhoneNumber(
             @Body JsonObject jsonObject
     );
 
@@ -63,10 +71,10 @@ public interface ApiService {
 
     //BOOK
     @GET("get-all-book.php")
-    Call<Result> getbook();
+    Call<BookResponse> getbook();
 
     @POST("get-image-by-bookid.php")
-    Call<Result> getImagesByBookID(
+    Call<BookImageResponse> getImagesByBookID(
             @Body JsonObject jsonObject
     );
 
@@ -74,7 +82,7 @@ public interface ApiService {
     // Category
 
     @GET("get-all-categories.php")
-    Call<Result> getCategories();
+    Call<CategoryResponse> getCategories();
 
     // Publisher
 
@@ -83,27 +91,27 @@ public interface ApiService {
 
     // Cart
     @POST("get-cart-by-user.php")
-    Call<Result> getCartByUserID(
+    Call<CartResponse> getCartByUserID(
             @Body JsonObject jsonObject
     );
 
-    @POST("delete-cart.php")
-    Call<Result> deleteCart(
+    @POST("get-remove-cart.php")
+    Call<CartResponse> deleteCart(
             @Body JsonObject jsonObject
     );
 
     @POST("insert-cart.php")
-    Call<Result> insertCart(
+    Call<CartResponse> insertCart(
             @Body JsonObject jsonObject
     );
 
     @POST("get-minus-quantity-cart.php")
-    Call<Result> decreaseCartQuantity(
+    Call<CartResponse> decreaseCartQuantity(
             @Body JsonObject jsonObject
     );
 
     @POST("get-add-quantity-cart.php")
-    Call<Result> increaseCartQuantity(
+    Call<CartResponse> increaseCartQuantity(
             @Body JsonObject jsonObject
     );
 

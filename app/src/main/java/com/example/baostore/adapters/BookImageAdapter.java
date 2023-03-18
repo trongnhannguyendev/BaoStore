@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookImageAdapter extends RecyclerView.Adapter<BookImageAdapter.MyViewHolder> {
-    public List<BookImage> list = new ArrayList<>();
+    public List<BookImage> list;
     Context context;
 
     public BookImageAdapter(Context context, List<BookImage> list){

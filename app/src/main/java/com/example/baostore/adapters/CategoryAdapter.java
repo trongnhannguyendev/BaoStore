@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Category category = list.get(position);
-        holder.tvName_category.setText(category.getCategoryName());
+        holder.tvName_category.setText(category.getCategoryname());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +48,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 MainActivity mainActivity = (MainActivity) context;
                 SearchFragment fragment = new SearchFragment();
                 mainActivity.setSearchSelection();
-                mainActivity.loadSearchFragment(fragment,1, String.valueOf(category.getCategoryID()));
-                Log.d(String.valueOf(R.string.debug_CartAdapter), category.getCategoryID()+"");
+                mainActivity.loadSearchFragment(fragment,1, String.valueOf(category.getCategoryid()));
+                Log.d(String.valueOf(R.string.debug_CartAdapter), "categoryid: "+category.getCategoryid()+"");
             }
         });
 

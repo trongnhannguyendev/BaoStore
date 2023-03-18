@@ -5,7 +5,7 @@ import static com.example.baostore.Constant.Constants.*;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.baostore.models.Address;
+import com.example.baostore.Utils.AppConstant;
 import com.example.baostore.models.User;
 
 public class SharedPrefManager {
@@ -28,10 +28,11 @@ public class SharedPrefManager {
     public boolean userLogin(User user) {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(USER_ID, user.getUserID());
+        editor.putInt(USER_ID, user.getUserid());
         editor.putString(USER_EMAIL, user.getEmail());
         editor.putString(USER_FULL_NAME, user.getFullname());
-        editor.putString(USER_PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(USER_PHONE_NUMBER, user.getPhonenumber());
+        editor.putInt(USER_STATE, user.getState());
         editor.apply();
         return true;
     }
@@ -46,10 +47,11 @@ public class SharedPrefManager {
     public User getUser() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         User user = new User();
-        user.setUserID(sharedPreferences.getInt(USER_ID, 0));
+        user.setUserid(sharedPreferences.getInt(USER_ID, 0));
         user.setEmail(sharedPreferences.getString(USER_EMAIL, null));
         user.setFullname(sharedPreferences.getString(USER_FULL_NAME, null));
-        user.setPhoneNumber(sharedPreferences.getString(USER_PHONE_NUMBER, null));
+        user.setPhonenumber(sharedPreferences.getString(USER_PHONE_NUMBER, null));
+        user.setState(sharedPreferences.getInt(USER_STATE, 0));
         return user;
     }
 
@@ -59,5 +61,28 @@ public class SharedPrefManager {
         editor.clear();
         editor.apply();
         return true;
+    }
+
+    public static void setUserLoginToken(String token) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AppConstant.USER_LOGIN_TOKEN, token).apply();
+    }
+
+    public static String getUserLoginToken() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(AppConstant.USER_LOGIN_TOKEN, null);
+    }
+
+    public static void setUserLoginState(Boolean state) {
+        // xet trang thai dang nhap user
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(AppConstant.IS_USER_LOGIN, state).apply();
+    }
+
+    public static boolean getUserLoginState() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(AppConstant.IS_USER_LOGIN, false);
     }
 }
