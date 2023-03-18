@@ -8,6 +8,7 @@ import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
+import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -95,7 +97,10 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 intent.putExtras(bundle);
 
 
-                view.getContext().startActivity(intent);
+                JsonObject object = new JsonObject();
+                object.addProperty(BOOK_ID, book.getbookid());
+                intent.putExtras(bundle);
+                BookImageGetAll(context, object,bundle,intent);
 
             }
         });

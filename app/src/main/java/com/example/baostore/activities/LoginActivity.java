@@ -18,7 +18,6 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
@@ -29,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvRegister, tvForgotPass;
     MotionButton btnLogin;
     EditText edEmail, edPassword;
-    UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // khởi tạo DAO
-        userDAO = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {

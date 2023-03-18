@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.DAOs.CartDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
@@ -38,7 +37,6 @@ public class CartFragment extends Fragment {
     public RecyclerView recyCart;
     public CartAdapter adapter;
     public TextView tvTotalPrice;
-    public CartDAO cartDAO;
     public double totalCartPrice;
     public Bundle bundle;
 
@@ -49,7 +47,6 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
-        cartDAO = new CartDAO();
 
         // màu icon progress
         cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
@@ -58,8 +55,6 @@ public class CartFragment extends Fragment {
 
         // xử lý button
         btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         bundle = getArguments();
 
 

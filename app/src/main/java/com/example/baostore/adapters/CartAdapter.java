@@ -1,11 +1,9 @@
 package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
-import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.cartDecreaseQuantity;
 import static com.example.baostore.testapi.RetrofitCallBack.cartDelete;
-import static com.example.baostore.testapi.RetrofitCallBack.cartIncreaseQuantity;
+import static com.example.baostore.testapi.RetrofitCallBack.cartQuantity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,29 +14,25 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
-import com.example.baostore.activities.MainActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.CartResponse;
+import com.example.baostore.testapi.RetrofitCallBack;
 import com.google.gson.JsonObject;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
     private List<Cart> list;
@@ -64,6 +58,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Cart cart = list.get(position);
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        User user = SharedPrefManager.getInstance(context).getUser();
+        JsonObject object = new JsonObject();
+        object.addProperty(USER_ID, user.getUserid());
+        object.addProperty(BOOK_ID, cart.getBookid());
+
+        Call<CartResponse> addQuantity = service.increaseCartQuantity(object);
+        Call<CartResponse> decreaseQuantity = service.decreaseCartQuantity(object);
+        Call<CartResponse> deleteCart = service.deleteCart(object);
 
 
         int quantity = cart.getQuantity();
@@ -91,19 +95,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         thread.start();
 
         holder.ivDecrease.setOnClickListener(view -> {
+
+
+
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
             double oldPrice = cart.getPrice() * curQuantity;
             holder.ivIncrease.setClickable(true);
             if (curQuantity <= 1) {
                 holder.ivDecrease.setClickable(false);
             } else {
+                decreaseQuantity.clone().enqueue(RetrofitCallBack.cartQuantity(context));
                 curQuantity--;
                 holder.edQuantity.setText(String.valueOf(curQuantity));
                 double currentPrice = cart.getPrice();
                 int newTotalPrice = (int) (currentPrice * curQuantity);
                 holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
 
-                decreaseCartQuantity(cart);
             }
 
 
@@ -113,6 +120,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
 
         holder.ivIncrease.setOnClickListener(view -> {
+
+            addQuantity.clone().enqueue(RetrofitCallBack.cartQuantity(context));
+
             int curQuantity = Integer.parseInt(holder.edQuantity.getText().toString());
             double oldPrice = cart.getPrice() * curQuantity;
             holder.ivDecrease.setClickable(true);
@@ -123,26 +133,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             int newTotalPrice = (int) (currentPrice * curQuantity);
             holder.tvTotalPrice.setText(new Utils().priceToString(newTotalPrice));
 
-            increaseCartQuantity(cart);
             double newPrice = cart.getPrice() * curQuantity;
             double updatePrice = newPrice - oldPrice;
             fragment.updateTotalPrice(updatePrice);
+
+
         });
 
         holder.ivCancel.setOnClickListener(view -> {
 
 
-            JsonObject object = new JsonObject();
-            User user = SharedPrefManager.getInstance(context).getUser();
-            int id = user.getUserid();
 
-            object.addProperty(USER_ID, id);
-            object.addProperty(BOOK_ID, cart.getBookid());
+            JsonObject object1 = new JsonObject();
+            User user1 = SharedPrefManager.getInstance(context).getUser();
+            int id = user1.getUserid();
+
+            object1.addProperty(USER_ID, id);
+            object1.addProperty(BOOK_ID, cart.getBookid());
 
             Log.d(context.getResources().getString(R.string.debug_CartAdapter), id + "");
             Log.d(context.getResources().getString(R.string.debug_CartAdapter), cart.getBookid() + "");
 
-            cartDelete(context, object);
+            cartDelete(context, object1);
         });
 
     }
@@ -172,22 +184,5 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             edQuantity = itemView.findViewById(R.id.edQuantity_itemcart);
 
         }
-    }
-
-    private void increaseCartQuantity(Cart cart) {
-        User user = SharedPrefManager.getInstance(context).getUser();
-        JsonObject object = new JsonObject();
-        object.addProperty(USER_ID, user.getUserid());
-        object.addProperty(BOOK_ID, cart.getBookid());
-        cartIncreaseQuantity(context, object);
-    }
-
-    private void decreaseCartQuantity(Cart cart) {
-        User user = SharedPrefManager.getInstance(context).getUser();
-        JsonObject object = new JsonObject();
-        object.addProperty(USER_ID, user.getUserid());
-        object.addProperty(BOOK_ID, cart.getBookid());
-
-        cartDecreaseQuantity(context, object);
     }
 }

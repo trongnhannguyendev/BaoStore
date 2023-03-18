@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.DAOs.BookDAO;
 import com.example.baostore.R;
 import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.models.Book;
@@ -30,7 +29,6 @@ public class SearchFragment extends Fragment {
     List<Book> searchList;
     RecyclerView recyBook_search;
     Book2Adapter adapter;
-    BookDAO dao;
     int searchCode = 0;
 
     @Override
@@ -42,7 +40,6 @@ public class SearchFragment extends Fragment {
         recyBook_search = v.findViewById(R.id.recyBook_search);
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        dao = new BookDAO(getContext());
         list_book = new ArrayList<>();
         searchList = new ArrayList<>();
 

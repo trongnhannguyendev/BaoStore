@@ -1,21 +1,11 @@
 package com.example.baostore.testapi;
 
-import static com.example.baostore.Constant.Constants.ADDRESS_CITY;
-import static com.example.baostore.Constant.Constants.ADDRESS_DEFAULT;
-import static com.example.baostore.Constant.Constants.ADDRESS_DISTRICT;
-import static com.example.baostore.Constant.Constants.ADDRESS_ID;
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
-import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
-import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
-import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
-import static com.example.baostore.Constant.Constants.IMAGE_URL;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
-import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.content.Context;
@@ -23,27 +13,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.SnapHelper;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
-import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
-import com.example.baostore.adapters.BookImageAdapter;
-import com.example.baostore.adapters.CartAdapter;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
@@ -57,12 +40,9 @@ import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.UserResponse;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -125,7 +105,7 @@ public class RetrofitCallBack {
 
                     // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
                     if(user.getUserid() != 0) {
-                        if (!user.getFullname().equals(user1.getFullname()) || !user.getPhoneNumber().equals(user1.getPhoneNumber())) {
+                        if (user.getFullname()  !=user1.getFullname() || user.getPhoneNumber()!=user1.getPhoneNumber()) {
                             SharedPrefManager.getInstance(context).userLogin(user1);
                         }
                     }
@@ -160,57 +140,6 @@ public class RetrofitCallBack {
         return callback;
     }
 
-    public static void userRegister(Context context,JsonObject object) {
-        RegisterActivity activity = (RegisterActivity) context;
-
-        JsonObject emailObject = new JsonObject();
-        emailObject.addProperty(USER_EMAIL, object.get(USER_EMAIL).getAsString());
-
-        Call<UserResponse> checkEmailCall = service.checkUserEmailExist(emailObject);
-        checkEmailCall.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
-                // Hủy nếu email tồn tại
-                if (response.body().getResponseCode() == RESPONSE_OKAY) {
-                    Toast.makeText(context, "Email đã sử dụng!", Toast.LENGTH_SHORT).show();
-                    activity.turnEditingOn();
-                    return;
-                }
-                // Gọi đăng ký
-                Call<UserResponse> regCall = service.registerUser(object);
-
-                regCall.enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.body().getResponseCode() == RESPONSE_OKAY) {
-                            Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                            activity.finish();
-                            context.startActivity(new Intent(context, LoginActivity.class));
-                        } else {
-                            activity.turnEditingOn();
-                            Toast.makeText(context, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        activity.turnEditingOn();
-                        Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
-                        Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                activity.turnEditingOn();
-                Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
-
-            }
-        });
-    }
 
     public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
         RegisterActivity activity = (RegisterActivity) context;
@@ -252,63 +181,56 @@ public class RetrofitCallBack {
     return callback;
     }
 
-    public static void bookGetAll(Context context, Bundle bundle, ProgressBar progressBar, Fragment fragment){
-        ApiService service = new GetRetrofit().getRetrofit();
+
+    public static Callback<BookResponse> bookGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
+        Callback<BookResponse> callback = new Callback<BookResponse>() {
+            @Override
+            public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                List<Book> list = response.body().getData();
 
-        Call<BookResponse> call = service.getbook();
-        call.enqueue(new Callback<BookResponse>() {
-                         @Override
-                         public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
-                             List<Book> list = response.body().getData();
+                bundle.putSerializable(BOOK_LIST, (Serializable) list);
 
-                             bundle.putSerializable(BOOK_LIST, (Serializable) list);
-                             progressBar.setVisibility(View.INVISIBLE);
+                fragment.setArguments(bundle);
+                activity.loadFragment(fragment);
+            }
 
-                             fragment.setArguments(bundle);
-                             activity.loadFragment(fragment);
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<BookResponse> call, Throwable t) {
-                             Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------", t.toString());
-                         }
-                     }
-        );
+            @Override
+            public void onFailure(Call<BookResponse> call, Throwable t) {
+                Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                Log.d("----------------------", t.toString());
+            }
+        };
+        return callback;
     }
 
-    public static void categoryGetAll(Context context, Bundle bundle, ProgressBar progressBar, Fragment fragment){
-        Call<CategoryResponse> call = service.getCategories();
+    public static Callback<CategoryResponse> categoryGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
-        call.enqueue(new Callback<CategoryResponse>() {
-                         @Override
-                         public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                             if (response.body().getResponseCode() == 1) {
-                                 List<Category> categoryList = response.body().getData();
+        Callback<CategoryResponse> callback = new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (response.body().getResponseCode() == 1) {
+                    List<Category> categoryList = response.body().getData();
 
-                                 Log.d("-----------------Main", categoryList.get(0).getCategoryname());
-                                 bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
+                    Log.d("-----------------Main", categoryList.get(0).getCategoryname());
+                    bundle.putSerializable(CATEGORY_LIST, (Serializable) categoryList);
 
-                                 fragment.setArguments(bundle);
-                                 activity.loadFragment(fragment);
+                    fragment.setArguments(bundle);
+                    activity.loadFragment(fragment);
 
-                             }
+                }
+            }
 
-
-                         }
-
-                         @Override
-                         public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                             Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
-                             Log.d("----------------------", t.toString());
-                         }
-                     }
-        );
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                Log.d("----------------------", t.toString());
+            }
+        };
+        return callback;
     }
     
-    public static void userAddressGetAll(Context context, Bundle bundle,Fragment fragment){
+    public static void userAddressGetAll1(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
         User user = SharedPrefManager.getInstance(context).getUser();
 
@@ -345,30 +267,60 @@ public class RetrofitCallBack {
 
     }
 
-    public static void cartGetAllByID(Context context, Fragment fragment, Bundle bundle){
+    public static Callback<AddressResponse> userAddressGetAll(Context context, Bundle bundle, Fragment fragment){
+        MainActivity activity = (MainActivity) context;
+        Callback<AddressResponse> callback = new Callback<AddressResponse>() {
+            @Override
+            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
 
-        User user = SharedPrefManager.getInstance(context).getUser();
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserid());
-        Call<CartResponse> call = service.getCartByUserID(jsonObject);
+                    List<Address> addressList = response.body().getData();
 
-        call.enqueue(new Callback<CartResponse>() {
+                    if(!addressList.isEmpty()){
+                        bundle.putSerializable(ADDRESS_LIST, (Serializable) addressList);
+                        fragment.setArguments(bundle);
+
+                    }
+                    activity.loadFragment(fragment);
+
+                } else{
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(String.valueOf(R.string.debug_MainActivity), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d(String.valueOf(R.string.debug_MainActivity), t.toString());
+            }
+        };
+        return callback;
+    }
+
+    public static Callback<CartResponse> cartGetAllByUserID(Context context, Bundle bundle, Fragment fragment){
+        MainActivity activity = (MainActivity) context;
+        Callback<CartResponse> callback = new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 int responseCode = response.body().getResponseCode();
+                Log.d("--", "Cart response: "+responseCode);
                 Log.d((String.valueOf(R.string.debug_CartFragment)), responseCode+"");
                 if(responseCode == RESPONSE_OKAY) {
                     List<Cart> listCart = response.body().getData();
 
                     if(!listCart.isEmpty()){
                         bundle.putSerializable(CART_LIST, (Serializable) listCart);
-                        fragment.setArguments(bundle);
+
 
                     }
+                    fragment.setArguments(bundle);
+                    activity.loadFragment(fragment);
 
                 }else{
                     Log.d(String.valueOf(R.string.debug_CartFragment), response.body().getMessage());
                 }
+
 
             }
 
@@ -376,7 +328,8 @@ public class RetrofitCallBack {
             public void onFailure(Call<CartResponse> call, Throwable t) {
                 Log.d(String.valueOf(R.string.debug_CartFragment), t.toString());
             }
-        });
+        };
+        return callback;
     }
 
     public static void cartAddItem(Context context, JsonObject object){
@@ -404,6 +357,8 @@ public class RetrofitCallBack {
         });
     }
 
+
+
     public static void BookImageGetAll(Context context, JsonObject object, Bundle bundle, Intent intent){
         Call<BookImageResponse> call = service.getImagesByBookID(object);
         call.enqueue(new Callback<BookImageResponse>() {
@@ -422,10 +377,8 @@ public class RetrofitCallBack {
         });
     }
 
-    public static void cartDecreaseQuantity(Context context, JsonObject object){
-
-        Call<CartResponse> call = service.decreaseCartQuantity(object);
-        call.enqueue(new Callback<CartResponse>() {
+    public static Callback<CartResponse> cartQuantity(Context context){
+        Callback<CartResponse> callback = new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 int responseCode = response.body().getResponseCode();
@@ -439,27 +392,10 @@ public class RetrofitCallBack {
                 Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
                 Log.d("----Cartadapter", t.toString());
             }
-        });
+        };
+        return callback;
     }
 
-    public static void cartIncreaseQuantity(Context context,JsonObject object){
-        Call<CartResponse> call = service.increaseCartQuantity(object);
-        call.enqueue(new Callback<CartResponse>() {
-            @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
-                int responseCode = response.body().getResponseCode();
-                if (responseCode != RESPONSE_OKAY) {
-                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponse> call, Throwable t) {
-                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                Log.d("----Cartadapter", t.toString());
-            }
-        });
-    }
 
     public static void cartDelete(Context context, JsonObject object){
         Call<CartResponse> call = service.deleteCart(object);

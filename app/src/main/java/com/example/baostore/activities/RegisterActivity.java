@@ -2,43 +2,33 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.*;
 import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
-import static com.example.baostore.testapi.RetrofitCallBack.userRegister;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
-import com.example.baostore.DAOs.UserDAO;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edEmail, edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
-    UserDAO userDAO;
     Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userDAO = new UserDAO(this);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -87,7 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
                 call.enqueue(getUserRegister(RegisterActivity.this, object));
 
 
-                userRegister(RegisterActivity.this, object);
             } else{
                 turnEditingOn();
             }
