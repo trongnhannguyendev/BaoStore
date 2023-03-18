@@ -3,7 +3,6 @@ package com.example.baostore.adapters;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.cartDeleteItem;
-import static com.example.baostore.testapi.RetrofitCallBack.cartNoData;
 
 import android.content.Context;
 import android.graphics.Bitmap;

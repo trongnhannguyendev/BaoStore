@@ -1,10 +1,10 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
+import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -21,19 +21,17 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UserInforActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -59,9 +57,6 @@ public class UserInforActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnConfirm_UserInfor);
         spnAddress = findViewById(R.id.spnAddress_info);
 
-
-        user = SharedPrefManager.getInstance(this).getUser();
-
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
             addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
@@ -77,10 +72,11 @@ public class UserInforActivity extends AppCompatActivity {
 
 
 
-
+        user = SharedPrefManager.getInstance(this).getUser();
+        Log.d("----", "id: "+user.getUserid()+" fullname: " + user.getFullname()+ " phone number: "+ user.getPhonenumber());
 
         edfullname.setText(user.getFullname());
-        edPhoneNumber.setText(user.getPhoneNumber());
+        edPhoneNumber.setText(user.getPhonenumber());
         edEmail.setText(user.getEmail());
         edAddress.setText("");
         edAddress.setEnabled(false);
@@ -112,7 +108,7 @@ public class UserInforActivity extends AppCompatActivity {
                 if(!fullName.equals(user.getFullname())){
                     updateFullName(fullName);
                 }
-                if(!phoneNumber.equals(user.getPhoneNumber())  && phoneNumber.length() == 10){
+                if(!phoneNumber.equals(user.getPhonenumber())  && phoneNumber.length() == 10){
                     updatePhoneNumber(phoneNumber);
                 }
                 // TODO add update address list
@@ -129,23 +125,9 @@ public class UserInforActivity extends AppCompatActivity {
         object.addProperty(USER_EMAIL, newEmail);
 
         ApiService service = new GetRetrofit().getRetrofit();
-        Call<Result> call = service.updateEmail(object);
+        Call<UserResponse> call = service.updateEmail(object);
 
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(UserInforActivity.this, "Update email completed!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
-            }
-        });
+        call.enqueue(userUpdateInfo(this));
 
     }
 
@@ -154,23 +136,9 @@ public class UserInforActivity extends AppCompatActivity {
         object.addProperty(USER_PHONE_NUMBER, newPhoneNumber);
 
         ApiService service = new GetRetrofit().getRetrofit();
-        Call<Result> call = service.updatePhoneNumber(object);
+        Call<UserResponse> call = service.updatePhoneNumber(object);
 
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(UserInforActivity.this, "Update phone number completed!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
-            }
-        });
+        call.enqueue(userUpdateInfo(this));
 
     }
 
@@ -179,23 +147,9 @@ public class UserInforActivity extends AppCompatActivity {
         object.addProperty(USER_FULL_NAME, newFullName);
 
         ApiService service = new GetRetrofit().getRetrofit();
-        Call<Result> call = service.updateFullname(object);
+        Call<UserResponse> call = service.updateFullname(object);
 
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                int responseCode = response.body().getResponseCode();
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(UserInforActivity.this, "Update full name completed!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
-            }
-        });
+        call.enqueue(userUpdateInfo(this));
 
     }
 

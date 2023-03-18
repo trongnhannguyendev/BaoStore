@@ -1,6 +1,7 @@
 package com.example.baostore.Api;
 
 import com.example.baostore.models.BookImage;
+import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
 import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
@@ -39,22 +40,22 @@ public interface ApiService {
     );
 
     @POST("update-email.php")
-    Call<Result> updateEmail(
+    Call<UserResponse> updateEmail(
             @Body JsonObject jsonObject
     );
 
     @POST("update-full-name.php")
-    Call<Result> updateFullname(
+    Call<UserResponse> updateFullname(
             @Body JsonObject jsonObject
     );
 
     @POST("update-password.php")
-    Call<Result> updatePassword(
+    Call<UserResponse> updatePassword(
             @Body JsonObject jsonObject
     );
 
     @POST("update-phone-number.php")
-    Call<Result> updatePhoneNumber(
+    Call<UserResponse> updatePhoneNumber(
             @Body JsonObject jsonObject
     );
 

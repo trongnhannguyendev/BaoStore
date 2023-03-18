@@ -3,6 +3,7 @@ package com.example.baostore.activities;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
+import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,10 +18,12 @@ import android.widget.Toast;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.ApiUrl;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -76,12 +79,7 @@ public class ChangePassActivity extends AppCompatActivity {
             return;
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiUrl.BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService service = retrofit.create(ApiService.class);
+        ApiService service = new GetRetrofit().getRetrofit();
 
         User user = SharedPrefManager.getInstance(this).getUser();
 
@@ -90,50 +88,10 @@ public class ChangePassActivity extends AppCompatActivity {
         jsonObject.addProperty(USER_EMAIL, user.getEmail());
         jsonObject.addProperty(USER_PASSWORD, oldPass);
 
-/*
-        Call<Result> loginCall = service.userLogin(jsonObject);
+        Call<UserResponse> call = service.updatePassword(jsonObject);
 
-        loginCall.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                if (response.body().getResponseCode() == RESPONSE_OKAY) {
+        call.enqueue(userUpdateInfo(this));
 
-                    JsonObject updateObj = new JsonObject();
-                    updateObj.addProperty(USER_EMAIL, user.getEmail());
-                    updateObj.addProperty(USER_PASSWORD, newPass);
-
-                    Call<Result> updateCall = service.updatePassword(updateObj);
-                    updateCall.enqueue(new Callback<Result>() {
-                        @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
-                            int responseCode = response.body().getResponseCode();
-                            Log.d("-------------------", response.body().getMessage());
-                            if (responseCode == 1) {
-                                Toast.makeText(ChangePassActivity.this, "update successful", Toast.LENGTH_SHORT).show();
-                                finish();
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
-
-                        }
-                    });
-                } else {
-                    Toast.makeText(ChangePassActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-
-            }
-        });
-
-
-
- */
     }
 
 

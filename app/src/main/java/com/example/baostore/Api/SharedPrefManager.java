@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.baostore.Utils.AppConstant;
-import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
 public class SharedPrefManager {
@@ -32,7 +31,7 @@ public class SharedPrefManager {
         editor.putInt(USER_ID, user.getUserid());
         editor.putString(USER_EMAIL, user.getEmail());
         editor.putString(USER_FULL_NAME, user.getFullname());
-        editor.putString(USER_PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(USER_PHONE_NUMBER, user.getPhonenumber());
         editor.putInt(USER_STATE, user.getState());
         editor.apply();
         return true;
@@ -51,7 +50,7 @@ public class SharedPrefManager {
         user.setUserid(sharedPreferences.getInt(USER_ID, 0));
         user.setEmail(sharedPreferences.getString(USER_EMAIL, null));
         user.setFullname(sharedPreferences.getString(USER_FULL_NAME, null));
-        user.setPhoneNumber(sharedPreferences.getString(USER_PHONE_NUMBER, null));
+        user.setPhonenumber(sharedPreferences.getString(USER_PHONE_NUMBER, null));
         user.setState(sharedPreferences.getInt(USER_STATE, 0));
         return user;
     }

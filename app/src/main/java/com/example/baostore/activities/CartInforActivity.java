@@ -88,7 +88,7 @@ public class CartInforActivity extends AppCompatActivity {
 
 
         edFullName.setText(user.getFullname());
-        edPhoneNumber.setText(user.getPhoneNumber());
+        edPhoneNumber.setText(user.getPhonenumber());
         edEmail.setText(user.getEmail());
 
 // xử lý button

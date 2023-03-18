@@ -5,7 +5,7 @@ public class User {
     private String email;
     private String password;
     private String fullname;
-    private String phoneNumber;
+    private String phonenumber;
     private int state;
 
 
@@ -44,12 +44,12 @@ public class User {
         this.fullname = fullname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public int getState() {

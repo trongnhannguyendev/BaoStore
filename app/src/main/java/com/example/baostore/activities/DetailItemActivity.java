@@ -20,16 +20,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.adapters.BookImageAdapter;
 import com.example.baostore.models.BookImage;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.CartResponse;
+import com.example.baostore.testapi.RetrofitCallBack;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
 
 public class DetailItemActivity extends AppCompatActivity {
 
@@ -51,6 +57,8 @@ public class DetailItemActivity extends AppCompatActivity {
         recyImages = findViewById(R.id.recyImages_detailItem);
         btnAddToCart = findViewById(R.id.btnAddtocart_detail);
         btnToPayment = findViewById(R.id.btnPay_detail);
+
+
 
 
         Bundle bundle = getIntent().getExtras();
@@ -95,7 +103,13 @@ public class DetailItemActivity extends AppCompatActivity {
         object.addProperty(USER_ID, id);
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
         object.addProperty(CART_QUANTITY, 1);
-        cartAddItem(this, object);
+
+        ApiService service = new GetRetrofit().getRetrofit();
+        Call<CartResponse> call = service.insertCart(object);
+
+        call.enqueue(cartAddItem(this));
+
+        //RetrofitCallBack.cartAddItem1(this, object);
 
 
     }

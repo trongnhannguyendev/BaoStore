@@ -23,13 +23,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.models.Book;
+import com.example.baostore.responses.BookImageResponse;
 import com.google.gson.JsonObject;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
 
@@ -94,13 +99,15 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
                 bundle.putString(BOOK_URL, book.getUrl());
 
-                intent.putExtras(bundle);
 
 
                 JsonObject object = new JsonObject();
                 object.addProperty(BOOK_ID, book.getbookid());
                 intent.putExtras(bundle);
-                BookImageGetAll(context, object,bundle,intent);
+
+                ApiService service =new GetRetrofit().getRetrofit();
+                Call<BookImageResponse> call = service.getImagesByBookID(object);
+                call.enqueue(BookImageGetAll(context,bundle,intent));
 
             }
         });

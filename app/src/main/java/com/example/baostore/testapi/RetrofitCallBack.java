@@ -6,7 +6,6 @@ import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
-import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +24,7 @@ import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
+import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Book;
@@ -49,6 +49,7 @@ import retrofit2.Response;
 
 public class RetrofitCallBack {
     static ApiService service = new GetRetrofit().getRetrofit();
+    // User
 
     public static Callback<UserResponse> getCheckLogin(Context context){
         LoginActivity loginActivity = (LoginActivity) context;
@@ -103,7 +104,7 @@ public class RetrofitCallBack {
 
                     // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
                     if(user.getUserid() != 0) {
-                        if (user.getFullname()  !=user1.getFullname() || user.getPhoneNumber()!=user1.getPhoneNumber()) {
+                        if (user.getFullname()  !=user1.getFullname() || user.getPhonenumber()!=user1.getPhonenumber()) {
                             SharedPrefManager.getInstance(context).userLogin(user1);
                         }
                     }
@@ -137,7 +138,6 @@ public class RetrofitCallBack {
         };
         return callback;
     }
-
 
     public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
         RegisterActivity activity = (RegisterActivity) context;
@@ -179,7 +179,28 @@ public class RetrofitCallBack {
     return callback;
     }
 
+    public static Callback<UserResponse> userUpdateInfo(Context context){
+        UserInforActivity activity = (UserInforActivity) context;
+        Callback<UserResponse> update = new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if(responseCode == RESPONSE_OKAY){
+                    Toast.makeText(context, "Update email completed!", Toast.LENGTH_SHORT).show();
+                    activity.finish();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
+            }
+        };
+        return update;
+
+    }
+
+    // Book
     public static Callback<BookResponse> bookGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
         Callback<BookResponse> callback = new Callback<BookResponse>() {
@@ -226,43 +247,6 @@ public class RetrofitCallBack {
             }
         };
         return callback;
-    }
-    
-    public static void userAddressGetAll1(Context context, Bundle bundle, Fragment fragment){
-        MainActivity activity = (MainActivity) context;
-        User user = SharedPrefManager.getInstance(context).getUser();
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserid());
-
-        Call<AddressResponse> call = service.getAddressByUser(jsonObject);
-        call.enqueue(new Callback<AddressResponse>() {
-            @Override
-            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
-                if(response.body().getResponseCode() == RESPONSE_OKAY){
-
-                    List<Address> addressList = response.body().getData();
-
-                    if(!addressList.isEmpty()){
-                        bundle.putSerializable(ADDRESS_LIST, (Serializable) addressList);
-                        fragment.setArguments(bundle);
-
-                    }
-                    activity.loadFragment(fragment);
-
-                } else{
-                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d(String.valueOf(R.string.debug_MainActivity), response.body().getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddressResponse> call, Throwable t) {
-                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                Log.d(String.valueOf(R.string.debug_MainActivity), t.toString());
-            }
-        });
-
     }
 
     public static Callback<AddressResponse> userAddressGetAll(Context context, Bundle bundle, Fragment fragment){
@@ -330,10 +314,10 @@ public class RetrofitCallBack {
         return callback;
     }
 
-    public static void cartAddItem(Context context, JsonObject object){
-        Call<CartResponse> call = service.insertCart(object);
+
+    public static Callback<CartResponse> cartAddItem(Context context){
         DetailItemActivity activity = (DetailItemActivity) context;
-        call.enqueue(new Callback<CartResponse>() {
+        Callback<CartResponse> callback = new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 int responseCode = response.body().getResponseCode();
@@ -350,14 +334,12 @@ public class RetrofitCallBack {
                 Toast.makeText(context, "Some wrong happen", Toast.LENGTH_SHORT).show();
                 Log.d("--DetailItem", "onFailure: " + t.toString());
             }
-        });
+        };
+        return callback;
     }
 
-
-
-    public static void BookImageGetAll(Context context, JsonObject object, Bundle bundle, Intent intent){
-        Call<BookImageResponse> call = service.getImagesByBookID(object);
-        call.enqueue(new Callback<BookImageResponse>() {
+    public static Callback<BookImageResponse> BookImageGetAll(Context context, Bundle bundle, Intent intent){
+        Callback<BookImageResponse> callback = new Callback<BookImageResponse>() {
             @Override
             public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
                 List<BookImage> imageList = response.body().getData();
@@ -370,7 +352,8 @@ public class RetrofitCallBack {
             public void onFailure(Call<BookImageResponse> call, Throwable t) {
                 Log.d("----DetailItemActivity", t.toString());
             }
-        });
+        };
+        return callback;
     }
 
     public static Callback<CartResponse> cartNoData(Context context){
@@ -392,31 +375,6 @@ public class RetrofitCallBack {
         return callback;
     }
 
-
-    public static void cartDelete(Context context, JsonObject object){
-        Call<CartResponse> call = service.deleteCart(object);
-
-        call.enqueue(new Callback<CartResponse>() {
-            @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
-                int responseCode = response.body().getResponseCode();
-                if (responseCode == RESPONSE_OKAY) {
-                    Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
-                    MainActivity activity = (MainActivity) context;
-                    context.startActivity(new Intent(context, MainActivity.class));
-                    Fragment fragment1 = new CartFragment();
-                    activity.loadFragment(fragment1);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponse> call, Throwable t) {
-                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                Log.d(context.getResources().getString(R.string.debug_CartAdapter), t.toString());
-
-            }
-        });
-    }
 
     public static Callback<CartResponse> cartDeleteItem(Context context){
         Callback<CartResponse> callback = new Callback<CartResponse>() {
