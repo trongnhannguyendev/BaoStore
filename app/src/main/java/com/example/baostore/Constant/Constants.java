@@ -62,8 +62,19 @@ public class Constants {
     public static final String ADDRESS_DEFAULT = "isdefault";
     public static final String ADDRESS_LIST = "addressList";
 
+    //  Publisher
+    public static final String PUBLISHER_LIST = "publisherList";
 
+    // Author
+    public static final String AUTHOR_LIST = "authorList";
 
-
+    // Order
+    public static final String ORDER_USER_NAME = "fullname";
+    public static final String ORDER_ADDRESS = "address";
+    public static final String ORDER_CREATE_DATE = "createdate";
+    public static final String ODER_NOTE = "note";
+    public static final String ODER_FULLNAME = "fullname";
+    public static final String ORDER_PHONE_NUMBER = "phonenumb";
+    public static final String ORDER_PAYMENT = "payment";
 
 }

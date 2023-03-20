@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baostore.R;
 import com.example.baostore.activities.DetailOrderItemActivity;
 import com.example.baostore.models.Order;
-import com.example.baostore.models.OrderDetail;
 
 import java.util.ArrayList;
 import java.util.List;

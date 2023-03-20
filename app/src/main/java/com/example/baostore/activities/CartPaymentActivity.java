@@ -1,5 +1,15 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
+import static com.example.baostore.Constant.Constants.ORDER_ADDRESS;
+import static com.example.baostore.Constant.Constants.ORDER_CREATE_DATE;
+import static com.example.baostore.Constant.Constants.ORDER_PHONE_NUMBER;
+import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
+import static com.example.baostore.testapi.RetrofitCallBack.addOrder;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +20,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
+import com.example.baostore.responses.OrderResponse;
+import com.google.gson.JsonObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import retrofit2.Call;
 
 public class CartPaymentActivity extends AppCompatActivity {
     private LinearLayout btn_hide_show, layout_hide_show;
@@ -36,7 +57,40 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvTotalPrice = findViewById(R.id.tvTotalPrice_itemcart);
         btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
+        ApiService service = new GetRetrofit().getRetrofit();
+
+
+        Bundle bundle = getIntent().getExtras();
+
+        double price = Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString());
+        String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        String fullName =bundle.get(USER_FULL_NAME).toString();
+        String phoneNunber = bundle.get(USER_PHONE_NUMBER).toString();
+        String address = bundle.get(ADDRESS_LOCATION).toString();
+
+        tvFullname.setText(fullName);
+        tvPhoneNumber.setText(phoneNunber);
+        tvAddress.setText(address);
+        tvTotalPrice.setText(new Utils().priceToString(price));
+        tvOrderDate.setText(orderDate);
+
         btnConfirm.setOnClickListener(view ->{
+
+
+
+
+            JsonObject object = new JsonObject();
+            object.addProperty(ORDER_USER_NAME, fullName);
+            object.addProperty(ORDER_PHONE_NUMBER, phoneNunber);
+            object.addProperty(ORDER_ADDRESS, address);
+            object.addProperty(ORDER_CREATE_DATE, orderDate);
+
+
+            Call<OrderResponse> call = service.addOrder(object);
+
+            call.enqueue(addOrder(this));
+
             finish();
         });
 

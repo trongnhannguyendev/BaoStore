@@ -9,16 +9,16 @@ import static com.example.baostore.Constant.Constants.CART_QUANTITY;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.cartAddItem;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
@@ -29,7 +29,6 @@ import com.example.baostore.adapters.BookImageAdapter;
 import com.example.baostore.models.BookImage;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.CartResponse;
-import com.example.baostore.testapi.RetrofitCallBack;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;

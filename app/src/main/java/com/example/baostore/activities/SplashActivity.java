@@ -1,10 +1,6 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
-import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
-import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.Constant.Constants.USER_STATE;
 import static com.example.baostore.testapi.RetrofitCallBack.getCheckSaveUserSplash;
 
 import android.content.Intent;
@@ -13,26 +9,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
-import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
 import com.example.baostore.testapi.AppHelper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
     private LinearLayout btnSplash;

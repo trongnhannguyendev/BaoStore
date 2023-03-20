@@ -1,7 +1,6 @@
 package com.example.baostore.responses;
 
 import com.example.baostore.models.Address;
-import com.example.baostore.models.Address;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

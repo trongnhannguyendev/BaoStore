@@ -1,14 +1,11 @@
 package com.example.baostore.activities;
 
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.baostore.R;
 

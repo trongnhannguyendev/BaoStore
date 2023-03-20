@@ -1,6 +1,11 @@
 package com.example.baostore.Api;
 
-import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.Constant.Constants.SHARED_PREF_NAME;
+import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
+import static com.example.baostore.Constant.Constants.USER_STATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;

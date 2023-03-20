@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.activities.BuyHistoryActivity;
-import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.UserInforActivity;

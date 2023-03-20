@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +14,6 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.BookImage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookImageAdapter extends RecyclerView.Adapter<BookImageAdapter.MyViewHolder> {

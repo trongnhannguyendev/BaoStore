@@ -1,15 +1,18 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_PASSWORD;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.utils.widget.MotionButton;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;

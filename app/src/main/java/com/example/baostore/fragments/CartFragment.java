@@ -2,6 +2,7 @@ package com.example.baostore.fragments;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
+import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +16,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +61,9 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CartInforActivity.class);
+
+                bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
+
                 if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
                     i.putExtras(bundle);
                 }

@@ -1,12 +1,13 @@
 package com.example.baostore.Api;
 
-import com.example.baostore.models.BookImage;
-import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
+import com.example.baostore.responses.AuthorResponse;
 import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.OrderResponse;
+import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
@@ -87,7 +88,12 @@ public interface ApiService {
     // Publisher
 
     @GET("get-all-publishers.php")
-    Call<Result> getPublishers();
+    Call<PublisherResponse> getPublishers();
+
+    // Author
+    @GET("get-all-authors.php")
+    Call<AuthorResponse> getAuthors();
+
 
     // Cart
     @POST("get-cart-by-user.php")
@@ -115,7 +121,10 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
-
+    @POST("insert-order.php")
+    Call<OrderResponse> addOrder(
+            @Body JsonObject jsonObject
+    );
 
 
 

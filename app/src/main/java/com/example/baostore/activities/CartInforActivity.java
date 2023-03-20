@@ -1,10 +1,9 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.utils.widget.MotionButton;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
@@ -99,21 +102,27 @@ public class CartInforActivity extends AppCompatActivity {
                 String email = edEmail.getText().toString().trim();
                 String phoneNumber = edPhoneNumber.getText().toString().trim();
                 String fullName = edFullName.getText().toString().trim();
+                String address = edAddress.getText().toString().trim();
 
                 if(checkError(email, phoneNumber, fullName)){
-                    saveReceiver(email, phoneNumber,fullName);
+                    saveReceiver(address, phoneNumber,fullName);
                 }
 
-                Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
-                startActivity(i);
+
+
             }
         });
 
     }
 
-    public void saveReceiver(String email, String phoneNumber, String fullName){
+    public void saveReceiver(String address, String phoneNumber, String fullName){
+        Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
+        bundle.putString(ADDRESS_LOCATION, address);
+        bundle.putString(USER_PHONE_NUMBER, phoneNumber);
+        bundle.putString(USER_FULL_NAME, fullName);
+        i.putExtras(bundle);
 
-
+        startActivity(i);
     }
 
      private boolean checkError(String email, String phoneNumber, String fullname) {

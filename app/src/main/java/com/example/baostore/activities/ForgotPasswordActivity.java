@@ -1,13 +1,12 @@
 package com.example.baostore.activities;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.baostore.R;
 import com.google.android.gms.tasks.OnCompleteListener;

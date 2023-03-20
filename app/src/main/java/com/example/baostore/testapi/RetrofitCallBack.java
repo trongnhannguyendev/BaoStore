@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 
 import android.content.Context;
@@ -27,16 +28,21 @@ import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
+import com.example.baostore.models.Author;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.BookImage;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.Category;
+import com.example.baostore.models.Publisher;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
+import com.example.baostore.responses.AuthorResponse;
 import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.OrderResponse;
+import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
@@ -397,4 +403,67 @@ public class RetrofitCallBack {
         };
         return callback;
     }
+
+    public static Callback<PublisherResponse> getPublisher(Context context, Bundle bundle, Fragment fragment) {
+        MainActivity activity = (MainActivity) context;
+        Callback<PublisherResponse> callback = new Callback<PublisherResponse>() {
+            @Override
+            public void onResponse(Call<PublisherResponse> call, Response<PublisherResponse> response) {
+                if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                    List<Publisher> list = response.body().getData();
+                    bundle.putSerializable(PUBLISHER_LIST, (Serializable) list);
+
+                    fragment.setArguments(bundle);
+                    activity.loadFragment(fragment);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PublisherResponse> call, Throwable t) {
+                Log.d("---", t.toString()+"");
+            }
+
+        };
+        return callback;
+    }
+
+    public static Callback<AuthorResponse> getAuthor(Context context, Bundle bundle, Fragment fragment){
+        MainActivity activity = (MainActivity) context;
+        Callback<AuthorResponse> callback = new Callback<AuthorResponse>() {
+            @Override
+            public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
+                    List<Author> list = response.body().getData();
+                    bundle.putSerializable(PUBLISHER_LIST, (Serializable) list);
+
+                    fragment.setArguments(bundle);
+                    activity.loadFragment(fragment);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthorResponse> call, Throwable t) {
+                Log.d("---", t.toString()+"");
+            }
+        };
+        return callback;
+    }
+
+    public static Callback<OrderResponse> addOrder(Context context){
+        Callback<OrderResponse> callback = new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
+                    Toast.makeText(context, "Order has been placed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                Log.d("---", t.toString()+"");
+            }
+        };
+        return  callback;
+    }
+
 }

@@ -1,6 +1,13 @@
 package com.example.baostore.adapters;
 
-import static com.example.baostore.Constant.Constants.*;
+import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
+import static com.example.baostore.Constant.Constants.BOOK_CATEGORY_ID;
+import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.BOOK_PRICE;
+import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
+import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
+import static com.example.baostore.Constant.Constants.BOOK_TITLE;
+import static com.example.baostore.Constant.Constants.BOOK_URL;
 import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;

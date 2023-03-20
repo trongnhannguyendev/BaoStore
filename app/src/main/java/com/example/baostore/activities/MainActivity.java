@@ -1,14 +1,18 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.AUTHOR_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH;
 import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
 import static com.example.baostore.testapi.RetrofitCallBack.cartGetAllByUserID;
 import static com.example.baostore.testapi.RetrofitCallBack.categoryGetAll;
+import static com.example.baostore.testapi.RetrofitCallBack.getAuthor;
+import static com.example.baostore.testapi.RetrofitCallBack.getPublisher;
 import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
 
 import android.os.Bundle;
@@ -35,9 +39,11 @@ import com.example.baostore.fragments.ProfileFragment;
 import com.example.baostore.fragments.SearchFragment;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
+import com.example.baostore.responses.AuthorResponse;
 import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.PublisherResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonObject;
 
@@ -93,16 +99,20 @@ public class MainActivity extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_ID, user.getUserid());
 
-
+        //TODO: Get publisher
         Call<BookResponse> bookResponseCall = service.getbook();
         Call<CategoryResponse> categoryResponseCall = service.getCategories();
         Call<AddressResponse> addressResponseCall = service.getAddressByUser(jsonObject);
         Call<CartResponse> cartResponseCall = service.getCartByUserID(jsonObject);
+        Call<PublisherResponse> publisherResponseCall = service.getPublishers();
+        Call<AuthorResponse> authorResponseCall = service.getAuthors();
 
         bookResponseCall.clone().enqueue(bookGetAll(this, bundle, fragment));
         categoryResponseCall.clone().enqueue(categoryGetAll(this, bundle, fragment));
         addressResponseCall.clone().enqueue(userAddressGetAll(this, bundle, fragment));
         //cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle,fragment));
+        publisherResponseCall.clone().enqueue(getPublisher(this, bundle, fragment));
+        authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
 
 
 
@@ -127,8 +137,19 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
-                    if(bundle == null || !bundle.containsKey(BOOK_LIST)){
-                        bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
+                    if(bundle == null ){
+                        if(!bundle.containsKey(BOOK_LIST)) {
+                            bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
+                        }
+                        if(!bundle.containsKey(CATEGORY_LIST)){
+                            categoryResponseCall.enqueue(categoryGetAll(this, bundle, fragment));
+                        }
+                        if(!bundle.containsKey(PUBLISHER_LIST)){
+                            publisherResponseCall.enqueue(getPublisher(this, bundle, fragment));
+                        }
+                        if(!bundle.containsKey(AUTHOR_LIST)){
+                            authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
+                        }
                     } else{
                         fragment.setArguments(bundle);
                         loadSearchFragment(fragment,0,null);
