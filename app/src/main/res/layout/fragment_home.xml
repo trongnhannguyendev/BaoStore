@@ -19,15 +19,18 @@
         android:paddingBottom="5dp">
 
         <EditText
+            android:id="@+id/edSearch_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:hint="Bạn muốn tìm gì ?"
             android:lines="1"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <ImageView
+            android:id="@+id/ibSearch_home"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_search"
@@ -40,7 +43,12 @@
         android:background="@color/white"
         android:elevation="5dp"
         android:layout_height="wrap_content">
-        <include layout="@layout/layout_category" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyCategory1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 
@@ -73,6 +81,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnSearchPopular"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
 
@@ -113,17 +122,10 @@
                     android:orientation="horizontal"
                     android:paddingRight="20dp">
 
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
-
-                    <include layout="@layout/item_layout_2" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyBook_Popular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
 
                 </LinearLayout>
@@ -135,6 +137,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/btnSearchNew"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -174,7 +177,14 @@
                     android:layout_width="match_parent"
                     android:elevation="5dp"
                     android:layout_height="wrap_content">
-                    <include layout="@layout/layout_category" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -185,19 +195,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
-
-                    <include layout="@layout/item_layout_1" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyBook_new"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
 
                 </LinearLayout>

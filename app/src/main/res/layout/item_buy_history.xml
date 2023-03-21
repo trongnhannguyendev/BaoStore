@@ -17,6 +17,7 @@
         >
 
         <TextView
+            android:id="@+id/tvToOrderDetail_buyhistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -38,7 +39,7 @@
                 android:background="#DADADA" />
 
             <TextView
-
+                android:id="@+id/tvBuyDate_buyhistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -72,6 +73,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvBookName_buyhistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đắc nhân tâm"
@@ -80,6 +82,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvBookPrice_buyhistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="70.000"
@@ -87,6 +90,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvBookQuantity_buyhistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="x1"
@@ -99,6 +103,7 @@
            android:layout_height="1dp"
            android:background="#DADADA"/>
         <TextView
+            android:id="@+id/tvTotalQuantity_buyhistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -122,6 +127,7 @@
                 android:textSize="16dp"
                 android:text="Thành tiền"/>
             <TextView
+                android:id="@+id/tvTotalPrice_buyhistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"

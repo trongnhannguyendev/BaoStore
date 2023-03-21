@@ -25,6 +25,7 @@
 
 
         <EditText
+            android:id="@+id/edFullname_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -37,10 +38,10 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edPhoneNumber_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-
             android:background="@drawable/custom_form_2"
             android:drawableStart="@drawable/ic_phone"
             android:drawablePadding="10dp"
@@ -48,7 +49,18 @@
             android:paddingLeft="8dp"
             android:textSize="20dp" />
 
+        <Spinner
+            android:id="@+id/spnAddress_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_form_2"
+            android:drawablePadding="10dp"
+            android:paddingLeft="8dp"
+            android:layout_marginBottom="20dp"/>
+
+
         <EditText
+            android:id="@+id/edAddress_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -64,6 +76,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edMail_info"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
@@ -86,6 +99,7 @@
         android:gravity="center">
 
         <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnConfirm_UserInfor"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_1"
