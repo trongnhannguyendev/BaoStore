@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         android:background="@color/white"
+        android:elevation="5dp"
         android:layout_height="wrap_content">
         <include layout="@layout/layout_category" />
     </LinearLayout>
@@ -171,12 +172,13 @@
                 <LinearLayout
                     android:id="@+id/layout_category_2"
                     android:layout_width="match_parent"
-                    android:background="@color/white"
+                    android:elevation="5dp"
                     android:layout_height="wrap_content">
                     <include layout="@layout/layout_category" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_prod_cate"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"

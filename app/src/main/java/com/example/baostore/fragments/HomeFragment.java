@@ -1,14 +1,15 @@
 package com.example.baostore.fragments;
 
 
-
-
+import android.animation.ObjectAnimator;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -38,34 +39,30 @@ public class HomeFragment extends Fragment {
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 int[] location = new int[2];
                 layout2.getLocationOnScreen(location);
-//                int[] layoutLocation = new int[2];
-//                layout2.getLocationOnScreen(layoutLocation);
-//
-//                int[] scrollViewLocation = new int[2];
-//                nestedScrollView.getLocationOnScreen(scrollViewLocation);
-//
-//                int distanceFromLayoutTopToScrollViewTop = layoutLocation[1] - scrollViewLocation[1];
+                int[] layoutLocation = new int[2];
+                layout2.getLocationOnScreen(layoutLocation);
+
+                int[] scrollViewLocation = new int[2];
+                nestedScrollView.getLocationOnScreen(scrollViewLocation);
+
+                int distanceFromLayoutTopToScrollViewTop = layoutLocation[1] - scrollViewLocation[1];
 
 
+                int y = location[1] - layout2.getHeight() - 93;
+                Log.i("TAG", "Y: " + y);
+                Log.i("TAG", "distanceFromLayoutTopToScrollViewTop: " + distanceFromLayoutTopToScrollViewTop);
+                Log.i("TAG", "Show + " + scrollY);
 
-                int y = location[1]-layout2.getHeight()-93;
-                Log.i("TAG",  "Y: "+y);
-                Log.i("TAG", "Show + "+scrollY);
-                if (y<=0){
+
+                if (y <= 0 && layout2.getVisibility() == View.VISIBLE) {
+                    layout2.setVisibility(View.INVISIBLE);
                     layout1.setVisibility(View.VISIBLE);
-
-
-                }
-                else {
+                } else if (y > 0 && layout1.getVisibility() == View.VISIBLE) {
                     layout1.setVisibility(View.GONE);
                     layout2.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-
-
-
 
 
         return view;
