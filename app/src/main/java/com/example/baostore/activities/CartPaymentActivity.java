@@ -2,11 +2,14 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
 import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
+import static com.example.baostore.Constant.Constants.ODER_NOTE;
 import static com.example.baostore.Constant.Constants.ORDER_ADDRESS;
 import static com.example.baostore.Constant.Constants.ORDER_CREATE_DATE;
+import static com.example.baostore.Constant.Constants.ORDER_PAYMENT;
 import static com.example.baostore.Constant.Constants.ORDER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.testapi.RetrofitCallBack.addOrder;
 
@@ -23,9 +26,11 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.Order;
+import com.example.baostore.models.User;
 import com.example.baostore.responses.OrderResponse;
 import com.google.gson.JsonObject;
 
@@ -80,13 +85,16 @@ public class CartPaymentActivity extends AppCompatActivity {
         //tvShipPrice.setText(null);
         tvTotalPrice.setText(new Utils().priceToString(totalPrice));
 
+        User user= SharedPrefManager.getInstance(this).getUser();
 
         btnConfirm.setOnClickListener(view ->{
             JsonObject object = new JsonObject();
             object.addProperty(ORDER_USER_NAME, fullName);
             object.addProperty(ORDER_PHONE_NUMBER, phoneNunber);
             object.addProperty(ORDER_ADDRESS, address);
-            object.addProperty(ORDER_CREATE_DATE, orderDate);
+            object.addProperty(ORDER_PAYMENT, 0);
+            object.addProperty(USER_ID, user.getUserid());
+
 
 
             Call<OrderResponse> call = service.addOrder(object);

@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // Thêm HomeFragment vào FrameLayout
 
         fragment = new HomeFragment();
-        ApiService service = new GetRetrofit().getRetrofit();
+        ApiService service = GetRetrofit.getInstance(this).getRetrofit();
 
         User user = SharedPrefManager.getInstance(this).getUser();
 

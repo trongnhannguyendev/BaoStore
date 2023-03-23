@@ -28,19 +28,16 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvRegister, tvForgotPass;
     MotionButton btnLogin;
     EditText edEmail, edPassword;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // khởi tạo DAO
-
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
-
 
         // Chuyển màn hình Register
         tvRegister = findViewById(R.id.tvRegister);
@@ -52,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Chuyển màn hình quên mật khẩu
         tvForgotPass = findViewById(R.id.tvForgotPass);
         tvForgotPass.setOnClickListener(view ->{
             Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
-
+        service = new GetRetrofit().getRetrofit();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     jsonObject.addProperty(USER_EMAIL, email);
                     jsonObject.addProperty(USER_PASSWORD, password);
 
-                    ApiService service = new GetRetrofit().getRetrofit();
+
                     Call<UserResponse> checkLogin = service.userLogin(jsonObject);
                     checkLogin.enqueue(getCheckLogin(LoginActivity.this));
 

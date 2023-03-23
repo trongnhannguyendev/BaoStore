@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
@@ -43,6 +44,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.tvTotalQuantity.setText("3");
         holder.tvBuyDate.setText(order.getCreatedate().toString());
 
+        holder.recyBooks_buyhistory.setLayoutManager(new LinearLayoutManager(context));
+
+
+
         // TODO: send order detail
 
         holder.tvToOrderHistory.setOnClickListener(view ->{
@@ -58,12 +63,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView tvBuyDate,tvToOrderHistory, tvTotalQuantity, tvTotalPrice;
+        public RecyclerView recyBooks_buyhistory;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvToOrderHistory = itemView.findViewById(R.id.tvToOrderDetail_buyhistory);
             tvBuyDate = itemView.findViewById(R.id.tvBuyDate_buyhistory);
             tvTotalQuantity = itemView.findViewById(R.id.tvTotalQuantity_buyhistory);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice_buyhistory);
+            recyBooks_buyhistory = itemView.findViewById(R.id.recyBooks_buyhistory);
         }
     }
 }
