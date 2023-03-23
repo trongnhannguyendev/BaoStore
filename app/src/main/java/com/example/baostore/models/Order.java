@@ -1,37 +1,38 @@
 package com.example.baostore.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Order {
-    private int orderID;
-    private int orderState;
+public class Order implements Serializable {
+    private int orderid;
+    private int state;
     private double orderTotal;
-    private Date createDate;
+    private String createdate;
     private String note;
     private String fullname;
-    private String phoneNumber;
+    private String phonenumber;
     private String address;
     private int payment;
-    private int userID;
+    private int userid;
 
-    public Order(){
+    public Order() {
 
     }
 
-    public int getOrderID() {
-        return orderID;
+    public int getOrderid() {
+        return orderid;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setOrderid(int orderid) {
+        this.orderid = orderid;
     }
 
-    public int getOrderState() {
-        return orderState;
+    public int getState() {
+        return state;
     }
 
-    public void setOrderState(int orderState) {
-        this.orderState = orderState;
+    public void setState(int state) {
+        this.state = state;
     }
 
     public double getOrderTotal() {
@@ -42,12 +43,12 @@ public class Order {
         this.orderTotal = orderTotal;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getCreatedate() {
+        return createdate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedate(String createdate) {
+        this.createdate = createdate;
     }
 
     public String getNote() {
@@ -66,12 +67,12 @@ public class Order {
         this.fullname = fullname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public String getAddress() {
@@ -90,11 +91,11 @@ public class Order {
         this.payment = payment;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 }

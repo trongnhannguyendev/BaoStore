@@ -1,16 +1,20 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Api.ApiUrl.BASE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
@@ -19,6 +23,11 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.responses.UserResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -27,11 +36,30 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edEmail, edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
     Utils utils;
+    ActionCodeSettings actionCodeSettings;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        edEmail = findViewById(R.id.edEmail_reg);
+        edPass = findViewById(R.id.edPassword_reg);
+        edRePass = findViewById(R.id.edRePassword_reg);
+        edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
+        edFullName = findViewById(R.id.edFullName_reg);
+        btnCancel = findViewById(R.id.btnCancel);
+        btnRegister = findViewById(R.id.btnRegister);
+
+         auth = FirebaseAuth.getInstance();
+
+         actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setHandleCodeInApp(true)
+                 //TODO: Add link from firebase
+                 .setUrl("MyLink")
+                .setAndroidPackageName("com.example.baostore",true,"18")
+                .build();
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -39,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         // Hủy
-        btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,12 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // Ánh xạ
-        btnRegister = findViewById(R.id.btnRegister);
-        edEmail = findViewById(R.id.edEmail_reg);
-        edPass = findViewById(R.id.edPassword_reg);
-        edRePass = findViewById(R.id.edRePassword_reg);
-        edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
-        edFullName = findViewById(R.id.edFullName_reg);
+
+
 
 
         // Đăng ký
@@ -68,7 +91,10 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Chạy đăng ký nếu không có lỗi
             if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
-                //register(email, pass, fullname, phoneNumber);
+
+                sendSigninLink(email);
+
+
                 JsonObject object = new JsonObject();
                 object.addProperty(USER_EMAIL,email);
                 object.addProperty(USER_PASSWORD,pass);
@@ -87,80 +113,35 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-/*
 
-    public void register(String email, String pass, String fullname, String phoneNumber) {
-        ApiService service = new GetRetrofit().getRetrofit();
+    public void verifySigninLink(String email){
+        Intent intent=getIntent();
+        String emailLink = intent.getData().toString();
 
-        JsonObject emailObject = new JsonObject();
-        emailObject.addProperty(USER_EMAIL, email);
-
-        Call<Result> checkEmailCall = service.checkUserEmailExist(emailObject);
-        checkEmailCall.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                boolean callError = response.body().getError();
-                int responseCode = response.body().getResponseCode();
-                String callMsg = response.body().getMessage();
-                String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
-                Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
-
-                // Hủy nếu email tồn tại
-                if (responseCode == 1) {
-                    Toast.makeText(RegisterActivity.this, "Email đã sử dụng!", Toast.LENGTH_SHORT).show();
-                    turnEditingOn();
-                    return;
+        if(auth.isSignInWithEmailLink(emailLink)){
+            auth.signInWithEmailLink(email, emailLink).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(RegisterActivity.this, "Dang nhap thanh cong", Toast.LENGTH_SHORT).show();
+                        //TODO: add register enqueue
+                    }
                 }
+            });
+        }
+    }
 
-                // Lưu người dùng nếu email không tồn tại
-                JsonObject userObject = new JsonObject();
-                userObject.addProperty(USER_EMAIL, email);
-                userObject.addProperty(USER_PASSWORD, pass);
-                userObject.addProperty(USER_FULL_NAME, fullname);
-                userObject.addProperty(USER_PHONE_NUMBER, phoneNumber);
+    public void sendSigninLink(String email){
 
-                // Gọi đăng ký
-                Call<Result> regCall = service.registerUser(userObject);
-
-                regCall.enqueue(new Callback<Result>() {
-                    @Override
-                    public void onResponse(Call<Result> call, Response<Result> response) {
-                        boolean callError = response.body().getError();
-                        int responseCode = response.body().getResponseCode();
-                        String callMsg = response.body().getMessage();
-                        String log = new Utils().logEnqueueMsg(callError, responseCode, callMsg);
-                        Log.d(getResources().getString(R.string.debug_RegisterActivity), log);
-
-
-                        if (responseCode == RESPONSE_OKAY) {
-                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                            finish();
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        } else {
-                            turnEditingOn();
-                            Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Result> call, Throwable t) {
-                        turnEditingOn();
-                        Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
-                        Toast.makeText(RegisterActivity.this, "Something wrong happen", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
+        auth.sendSignInLinkToEmail(email, actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                turnEditingOn();
-                Log.d(getResources().getString(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
-
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(RegisterActivity.this, "Email sent! check your email", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
-*/
 
     private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();

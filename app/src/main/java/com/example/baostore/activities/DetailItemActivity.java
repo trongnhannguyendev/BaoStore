@@ -5,7 +5,7 @@ import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
-import static com.example.baostore.Constant.Constants.CART_QUANTITY;
+import static com.example.baostore.Constant.Constants.CART_AMOUNT;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.cartAddItem;
 
@@ -101,7 +101,7 @@ public class DetailItemActivity extends AppCompatActivity {
         int id = user.getUserid();
         object.addProperty(USER_ID, id);
         object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
-        object.addProperty(CART_QUANTITY, 1);
+        object.addProperty(CART_AMOUNT, 1);
 
         ApiService service = new GetRetrofit().getRetrofit();
         Call<CartResponse> call = service.insertCart(object);

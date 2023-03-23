@@ -68,7 +68,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         Call<CartResponse> deleteCart = service.deleteCart(object);
 
 
-        int quantity = cart.getQuantity();
+        int quantity = cart.getAmount();
         String price = new Utils().priceToString(cart.getPrice());
         String totalPrice = new Utils().priceToString(quantity * cart.getPrice());
 

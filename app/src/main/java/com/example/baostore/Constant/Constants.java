@@ -48,7 +48,7 @@ public class Constants {
     public static final String CATEGORY_LIST = "categoryList";
 
     // Cart
-    public static final String CART_QUANTITY = "quantity";
+    public static final String CART_AMOUNT = "amount";
     public static final String CART_TOTAL_PRICE = "carttotalprice";
     public static final String CART_LIST = "cartList";
 
@@ -76,5 +76,6 @@ public class Constants {
     public static final String ODER_FULLNAME = "fullname";
     public static final String ORDER_PHONE_NUMBER = "phonenumb";
     public static final String ORDER_PAYMENT = "payment";
+    public static final String ORDER_LIST = "orderList";
 
 }

@@ -126,6 +126,14 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("get-all-order-by-user.php")
+    Call<OrderResponse> getAllOrderById(
+            @Body JsonObject jsonObject
+    );
 
+    @POST("insert-order-detail.php")
+    Call<OrderResponse> addOrderDetail(
+            @Body JsonObject jsonObject
+    );
 
 }

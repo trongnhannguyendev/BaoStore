@@ -1,6 +1,5 @@
 package com.example.baostore.fragments;
 
-import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
 
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -19,12 +19,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.adapters.CartAdapter;
 import com.example.baostore.models.Cart;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,8 @@ public class CartFragment extends Fragment {
 
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
+        ApiService service= new GetRetrofit().getRetrofit();
+
         // màu icon progress
         cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
         int color = getResources().getColor(R.color.ic_progress);
@@ -56,26 +61,32 @@ public class CartFragment extends Fragment {
         btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
         bundle = getArguments();
 
-
-        btnConfirmCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), CartInforActivity.class);
-
-                bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
-
-                if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
-                    i.putExtras(bundle);
-                }
-                startActivity(i);
-            }
-        });
-
         list = new ArrayList<>();
         recyCart = view.findViewById(R.id.recyCart_cart);
         recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
 
         getCart();
+
+        btnConfirmCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                Intent i = new Intent(getActivity(), CartInforActivity.class);
+
+
+                bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
+                bundle.putSerializable(CART_LIST, (Serializable) list);
+                Log.d("--CartFrag",totalCartPrice+"");
+
+                i.putExtras(bundle);
+                startActivity(i);
+                } catch (Exception e){
+                    Toast.makeText(getContext(), "No item found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
 
 
         return view;
@@ -92,7 +103,8 @@ public class CartFragment extends Fragment {
         if (bundle != null && bundle.containsKey(CART_LIST)) {
             list = (List<Cart>) bundle.getSerializable(CART_LIST);
             for (int i = 0; i < list.size(); i++) {
-                totalCartPrice += list.get(i).getPrice() * list.get(i).getQuantity();
+                totalCartPrice += list.get(i).getPrice() * list.get(i).getAmount();
+                Log.d("--", "getCart: " +totalCartPrice+"");
             }
             tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 

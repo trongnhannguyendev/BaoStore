@@ -41,7 +41,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         Order order = list.get(position);
         holder.tvTotalPrice.setText(order.getOrderTotal()+"");
         holder.tvTotalQuantity.setText("3");
-        holder.tvBuyDate.setText(order.getCreateDate().toString());
+        holder.tvBuyDate.setText(order.getCreatedate().toString());
 
         // TODO: send order detail
 

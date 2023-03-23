@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Cart implements Serializable {
     public int userid;
     public int bookid;
-    public int quantity;
+    public int amount;
     public String title;
     public double price;
     public String url;
@@ -30,12 +30,12 @@ public class Cart implements Serializable {
         this.bookid = bookid;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public String getTitle() {

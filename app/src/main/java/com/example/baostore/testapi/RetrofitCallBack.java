@@ -5,6 +5,7 @@ import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.ORDER_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 
@@ -15,17 +16,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.activities.UserInforActivity;
+import com.example.baostore.adapters.OrderHistoryAdapter;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Author;
@@ -33,6 +38,7 @@ import com.example.baostore.models.Book;
 import com.example.baostore.models.BookImage;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.Category;
+import com.example.baostore.models.Order;
 import com.example.baostore.models.Publisher;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
@@ -63,7 +69,6 @@ public class RetrofitCallBack {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 UserResponse userResponse = response.body();
-                Log.d("---Login", userResponse.toString());
 
                 if (userResponse.getResponseCode() == RESPONSE_OKAY) {
 
@@ -330,8 +335,13 @@ public class RetrofitCallBack {
                 if(responseCode == RESPONSE_OKAY){
                     Toast.makeText(context, "Item added", Toast.LENGTH_SHORT).show();
                     activity.finish();
+                }
+                else if(responseCode == 5){
+                    Toast.makeText(context, "Item already in cart!: "+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    activity.finish();
                 } else{
-                    Toast.makeText(context, "Item already in cart!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                    Log.d("---", response.body().getMessage());
                 }
             }
 
@@ -464,6 +474,28 @@ public class RetrofitCallBack {
             }
         };
         return  callback;
+    }
+
+    public static Callback<OrderResponse> getOrderByUserID(Context context, RecyclerView recy){
+        BuyHistoryActivity activity = (BuyHistoryActivity) context;
+        Callback<OrderResponse> callback = new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                if (response.body().getResponseCode() == 1) {
+                    List<Order> orderList = response.body().getData();
+                    OrderHistoryAdapter adapter = new OrderHistoryAdapter(orderList, context);
+                    Toast.makeText(activity, orderList.get(0).getPhonenumber()+"", Toast.LENGTH_SHORT).show();
+                    recy.setAdapter(adapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                Log.d("--", "onFailure: "+t.toString());
+            }
+        };
+        return callback;
     }
 
 }
