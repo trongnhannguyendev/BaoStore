@@ -21,8 +21,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.LoginActivity;
@@ -38,6 +41,7 @@ import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.OrderHistoryAdapter;
+import com.example.baostore.adapters.OrderItemAdapter;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Author;
@@ -46,6 +50,7 @@ import com.example.baostore.models.BookImage;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.Order;
+import com.example.baostore.models.OrderDetail;
 import com.example.baostore.models.Publisher;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
@@ -495,6 +500,7 @@ public class RetrofitCallBack {
         return callback;
     }
 
+    @NonNull
     public static Callback<OrderResponse> getOrderByUserID(Context context, RecyclerView recy){
         BuyHistoryActivity activity = (BuyHistoryActivity) context;
         Callback<OrderResponse> callback = new Callback<OrderResponse>() {
@@ -565,6 +571,34 @@ public class RetrofitCallBack {
             }
         };
         return  callback;
+    }
+
+    @NonNull
+    public static Callback<OrderDetailResponse> getOrderDetail(Context context, RecyclerView recy, TextView tvTotalPrice){
+        Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
+            @Override
+            public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
+                if (response.body().getResponseCode() == 1) {
+                    List<OrderDetail> orderDetailList = response.body().getData();
+                    Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
+                    OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
+                    Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
+                    recy.setAdapter(adapter);
+                    int totalAmount =0;
+                    for (int i = 0; i < orderDetailList.size(); i++) {
+                        totalAmount += orderDetailList.get(i).getTotal();
+                    }
+                    tvTotalPrice.setText(new Utils().priceToString( totalAmount));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
+                Log.d("--", "onFailure: "+t.toString());
+            }
+        };
+        return callback;
     }
 
     public static Callback<OrderDetailResponse> insertOrderDetail(Context context, JsonObject object){

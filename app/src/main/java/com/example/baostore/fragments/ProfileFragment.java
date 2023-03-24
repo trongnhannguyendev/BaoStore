@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment {
 
         btnChangePass.setOnClickListener(v ->{
             Intent i = new Intent(getActivity(), ChangePassActivity.class);
+            i.putExtras(bundle);
             startActivity(i);
         });
 

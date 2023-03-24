@@ -71,6 +71,7 @@ public class Constants {
     public static final String AUTHOR_LIST = "authorList";
 
     // Order
+    public static final String ORDER_ID = "orderid";
     public static final String ORDER_USER_NAME = "fullname";
     public static final String ORDER_ADDRESS = "address";
     public static final String ORDER_CREATE_DATE = "createdate";
@@ -79,5 +80,6 @@ public class Constants {
     public static final String ORDER_PHONE_NUMBER = "phonenumb";
     public static final String ORDER_PAYMENT = "payment";
     public static final String ORDER_LIST = "orderList";
+    public static final String ORDER_OBJECT = "orderObject";
 
 }

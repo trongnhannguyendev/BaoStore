@@ -238,9 +238,9 @@ public class SearchFragment extends Fragment {
 
             // TODO: add find string
             String find1 = "";
-                Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+                Log.d("--HomeFrag", list_book.get(0).getTitle());
                 searchCode = bundle.getInt(BOOK_SEARCH_CODE);
-                Log.d("------------------SearchFragment", "Search code: " + searchCode);
+                Log.d("--SearchFragment", "Search code: " + searchCode);
                 switch (searchCode) {
                     case 0:
                         adapter = new Book2Adapter(list_book, getContext());
