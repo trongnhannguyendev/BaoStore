@@ -1,6 +1,21 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.CART_LIST;
+import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
+import static com.example.baostore.Constant.Constants.ODER_NOTE;
+import static com.example.baostore.Constant.Constants.ORDER_ADDRESS;
+import static com.example.baostore.Constant.Constants.ORDER_PAYMENT;
+import static com.example.baostore.Constant.Constants.ORDER_PHONE_NUMBER;
+import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
+import static com.example.baostore.testapi.RetrofitCallBack.insertOrder;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,13 +25,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
+import com.example.baostore.Api.ApiService;
+import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
+import com.example.baostore.models.Book;
+import com.example.baostore.models.Cart;
+import com.example.baostore.models.User;
+import com.example.baostore.responses.OrderResponse;
+import com.google.gson.JsonObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
 
 public class CartPaymentActivity extends AppCompatActivity {
     private LinearLayout btn_hide_show, layout_hide_show;
     ImageView img_funcpayment_arrow;
     TextView tvTitleHeader, tvFullname, tvPhoneNumber, tvAddress,
-            tvOrderDate, tvNote, tvBookPrice, tvShipPrice, tvTotalPrice;
+            tvOrderDate, tvNote, tvShipPrice, tvTotalPrice;
     ImageView imgBack;
     MotionButton btnConfirm;
     private CardView cvIconProgress;
@@ -31,27 +62,52 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress_cpayment);
         tvOrderDate = findViewById(R.id.tvOrderDate_cpayment);
         tvNote = findViewById(R.id.tvNote_cpayment);
-        tvBookPrice = findViewById(R.id.tvBookPrice_itemcart);
         tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice_itemcart);
+        tvTotalPrice = findViewById(R.id.totalPrice_cpayment);
         btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
-        btnConfirm.setOnClickListener(view ->{
-            finish();
-        });
+        ApiService service = new GetRetrofit().getRetrofit();
 
-        // TODO get order detail
-        /*
-        Order order = new Order();
-        tvFullname.setText(order.getFullname());
-        tvPhoneNumber.setText(order.getPhoneNumber());
-        tvAddress.setText(order.getAddress());
-        tvOrderDate.setText(order.getCreateDate().toString());
-        tvNote.setText(order.getNote());
+
+        Bundle bundle = getIntent().getExtras();
+
+        double price = Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString());
+        String orderDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
+
+        String fullName =bundle.get(USER_FULL_NAME).toString();
+        String phoneNunber = bundle.get(USER_PHONE_NUMBER).toString();
+        String address = bundle.get(ADDRESS_LOCATION).toString();
+        double totalPrice =Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString());
+        Log.d("--", "onCreate: "+ totalPrice);
+
+        tvFullname.setText(fullName);
+        tvPhoneNumber.setText(phoneNunber);
+        tvAddress.setText(address);
+        tvOrderDate.setText(orderDate);
         //tvBookPrice.setText(null);
         //tvShipPrice.setText(null);
-        tvTotalPrice.setText(String.valueOf(order.getOrderTotal()));
-         */
+        tvTotalPrice.setText(new Utils().priceToString(totalPrice));
+
+        User user= SharedPrefManager.getInstance(this).getUser();
+        List<Cart> cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
+        List<Book> bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
+
+
+        btnConfirm.setOnClickListener(view ->{
+            JsonObject object = new JsonObject();
+            object.addProperty(ORDER_USER_NAME, fullName);
+            object.addProperty(USER_PHONE_NUMBER, phoneNunber);
+            object.addProperty(ORDER_ADDRESS, address);
+            object.addProperty(ORDER_PAYMENT, 0);
+            object.addProperty(ODER_NOTE, "None");
+            object.addProperty(USER_ID, user.getUserid());
+            Call<OrderResponse> call = service.addOrder(object);
+
+            call.enqueue(insertOrder(this, cartList,bookList, user.getUserid()));
+
+        });
+
+
 
 
 

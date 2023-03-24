@@ -1,11 +1,11 @@
 package com.example.baostore.responses;
 
-import com.example.baostore.models.Book;
+import com.example.baostore.models.Publisher;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class BookResponse {
+public class PublisherResponse {
     @SerializedName("respone_code")
     private int responseCode;
     @SerializedName("error")
@@ -13,12 +13,12 @@ public class BookResponse {
     @SerializedName("message")
     private String message;
     @SerializedName("data")
-    private List<Book> data;
+    private List<Publisher> data;
 
-    public BookResponse() {
+    public PublisherResponse() {
     }
 
-    public BookResponse(int responseCode, String error, String message, List<Book> data) {
+    public PublisherResponse(int responseCode, String error, String message, List<Publisher> data) {
         this.responseCode = responseCode;
         this.error = error;
         this.message = message;
@@ -49,13 +49,11 @@ public class BookResponse {
         this.message = message;
     }
 
-    public List<Book> getData() {
+    public List<Publisher> getData() {
         return data;
     }
 
-    public void setData(List<Book> data) {
+    public void setData(List<Publisher> data) {
         this.data = data;
     }
-
-
 }

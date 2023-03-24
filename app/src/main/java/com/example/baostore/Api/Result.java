@@ -4,10 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.baostore.models.User;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class Result {

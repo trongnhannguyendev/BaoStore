@@ -34,8 +34,10 @@ public class Constants {
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
     public static final String BOOK_LIST = "bookList";
+    public static final String BOOK_OBJECT = "bookObject";
     public static final String BOOK_IMAGE_LIST = "bookImageList";
     public static final String BOOK_SEARCH = "bookSeach";
+    public static final String BOOK_RELEASE_DATE = "releasedate";
 
     public static final String IMAGE_URL = "url";
 
@@ -48,7 +50,7 @@ public class Constants {
     public static final String CATEGORY_LIST = "categoryList";
 
     // Cart
-    public static final String CART_QUANTITY = "quantity";
+    public static final String CART_AMOUNT = "amount";
     public static final String CART_TOTAL_PRICE = "carttotalprice";
     public static final String CART_LIST = "cartList";
 
@@ -62,8 +64,20 @@ public class Constants {
     public static final String ADDRESS_DEFAULT = "isdefault";
     public static final String ADDRESS_LIST = "addressList";
 
+    //  Publisher
+    public static final String PUBLISHER_LIST = "publisherList";
 
+    // Author
+    public static final String AUTHOR_LIST = "authorList";
 
-
+    // Order
+    public static final String ORDER_USER_NAME = "fullname";
+    public static final String ORDER_ADDRESS = "address";
+    public static final String ORDER_CREATE_DATE = "createdate";
+    public static final String ODER_NOTE = "note";
+    public static final String ODER_FULLNAME = "fullname";
+    public static final String ORDER_PHONE_NUMBER = "phonenumb";
+    public static final String ORDER_PAYMENT = "payment";
+    public static final String ORDER_LIST = "orderList";
 
 }

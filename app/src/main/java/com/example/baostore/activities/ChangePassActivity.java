@@ -1,38 +1,27 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.ApiUrl;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.Result;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChangePassActivity extends AppCompatActivity {
     ImageView imgBack;

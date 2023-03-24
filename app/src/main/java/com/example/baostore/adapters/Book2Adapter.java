@@ -3,6 +3,7 @@ package com.example.baostore.adapters;
 import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
 import static com.example.baostore.Constant.Constants.BOOK_CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
@@ -37,12 +38,11 @@ import java.util.List;
 import retrofit2.Call;
 
 public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
-
-    private List<Book> list;
+    private List<Book> bookList;
     Context context;
 
-    public Book2Adapter(List<Book> list, Context context) {
-        this.list = list;
+    public Book2Adapter(List<Book> bookList, Context context) {
+        this.bookList = bookList;
         this.context = context;
     }
 
@@ -59,7 +59,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull Book2Adapter.MyViewHolder holder, int position) {
-        Book book = list.get(position);
+        Book book = bookList.get(position);
 
         Utils utils = new Utils();
         String price = utils.priceToString(book.getPrice());
@@ -90,15 +90,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID, book.getbookid());
-                bundle.putString(BOOK_TITLE, book.getTitle());
-                bundle.putDouble(BOOK_PRICE, book.getPrice());
-                bundle.putInt(BOOK_QUANTITY, book.getQuantity());
-                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryid());
-                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorid());
-                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
-                bundle.putString(BOOK_URL, book.getUrl());
-
+                bundle.putSerializable(BOOK_OBJECT, book);
 
 
                 JsonObject object = new JsonObject();
@@ -116,7 +108,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return bookList.size();
     }
 
 
