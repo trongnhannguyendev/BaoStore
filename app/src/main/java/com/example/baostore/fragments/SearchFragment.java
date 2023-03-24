@@ -27,10 +27,10 @@ import com.example.baostore.models.Publisher;
 
 import java.util.List;
 
-
+// TODO add list publisher, list author
 public class SearchFragment extends Fragment {
     SearchView svSearch_search;
-    // TODO add list publisher, list author
+
     List<Book> list_book;
     List<Book> searchList;
     List<Category> categoryList;

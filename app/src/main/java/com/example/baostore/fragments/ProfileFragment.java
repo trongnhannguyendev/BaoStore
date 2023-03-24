@@ -31,8 +31,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        tvFullname = view.findViewById(R.id.tvFullname_profile);
         // ánh xạ
+        tvFullname = view.findViewById(R.id.tvFullname_profile);
         btnUserInfor=view.findViewById(R.id.btnUserInfor);
         btnChangePass = view.findViewById(R.id.btnChangePass_profile);
         btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
@@ -41,7 +41,6 @@ public class ProfileFragment extends Fragment {
         tvFullname.setText(user.getFullname());
 
         bundle = getArguments();
-
 
         // xử lý thông tin cá nhân
         btnUserInfor.setOnClickListener(new View.OnClickListener() {
@@ -70,15 +69,12 @@ public class ProfileFragment extends Fragment {
 
         // Đăng xuất
         btnLogOut=view.findViewById(R.id.btnLogOut);
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-                SharedPrefManager.getInstance(getContext()).logout();
-                Intent i = new Intent(getActivity(), LoginActivity.class);
-                startActivity(i);
+        btnLogOut.setOnClickListener(v -> {
+            getActivity().finish();
+            SharedPrefManager.getInstance(getContext()).logout();
+            Intent i = new Intent(getActivity(), LoginActivity.class);
+            startActivity(i);
 
-            }
         });
 
         return view;

@@ -1,13 +1,21 @@
 package com.example.baostore.testapi;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
+import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_PRICE;
+import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
+import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
+import static com.example.baostore.Constant.Constants.BOOK_RELEASE_DATE;
+import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.CART_LIST;
+import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
-import static com.example.baostore.Constant.Constants.ORDER_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
+import static com.example.baostore.Constant.Constants.USER_ID;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +24,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.Api.ApiService;
@@ -47,6 +54,7 @@ import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.OrderDetailResponse;
 import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
@@ -127,8 +135,6 @@ public class RetrofitCallBack {
                         Toast.makeText(context, "Tài khoản đã bị vô hiệu hóa", Toast.LENGTH_SHORT).show();
                         i = new Intent(context, LoginActivity.class);
                     }
-
-
                 }
 
                 // Email không tồn tại
@@ -233,6 +239,31 @@ public class RetrofitCallBack {
         };
         return callback;
     }
+
+    public static Callback<BookResponse> updateBook(Context context, int actionCode){
+        Callback<BookResponse> callback = new Callback<BookResponse>() {
+            @Override
+            public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                if(response.body() !=null) {
+                    Log.d("--updateBook", "onResponse: " + response.body().getMessage());
+                }
+                if (actionCode == 1){
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BookResponse> call, Throwable t) {
+                Toast.makeText(context, "An error has occured", Toast.LENGTH_LONG).show();
+                Log.d("----------------------", t.toString());
+            }
+        };
+        return callback;
+    }
+
 
     public static Callback<CategoryResponse> categoryGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
@@ -392,16 +423,21 @@ public class RetrofitCallBack {
     }
 
 
-    public static Callback<CartResponse> cartDeleteItem(Context context){
+    public static Callback<CartResponse> cartDeleteItem(Context context, int actionCode){
         Callback<CartResponse> callback = new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 int responseCode = response.body().getResponseCode();
                 if (responseCode == RESPONSE_OKAY) {
-                    Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
-                    MainActivity activity = (MainActivity) context;
-                    Fragment fragment1 = new CartFragment();
-                    activity.loadFragment(fragment1);
+                    if(actionCode ==1) {
+                        Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
+                        MainActivity activity = (MainActivity) context;
+                        Fragment fragment1 = new CartFragment();
+                        activity.loadFragment(fragment1);
+                    }
+                    if(actionCode == 2){
+                        Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -459,23 +495,6 @@ public class RetrofitCallBack {
         return callback;
     }
 
-    public static Callback<OrderResponse> addOrder(Context context){
-        Callback<OrderResponse> callback = new Callback<OrderResponse>() {
-            @Override
-            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                if(response.body().getResponseCode() == RESPONSE_OKAY){
-                    Toast.makeText(context, "Order has been placed", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<OrderResponse> call, Throwable t) {
-                Log.d("---", t.toString()+"");
-            }
-        };
-        return  callback;
-    }
-
     public static Callback<OrderResponse> getOrderByUserID(Context context, RecyclerView recy){
         BuyHistoryActivity activity = (BuyHistoryActivity) context;
         Callback<OrderResponse> callback = new Callback<OrderResponse>() {
@@ -493,6 +512,79 @@ public class RetrofitCallBack {
             @Override
             public void onFailure(Call<OrderResponse> call, Throwable t) {
                 Log.d("--", "onFailure: "+t.toString());
+            }
+        };
+        return callback;
+    }
+
+    //TODO: test
+    public static Callback<OrderResponse> insertOrder(Context context, List<Cart> cartList, List<Book> bookList, int userid){
+        Callback<OrderResponse> callback = new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                Log.d("--Callback", "message: "+response.body().getMessage());
+                if(response.body().getResponseCode() == RESPONSE_OKAY){
+                    Toast.makeText(context, "Order has been placed", Toast.LENGTH_SHORT).show();
+
+                    for (int i = 0; i < cartList.size(); i++) {
+                        JsonObject object = new JsonObject();
+                        object.addProperty(USER_ID, userid);
+                        object.addProperty(BOOK_QUANTITY, cartList.get(i).getAmount());
+                        object.addProperty(BOOK_ID, cartList.get(i).getBookid());
+
+                        Call<OrderDetailResponse> call1 = service.addOrderDetail(object);
+                        call1.enqueue(insertOrderDetail(context, object));
+
+
+                        Book book = bookList.get(cartList.get(i).getBookid() -1);
+                        book.setQuantity(book.getQuantity() - cartList.get(i).getAmount());
+
+
+                        JsonObject object1 = new JsonObject();
+                        object1.addProperty(BOOK_QUANTITY, book.getQuantity());
+                        object1.addProperty(BOOK_ID, book.getbookid());
+
+                        Log.d("--Object", "Object: "+ object1);
+
+                        int actionCode = 0;
+                        if (i == cartList.size() -1){
+                            actionCode =1;
+                        }
+                        Call<BookResponse> call2 = service.updateBook(object1);
+                        call2.enqueue(updateBook(context, actionCode));
+
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                Log.d("---", t.toString()+"");
+            }
+        };
+        return  callback;
+    }
+
+    public static Callback<OrderDetailResponse> insertOrderDetail(Context context, JsonObject object){
+        Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
+            @Override
+            public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
+                OrderDetailResponse myRes = response.body();
+                if (myRes.getResponseCode() == RESPONSE_OKAY){
+                    Toast.makeText(context, "Insert order detail success", Toast.LENGTH_SHORT).show();
+                    Call<CartResponse> call1 = service.deleteCart(object);
+                    call1.enqueue(cartDeleteItem(context, 2));
+
+                }
+                Log.d("--Callback", "Response code: "+ myRes.getResponseCode()+"\n\nMessage: "+myRes.getMessage());
+            }
+
+            @Override
+            public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
+                Log.d("--Callback",t.toString());
+
             }
         };
         return callback;

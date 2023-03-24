@@ -1,5 +1,6 @@
 package com.example.baostore.fragments;
 
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
 
@@ -25,6 +26,7 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
 import com.example.baostore.adapters.CartAdapter;
+import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
 
 import java.io.Serializable;
@@ -35,12 +37,13 @@ import java.util.List;
 public class CartFragment extends Fragment {
     private CardView cvIconProgress;
     private MotionButton btnConfirmCart;
-    public List<Cart> list;
     public RecyclerView recyCart;
     public CartAdapter adapter;
     public TextView tvTotalPrice;
     public double totalCartPrice;
     public Bundle bundle;
+    public List<Cart> cartList;
+    public List<Book> bookList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,58 +64,50 @@ public class CartFragment extends Fragment {
         btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
         bundle = getArguments();
 
-        list = new ArrayList<>();
+        cartList = new ArrayList<>();
         recyCart = view.findViewById(R.id.recyCart_cart);
         recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
 
         getCart();
 
-        btnConfirmCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-                Intent i = new Intent(getActivity(), CartInforActivity.class);
+        btnConfirmCart.setOnClickListener(v -> {
+            try{
+            Intent i = new Intent(getActivity(), CartInforActivity.class);
+            bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
+            bundle.putSerializable(CART_LIST, (Serializable) cartList);
+            Log.d("--CartFrag",totalCartPrice+"");
 
-
-                bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
-                bundle.putSerializable(CART_LIST, (Serializable) list);
-                Log.d("--CartFrag",totalCartPrice+"");
-
-                i.putExtras(bundle);
-                startActivity(i);
-                } catch (Exception e){
-                    Toast.makeText(getContext(), "No item found", Toast.LENGTH_SHORT).show();
-                }
+            i.putExtras(bundle);
+            startActivity(i);
+            } catch (Exception e){
+                Toast.makeText(getContext(), "Giỏ hàng trống !!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
         return view;
     }
 
     public void updateTotalPrice(double updatePrice){
         totalCartPrice += updatePrice;
         tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
-
     }
 
     public void getCart() {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(CART_LIST)) {
-            list = (List<Cart>) bundle.getSerializable(CART_LIST);
-            for (int i = 0; i < list.size(); i++) {
-                totalCartPrice += list.get(i).getPrice() * list.get(i).getAmount();
+            cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
+            bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
+
+            for (int i = 0; i < cartList.size(); i++) {
+                totalCartPrice += cartList.get(i).getPrice() * cartList.get(i).getAmount();
                 Log.d("--", "getCart: " +totalCartPrice+"");
             }
             tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
-            adapter = new CartAdapter(list, getContext(), this);
+            adapter = new CartAdapter(cartList, bookList, getContext(), this);
 
             recyCart.setAdapter(adapter);
 
-            Log.d("---------------------------CartFrag", list.get(0).getTitle());
+            Log.d("---------------------------CartFrag", cartList.get(0).getTitle());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {

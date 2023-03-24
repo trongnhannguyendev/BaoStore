@@ -2,6 +2,7 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.BOOK_URL;
@@ -26,6 +27,7 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.adapters.BookImageAdapter;
+import com.example.baostore.models.Book;
 import com.example.baostore.models.BookImage;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.CartResponse;
@@ -37,14 +39,12 @@ import java.util.List;
 import retrofit2.Call;
 
 public class DetailItemActivity extends AppCompatActivity {
-
-    RecyclerView recyImages;
     TextView tvTitle, tvPrice, tvDescription;
     MotionButton btnAddToCart, btnToPayment;
-
-    List<BookImage> list = new ArrayList<>();
+    RecyclerView recyImages;
     BookImageAdapter adapter;
-
+    List<BookImage> list = new ArrayList<>();
+    Book book;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,18 +57,19 @@ public class DetailItemActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddtocart_detail);
         btnToPayment = findViewById(R.id.btnPay_detail);
 
-
-
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String title = bundle.get(BOOK_TITLE).toString();
-            double price = (double) bundle.get(BOOK_PRICE);
+            book = (Book) bundle.getSerializable(BOOK_OBJECT);
+            Log.d("--", book.getbookid()+"");
+
+
+
+            String title = book.getTitle();
+            double price = book.getPrice();
             // Book has no description
             String description;
-            String url = bundle.get(BOOK_URL).toString();
-            Log.d("--------------------------------", bundle.get(BOOK_TITLE).toString());
             tvTitle.setText(title);
+            Log.d("--", "book title: " + book.getTitle());
             tvPrice.setText(new Utils().priceToString(price));
 
             list = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);
@@ -80,39 +81,27 @@ public class DetailItemActivity extends AppCompatActivity {
             recyImages.setAdapter(adapter);
 
         }
-
-
         btnAddToCart.setOnClickListener(view -> {
             addCart(bundle);
         });
 
         btnToPayment.setOnClickListener(view -> {
             addCart(bundle);
-
-
         });
-
-
     }
 
     public void addCart(Bundle bundle) {
         JsonObject object = new JsonObject();
         User user = SharedPrefManager.getInstance(this).getUser();
         int id = user.getUserid();
+        int bookid = book.getbookid();
         object.addProperty(USER_ID, id);
-        object.addProperty(BOOK_ID, Integer.parseInt(bundle.get(BOOK_ID).toString()));
+        object.addProperty(BOOK_ID, bookid);
         object.addProperty(CART_AMOUNT, 1);
 
         ApiService service = new GetRetrofit().getRetrofit();
         Call<CartResponse> call = service.insertCart(object);
 
         call.enqueue(cartAddItem(this));
-
-        //RetrofitCallBack.cartAddItem1(this, object);
-
-
     }
-
-
-
 }

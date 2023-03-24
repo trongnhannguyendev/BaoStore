@@ -1,17 +1,18 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
 import static com.example.baostore.Constant.Constants.ODER_NOTE;
 import static com.example.baostore.Constant.Constants.ORDER_ADDRESS;
-import static com.example.baostore.Constant.Constants.ORDER_CREATE_DATE;
 import static com.example.baostore.Constant.Constants.ORDER_PAYMENT;
 import static com.example.baostore.Constant.Constants.ORDER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.testapi.RetrofitCallBack.addOrder;
+import static com.example.baostore.testapi.RetrofitCallBack.insertOrder;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -29,13 +30,15 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
-import com.example.baostore.models.Order;
+import com.example.baostore.models.Book;
+import com.example.baostore.models.Cart;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.OrderResponse;
 import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -86,22 +89,22 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvTotalPrice.setText(new Utils().priceToString(totalPrice));
 
         User user= SharedPrefManager.getInstance(this).getUser();
+        List<Cart> cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
+        List<Book> bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
+
 
         btnConfirm.setOnClickListener(view ->{
             JsonObject object = new JsonObject();
             object.addProperty(ORDER_USER_NAME, fullName);
-            object.addProperty(ORDER_PHONE_NUMBER, phoneNunber);
+            object.addProperty(USER_PHONE_NUMBER, phoneNunber);
             object.addProperty(ORDER_ADDRESS, address);
             object.addProperty(ORDER_PAYMENT, 0);
+            object.addProperty(ODER_NOTE, "None");
             object.addProperty(USER_ID, user.getUserid());
-
-
-
             Call<OrderResponse> call = service.addOrder(object);
 
-            call.enqueue(addOrder(this));
+            call.enqueue(insertOrder(this, cartList,bookList, user.getUserid()));
 
-            finish();
         });
 
 

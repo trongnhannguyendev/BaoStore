@@ -34,8 +34,10 @@ public class Constants {
     public static final String BOOK_PUBLISHER_ID = "publisherid";
     public static final String BOOK_URL = "url";
     public static final String BOOK_LIST = "bookList";
+    public static final String BOOK_OBJECT = "bookObject";
     public static final String BOOK_IMAGE_LIST = "bookImageList";
     public static final String BOOK_SEARCH = "bookSeach";
+    public static final String BOOK_RELEASE_DATE = "releasedate";
 
     public static final String IMAGE_URL = "url";
 

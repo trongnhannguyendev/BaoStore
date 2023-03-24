@@ -6,6 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GetRetrofit {
     public static GetRetrofit Instance;
+
+
     public static synchronized GetRetrofit getInstance(Context context){
         if(Instance == null){
             Instance = new GetRetrofit();

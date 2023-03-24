@@ -3,6 +3,8 @@ package com.example.baostore.adapters;
 import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
 import static com.example.baostore.Constant.Constants.BOOK_CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
+import static com.example.baostore.Constant.Constants.BOOK_LIST;
+import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
 import static com.example.baostore.Constant.Constants.BOOK_PRICE;
 import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
@@ -38,12 +40,11 @@ import java.util.List;
 import retrofit2.Call;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
-
-    private List<Book> list;
+    private List<Book> bookList;
     Context context;
 
-    public BookAdapter(List<Book> list, Context context) {
-        this.list = list;
+    public BookAdapter(List<Book> bookList, Context context) {
+        this.bookList = bookList;
         this.context = context;
     }
 
@@ -54,19 +55,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
         View v = inflater.inflate(R.layout.item_layout_2, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(v);
-        return viewHolder;
+        return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Book book = list.get(position);
+        Book book = bookList.get(position);
+        Utils utils = new Utils();
 
-        String price = new Utils().priceToString(book.getPrice());
 
+        double price = book.getPrice();
         holder.tvTitle.setText(book.getTitle());
-        holder.tvPrice.setText(price);
-        holder.tvSalePrice.setText(price);
+        holder.tvPrice.setText(utils.priceToString(price));
+        holder.tvSalePrice.setText(utils.priceToString(price));
         holder.ivBook.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Thread thread = new Thread(new Runnable() {
@@ -90,14 +91,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(BOOK_ID, book.getbookid());
-                bundle.putString(BOOK_TITLE, book.getTitle());
-                bundle.putDouble(BOOK_PRICE, book.getPrice());
-                bundle.putInt(BOOK_QUANTITY, book.getQuantity());
-                bundle.putInt(BOOK_CATEGORY_ID, book.getCategoryid());
-                bundle.putInt(BOOK_AUTHOR_ID, book.getAuthorid());
-                bundle.putInt(BOOK_PUBLISHER_ID, book.getPublisherid());
-                bundle.putString(BOOK_URL, book.getUrl());
+                bundle.putSerializable(BOOK_OBJECT, book);
 
                 Log.d("--BookAdapter", book.getbookid()+"");
 
@@ -108,17 +102,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
                 ApiService service =new GetRetrofit().getRetrofit();
                 Call<BookImageResponse> call = service.getImagesByBookID(object);
                 call.enqueue(BookImageGetAll(context,bundle,intent));
-
-
-
-
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return bookList.size();
     }
 
 

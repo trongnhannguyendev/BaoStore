@@ -6,6 +6,7 @@ import com.example.baostore.responses.BookImageResponse;
 import com.example.baostore.responses.BookResponse;
 import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
+import com.example.baostore.responses.OrderDetailResponse;
 import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
@@ -74,10 +75,17 @@ public interface ApiService {
     @GET("get-all-book.php")
     Call<BookResponse> getbook();
 
+    @POST("update-book-quantity.php")
+    Call<BookResponse> updateBook(
+            @Body JsonObject jsonObject
+    );
+
     @POST("get-image-by-bookid.php")
     Call<BookImageResponse> getImagesByBookID(
             @Body JsonObject jsonObject
     );
+
+
 
 
     // Category
@@ -132,7 +140,7 @@ public interface ApiService {
     );
 
     @POST("insert-order-detail.php")
-    Call<OrderResponse> addOrderDetail(
+    Call<OrderDetailResponse> addOrderDetail(
             @Body JsonObject jsonObject
     );
 
