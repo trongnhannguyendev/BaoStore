@@ -41,7 +41,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        // TODO: fix
         Utils utils = new Utils();
         OrderDetail orderDetail = list.get(position);
         holder.tvTotalPrice.setText(utils.priceToString(orderDetail.getPrice()));

@@ -82,4 +82,7 @@ public class Constants {
     public static final String ORDER_LIST = "orderList";
     public static final String ORDER_OBJECT = "orderObject";
 
+
+    public static final String VERIFICATION_CODE = "code";
+
 }

@@ -16,6 +16,7 @@ import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.Constant.Constants.VERIFICATION_CODE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
+import com.example.baostore.activities.EmailSentActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
@@ -63,6 +65,7 @@ import com.example.baostore.responses.OrderDetailResponse;
 import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
+import com.example.baostore.responses.VerificationCodeResponse;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -619,6 +622,25 @@ public class RetrofitCallBack {
             public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
                 Log.d("--Callback",t.toString());
 
+            }
+        };
+        return callback;
+    }
+
+    public static Callback<VerificationCodeResponse> getVerificationCode(Context context){
+        Callback<VerificationCodeResponse> callback = new Callback<VerificationCodeResponse>() {
+            @Override
+            public void onResponse(Call<VerificationCodeResponse> call, Response<VerificationCodeResponse> response) {
+                if (response.body().getResponseCode() == RESPONSE_OKAY){
+                    Intent intent = new Intent(context, EmailSentActivity.class);
+                    intent.putExtra(VERIFICATION_CODE, response.body().getData().getCode());
+                    context.startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerificationCodeResponse> call, Throwable t) {
+                Log.d("--", "onFailure: "+t.toString());
             }
         };
         return callback;

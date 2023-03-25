@@ -43,7 +43,6 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppHelper.pushNotification(SplashActivity.this,"Thông báo","Đăng nhập");
 
                 User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
                 Log.d("---sdrognp", user.getUserid() +" " + user.getFullname()+" " + user.getState());
