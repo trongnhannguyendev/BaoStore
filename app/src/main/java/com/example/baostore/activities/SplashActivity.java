@@ -26,11 +26,14 @@ import retrofit2.Call;
 public class SplashActivity extends AppCompatActivity {
     private LinearLayout btnSplash;
     Intent i;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        service = GetRetrofit.getInstance(this).getRetrofit();
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -43,28 +46,23 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
-                Log.d("---sdrognp", user.getUserid() +" " + user.getFullname()+" " + user.getState());
-
+                // Kiểm tra dữ liệu người dùng tồn tại
                 if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
                     finish();
-                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    i = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(i);
 
                 } else {
-                    ApiService service = new GetRetrofit().getRetrofit();
-
+                    User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
+                    Log.d(getString(R.string.debug_SplashActivity), user.getUserid() +" " + user.getFullname()+" " + user.getState());
                     JsonObject object = new JsonObject();
                     object.addProperty(USER_EMAIL, user.getEmail());
+                    // Kiểm tra xem email có tồn tại không (vì không lưu user password)
                     Call<UserResponse> call = service.checkUserEmailExist(object);
-
                     call.enqueue(getCheckSaveUserSplash(SplashActivity.this));
-
                 }
             }
         });
-
     }
 
 }

@@ -23,6 +23,8 @@ public class Constants {
     public static final String USER_FULL_NAME = "fullname";
     public static final String USER_PHONE_NUMBER = "phonenumber";
     public static final String USER_STATE = "state";
+    public static final String USER_OBJECT = "userObject";
+
 
     // Book
     public static final String BOOK_ID = "bookid";
@@ -85,4 +87,5 @@ public class Constants {
 
     public static final String VERIFICATION_CODE = "code";
 
+    public static final String ACTION_CODE = "code";
 }

@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activities.EmailSentActivity"
+            android:name=".activities.CodeVerifyActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ForgotPasswordActivity"

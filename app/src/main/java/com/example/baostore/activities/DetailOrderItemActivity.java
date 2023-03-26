@@ -57,7 +57,7 @@ public class DetailOrderItemActivity extends AppCompatActivity {
         JsonObject object = new JsonObject();
         object.addProperty(ORDER_ID,order.getOrderid());
 
-        ApiService service = GetRetrofit.Instance.getRetrofit();
+        ApiService service = GetRetrofit.getInstance(this).getRetrofit();
         Call<OrderDetailResponse> call = service.getOrderDetailById(object);
         call.enqueue(getOrderDetail(this, recyOrderDetail, tvTotalPrice));
     }

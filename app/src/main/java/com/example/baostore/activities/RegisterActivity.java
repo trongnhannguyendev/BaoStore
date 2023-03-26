@@ -1,11 +1,13 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Api.ApiUrl.BASE;
+import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_OBJECT;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
+import static com.example.baostore.testapi.RetrofitCallBack.getVerificationCode;
 
 import android.content.Intent;
 import android.os.Build;
@@ -22,13 +24,17 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
+import com.example.baostore.responses.VerificationCodeResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
+
+import java.io.Serializable;
 
 import retrofit2.Call;
 
@@ -37,8 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     MotionButton btnCancel, btnRegister;
     Utils utils;
     ActionCodeSettings actionCodeSettings;
-    FirebaseAuth auth;
-
+    ApiService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         btnRegister = findViewById(R.id.btnRegister);
 
-         auth = FirebaseAuth.getInstance();
-
-         actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setHandleCodeInApp(true)
-                 //TODO: Add link from firebase
-                 .setUrl("MyLink")
-                .setAndroidPackageName("com.example.baostore",true,"18")
-                .build();
+        service = GetRetrofit.getInstance(this).getRetrofit();
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -90,20 +88,23 @@ public class RegisterActivity extends AppCompatActivity {
             String fullname = edFullName.getText().toString().trim();
 
             // Chạy đăng ký nếu không có lỗi
-            if (checkError(email, pass, pass_re, phoneNumber, fullname)) {
+            if (!checkError(email, pass, pass_re, phoneNumber, fullname)) {
+                User user = new User();
+                user.setEmail(email);
+                user.setPassword(pass);
+                user.setPhonenumber(phoneNumber);
+                user.setFullname(fullname);
 
-                sendSigninLink(email);
-
-
+                // Lưu user vào bundle qua verify code
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(USER_OBJECT, (Serializable) user);
+                bundle.putInt(ACTION_CODE, 1);
+                Intent intent = new Intent(RegisterActivity.this, CodeVerifyActivity.class);
+                intent.putExtras(bundle);
                 JsonObject object = new JsonObject();
-                object.addProperty(USER_EMAIL,email);
-                object.addProperty(USER_PASSWORD,pass);
-                object.addProperty(USER_PHONE_NUMBER,phoneNumber);
-                object.addProperty(USER_FULL_NAME, fullname);
-
-                ApiService service = new GetRetrofit().getRetrofit();
-                Call<UserResponse> call = service.checkUserEmailExist(object);
-                call.enqueue(getUserRegister(RegisterActivity.this, object));
+                object.addProperty(USER_EMAIL, email);
+                Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
+                call.enqueue(getVerificationCode(RegisterActivity.this, intent));
 
 
             } else{
@@ -114,75 +115,46 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void verifySigninLink(String email){
-        Intent intent=getIntent();
-        String emailLink = intent.getData().toString();
-
-        if(auth.isSignInWithEmailLink(emailLink)){
-            auth.signInWithEmailLink(email, emailLink).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(RegisterActivity.this, "Dang nhap thanh cong", Toast.LENGTH_SHORT).show();
-                        //TODO: add register enqueue
-                    }
-                }
-            });
-        }
-    }
-
-    public void sendSigninLink(String email){
-
-        auth.sendSignInLinkToEmail(email, actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this, "Email sent! check your email", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();
 
-        boolean noError = true;
+        boolean hasError = false;
 
         if (pass.isEmpty()) {
-            edPass.setError(getResources().getString(R.string.no_pass));
-            noError = false;
+            edPass.setError(getResources().getString(R.string.err_pass_empty));
+            hasError = true;
         } else if (pass.length() <= 6) {
-            edPass.setError(getResources().getString(R.string.password_length));
-            noError = false;
+            edPass.setError(getResources().getString(R.string.err_password_length));
+            hasError = true;
         }
         if (!pass.equals(pass_re)) {
-            edRePass.setError(getResources().getString(R.string.pass_not_equal_repass));
-            noError = false;
+            edRePass.setError(getResources().getString(R.string.err_not_identical));
+            hasError = true;
         }
         if (phoneNumber.isEmpty()) {
-            edPhoneNumber.setError(getResources().getString(R.string.no_phonenumber));
-            noError = false;
+            edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_empty));
+            hasError = true;
         } else if (phoneNumber.length() != 10) {
-            edPhoneNumber.setError(getResources().getString(R.string.not_phone_number));
-            noError = false;
+            edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_format));
+            hasError = true;
         } else if (!utils.isNumeric(phoneNumber)) {
-            edPhoneNumber.setError(getResources().getString(R.string.wrong_number_format));
-            noError = false;
+            edPhoneNumber.setError(getResources().getString(R.string.err_num_format));
+            hasError = true;
         }
 
         if (email.isEmpty()) {
-            edEmail.setError(getResources().getString(R.string.no_email));
-            noError = false;
+            edEmail.setError(getResources().getString(R.string.err_email_empty));
+            hasError = true;
         } else if (!utils.checkEmailFormat(email)) {
-            edEmail.setError(getResources().getString(R.string.wrong_number_format));
-            noError = false;
+            edEmail.setError(getResources().getString(R.string.err_num_format));
+            hasError = true;
         }
 
         if (fullname.isEmpty()) {
-            edFullName.setError(getResources().getString(R.string.no_fullname));
-            noError = false;
+            edFullName.setError(getResources().getString(R.string.err_fullname_empty));
+            hasError = true;
         }
-        return noError;
+        return hasError;
     }
 
     public void turnEditingOff(){

@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(USER_ID, user.getUserid());
 
-        //TODO: Get publisher
         Call<BookResponse> bookResponseCall = service.getbook();
         Call<CategoryResponse> categoryResponseCall = service.getCategories();
         Call<AddressResponse> addressResponseCall = service.getAddressByUser(jsonObject);
