@@ -60,11 +60,11 @@ public class ChangePassActivity extends AppCompatActivity {
         String reNewPass = edReNewPass.getText().toString().trim();
 
         if (!newPass.equals(reNewPass)) {
-            Toast.makeText(this, getResources().getString(R.string.pass_not_equal_repass), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.err_not_identical), Toast.LENGTH_SHORT).show();
             return;
         }
         if (oldPass.isEmpty() || newPass.isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.no_pass) + "", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.err_pass_empty) + "", Toast.LENGTH_SHORT).show();
             return;
         }
 

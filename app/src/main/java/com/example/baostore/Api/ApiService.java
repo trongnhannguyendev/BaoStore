@@ -10,6 +10,7 @@ import com.example.baostore.responses.OrderDetailResponse;
 import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
+import com.example.baostore.responses.VerificationCodeResponse;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -139,8 +140,18 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("get-order-detail-of-order.php")
+    Call<OrderDetailResponse> getOrderDetailById(
+            @Body JsonObject jsonObject
+    );
+
     @POST("insert-order-detail.php")
     Call<OrderDetailResponse> addOrderDetail(
+            @Body JsonObject jsonObject
+    );
+
+    @POST("send-email-verification.php")
+    Call<VerificationCodeResponse> getEmailVerifyCode(
             @Body JsonObject jsonObject
     );
 

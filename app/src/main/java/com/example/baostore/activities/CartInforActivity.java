@@ -131,26 +131,26 @@ public class CartInforActivity extends AppCompatActivity {
         boolean noError = true;
 
         if (phoneNumber.isEmpty()) {
-            edPhoneNumber.setError(getResources().getString(R.string.no_phonenumber));
+            edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_empty));
             noError = false;
         } else if (phoneNumber.length() != 10) {
-            edPhoneNumber.setError(getResources().getString(R.string.not_phone_number));
+            edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_format));
             noError = false;
         } else if (!utils.isNumeric(phoneNumber)) {
-            edPhoneNumber.setError(getResources().getString(R.string.wrong_number_format));
+            edPhoneNumber.setError(getResources().getString(R.string.err_num_format));
             noError = false;
         }
 
         if (email.isEmpty()) {
-            edEmail.setError(getResources().getString(R.string.no_email));
+            edEmail.setError(getResources().getString(R.string.err_email_empty));
             noError = false;
         } else if (!utils.checkEmailFormat(email)) {
-            edEmail.setError(getResources().getString(R.string.wrong_number_format));
+            edEmail.setError(getResources().getString(R.string.err_num_format));
             noError = false;
         }
 
         if (fullname.isEmpty()) {
-            edFullName.setError(getResources().getString(R.string.no_fullname));
+            edFullName.setError(getResources().getString(R.string.err_fullname_empty));
             noError = false;
         }
         return noError;

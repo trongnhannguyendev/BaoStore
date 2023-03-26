@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     MotionButton btnLogin;
     EditText edEmail, edPassword;
     ApiService service;
-
+    boolean canExit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,44 +60,42 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
-        service = new GetRetrofit().getRetrofit();
+        service = GetRetrofit.getInstance(this).getRetrofit();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Tắt chỉnh sửa khi đang send query
                 turnEditingOff();
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
 
-                if(checkError(email, password)) {
-
+                if(!checkError(email, password)) {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty(USER_EMAIL, email);
                     jsonObject.addProperty(USER_PASSWORD, password);
-
 
                     Call<UserResponse> checkLogin = service.userLogin(jsonObject);
                     checkLogin.enqueue(getCheckLogin(LoginActivity.this));
 
                 } else{
                     turnEditingOn();
-
                 }
 
             }
         });
     }
 
-    // Kiểm tra dl nhập vào
+    // Kiểm tra dữ liệu nhập vào
     private boolean checkError(String email, String password){
-        boolean hasError = true;
+        boolean hasError = false;
         if(email.isEmpty()){
-            edEmail.setError(getResources().getString(R.string.no_email));
-            hasError = false;
+            edEmail.setError(getResources().getString(R.string.err_email_empty));
+            hasError = true;
         }
         if (password.isEmpty()){
-            edPassword.setError(getResources().getString(R.string.no_pass));
-            hasError = false;
+            edPassword.setError(getResources().getString(R.string.err_pass_empty));
+            hasError = true;
         }
         return hasError;
     }
@@ -117,8 +115,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Nhấn quay lại 2 lần để thoát app
-    boolean canExit = false;
-
     @Override
     public void onBackPressed() {
         if (canExit) {

@@ -20,14 +20,20 @@
             android:id="@+id/svSearch_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:paddingHorizontal="6dp"
+            android:layout_marginHorizontal="6dp"
             android:background="#FFFFFF"
             android:hint="Bạn muốn tìm gì ?"
             app:iconifiedByDefault="false"
             android:lines="1"
             android:maxLines="1" />
 
+        <Spinner
+            android:id="@+id/spnFind_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

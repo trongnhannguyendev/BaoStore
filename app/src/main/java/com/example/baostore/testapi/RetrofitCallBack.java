@@ -1,28 +1,25 @@
 package com.example.baostore.testapi;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
-import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
-import static com.example.baostore.Constant.Constants.BOOK_PRICE;
-import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
-import static com.example.baostore.Constant.Constants.BOOK_RELEASE_DATE;
-import static com.example.baostore.Constant.Constants.BOOK_TITLE;
 import static com.example.baostore.Constant.Constants.CART_LIST;
-import static com.example.baostore.Constant.Constants.CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
+import static com.example.baostore.Constant.Constants.VERIFICATION_CODE;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,14 +27,17 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
+import com.example.baostore.activities.CodeVerifyActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.OrderHistoryAdapter;
+import com.example.baostore.adapters.OrderItemAdapter;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.Author;
@@ -46,6 +46,7 @@ import com.example.baostore.models.BookImage;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.Order;
+import com.example.baostore.models.OrderDetail;
 import com.example.baostore.models.Publisher;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
@@ -58,6 +59,7 @@ import com.example.baostore.responses.OrderDetailResponse;
 import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
+import com.example.baostore.responses.VerificationCodeResponse;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -69,9 +71,10 @@ import retrofit2.Response;
 
 public class RetrofitCallBack {
     static ApiService service = new GetRetrofit().getRetrofit();
-    // User
 
+    // User
     public static Callback<UserResponse> getCheckLogin(Context context){
+        // Lấy activity hiện tại
         LoginActivity loginActivity = (LoginActivity) context;
         Callback<UserResponse> checkLoginCallBack = new Callback<UserResponse>() {
             @Override
@@ -79,7 +82,6 @@ public class RetrofitCallBack {
                 UserResponse userResponse = response.body();
 
                 if (userResponse.getResponseCode() == RESPONSE_OKAY) {
-
                     List<User> list = userResponse.getData();
                     // Lưu dữ liệu vào sharedPreference
                     SharedPrefManager.getInstance(context).userLogin(list.get(0));
@@ -89,7 +91,7 @@ public class RetrofitCallBack {
                     context.startActivity(new Intent(context, MainActivity.class));
                 } else {
                     // thông báo lỗi
-                    Toast.makeText(context, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.err_fail_login, Toast.LENGTH_SHORT).show();
                 }
                 loginActivity.turnEditingOn();
             }
@@ -101,6 +103,7 @@ public class RetrofitCallBack {
                 Toast.makeText(context, "Hãy thử lại sau", Toast.LENGTH_SHORT).show();
             }
         };
+        loginActivity.turnEditingOn();
         return checkLoginCallBack;
     }
 
@@ -109,38 +112,38 @@ public class RetrofitCallBack {
         Callback<UserResponse> callback = new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                UserResponse userResponse = response.body();
                 User user = SharedPrefManager.getInstance(context).getUser();
-                Intent i = new Intent(context, LoginActivity.class);
+                Intent i;
+                // Nếu email tồn tại trong server
+                if(userResponse.getResponseCode() == RESPONSE_OKAY) {
+                    User getUser = userResponse.getData().get(0);
 
-                // Kiểm tra email có tồn tại trong server
-                if(response.body().getResponseCode() == 1) {
-                    User user1 = response.body().getData().get(0);
-                    Log.d("---slkan", user1.getUserid() +" " + user1.getFullname()+" " + user1.getState());
+                    Log.d("---CheckSaveUserSplash",
+                            "User id: " + getUser.getUserid() +
+                                    "\nFull name: " + getUser.getFullname()+
+                                    "\nState: " + getUser.getState());
+
 
                     i = new Intent(context, MainActivity.class);
 
-                    int state = user1.getState();
-
-                    // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
-                    if(user.getUserid() != 0) {
-                        if (user.getFullname()  !=user1.getFullname() || user.getPhonenumber()!=user1.getPhonenumber()) {
-                            SharedPrefManager.getInstance(context).userLogin(user1);
-                        }
-                    }
-
+                    int state = getUser.getState();
                     // Kiểm tra tình trạng tài khoản
-
                     if (state != 1) {
                         SharedPrefManager.getInstance(context).logout();
-                        Toast.makeText(context, "Tài khoản đã bị vô hiệu hóa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.err_account_deactivate), Toast.LENGTH_SHORT).show();
                         i = new Intent(context, LoginActivity.class);
                     }
-                }
 
+                    // Kiểm tra dữ liệu không đồng nhất -> cập nhật SharedPref
+                    if (user.getFullname()  !=getUser.getFullname() || user.getPhonenumber()!=getUser.getPhonenumber()) {
+                        SharedPrefManager.getInstance(context).userLogin(getUser);
+                    }
+                }
                 // Email không tồn tại
                 else{
                     SharedPrefManager.getInstance(context).logout();
-                    Toast.makeText(context, "Email không tồn tại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.err_email_not_found), Toast.LENGTH_SHORT).show();
                     i = new Intent(context, LoginActivity.class);
                 }
                 activity.finish();
@@ -150,7 +153,7 @@ public class RetrofitCallBack {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 Toast.makeText(context, R.string.enqueue_failure, Toast.LENGTH_SHORT).show();
-                Log.d(String.valueOf(R.string.debug_SplashActivity), t.toString());
+                Log.d(context.getString(R.string.debug_SplashActivity), t.toString());
             }
         };
         return callback;
@@ -344,8 +347,6 @@ public class RetrofitCallBack {
                 }else{
                     Log.d(String.valueOf(R.string.debug_CartFragment), response.body().getMessage());
                 }
-
-
             }
 
             @Override
@@ -495,6 +496,7 @@ public class RetrofitCallBack {
         return callback;
     }
 
+    @NonNull
     public static Callback<OrderResponse> getOrderByUserID(Context context, RecyclerView recy){
         BuyHistoryActivity activity = (BuyHistoryActivity) context;
         Callback<OrderResponse> callback = new Callback<OrderResponse>() {
@@ -567,6 +569,34 @@ public class RetrofitCallBack {
         return  callback;
     }
 
+    @NonNull
+    public static Callback<OrderDetailResponse> getOrderDetail(Context context, RecyclerView recy, TextView tvTotalPrice){
+        Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
+            @Override
+            public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
+                if (response.body().getResponseCode() == 1) {
+                    List<OrderDetail> orderDetailList = response.body().getData();
+                    Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
+                    OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
+                    Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
+                    recy.setAdapter(adapter);
+                    int totalAmount =0;
+                    for (int i = 0; i < orderDetailList.size(); i++) {
+                        totalAmount += orderDetailList.get(i).getTotal();
+                    }
+                    tvTotalPrice.setText(new Utils().priceToString( totalAmount));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
+                Log.d("--", "onFailure: "+t.toString());
+            }
+        };
+        return callback;
+    }
+
     public static Callback<OrderDetailResponse> insertOrderDetail(Context context, JsonObject object){
         Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
             @Override
@@ -585,6 +615,24 @@ public class RetrofitCallBack {
             public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
                 Log.d("--Callback",t.toString());
 
+            }
+        };
+        return callback;
+    }
+
+    public static Callback<VerificationCodeResponse> getVerificationCode(Context context, Intent intent){
+        Callback<VerificationCodeResponse> callback = new Callback<VerificationCodeResponse>() {
+            @Override
+            public void onResponse(Call<VerificationCodeResponse> call, Response<VerificationCodeResponse> response) {
+                if (response.body().getResponseCode() == RESPONSE_OKAY){
+                    intent.putExtra(VERIFICATION_CODE, response.body().getData().getCode());
+                    context.startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerificationCodeResponse> call, Throwable t) {
+                Log.d("--", "onFailure: "+t.toString());
             }
         };
         return callback;

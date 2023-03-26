@@ -32,6 +32,7 @@ public class BuyHistoryActivity extends AppCompatActivity {
     MotionButton btnConfirm;
     List<Order> list = new ArrayList<>();
     RecyclerView recyBuyHistory;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +46,14 @@ public class BuyHistoryActivity extends AppCompatActivity {
         recyBuyHistory = findViewById(R.id.recyBuyHistory);
         recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
 
+        bundle = getIntent().getExtras();
+
+        loadData();
 
         btnConfirm = findViewById(R.id.btnConfirm_bh);
         btnConfirm.setOnClickListener(view ->{
             finish();
         });
-
-        loadData();
 
     }
 

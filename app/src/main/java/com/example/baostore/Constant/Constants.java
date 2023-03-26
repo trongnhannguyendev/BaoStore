@@ -23,6 +23,8 @@ public class Constants {
     public static final String USER_FULL_NAME = "fullname";
     public static final String USER_PHONE_NUMBER = "phonenumber";
     public static final String USER_STATE = "state";
+    public static final String USER_OBJECT = "userObject";
+
 
     // Book
     public static final String BOOK_ID = "bookid";
@@ -71,6 +73,7 @@ public class Constants {
     public static final String AUTHOR_LIST = "authorList";
 
     // Order
+    public static final String ORDER_ID = "orderid";
     public static final String ORDER_USER_NAME = "fullname";
     public static final String ORDER_ADDRESS = "address";
     public static final String ORDER_CREATE_DATE = "createdate";
@@ -79,5 +82,10 @@ public class Constants {
     public static final String ORDER_PHONE_NUMBER = "phonenumb";
     public static final String ORDER_PAYMENT = "payment";
     public static final String ORDER_LIST = "orderList";
+    public static final String ORDER_OBJECT = "orderObject";
 
+
+    public static final String VERIFICATION_CODE = "code";
+
+    public static final String ACTION_CODE = "code";
 }

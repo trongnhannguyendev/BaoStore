@@ -5,7 +5,7 @@ import android.content.Context;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GetRetrofit {
-    public static GetRetrofit Instance;
+    private static GetRetrofit Instance;
 
 
     public static synchronized GetRetrofit getInstance(Context context){
