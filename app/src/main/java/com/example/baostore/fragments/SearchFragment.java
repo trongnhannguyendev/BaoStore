@@ -29,6 +29,7 @@ import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.Publisher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO add list publisher, list author
@@ -55,9 +56,19 @@ public class SearchFragment extends Fragment {
         spnFind = v.findViewById(R.id.spnFind_search);
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        searchList = new ArrayList<>();
+
         bundle = getArguments();
-        if (bundle.containsKey(BOOK_SEARCH_CODE)) {
-            searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+        if (bundle!= null) {
+            if (bundle.containsKey(BOOK_SEARCH_CODE)) {
+                searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+            }
+            if (bundle.containsKey(BOOK_LIST)) {
+                list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
+            }
+            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
+            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
         }
 
         String[] findwhat = {"Title", "Category", "Author", "Publisher", "Price"};
@@ -78,16 +89,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
-            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
-            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
-        }
-
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new Book2Adapter(list_book, getContext());
         recyBook_search.setAdapter(adapter);
 
         filterV1("");
@@ -148,48 +150,19 @@ public class SearchFragment extends Fragment {
             case 5:
                 double price = Double.parseDouble(findWhat);
                 filterByPrice(price);
+            case 6:
+                String categoryFromHome = bundle.getString(BOOK_SEARCH);
+                filterByCategory(categoryFromHome);
+                break;
 
 
-
-        }
-    }
-
-    void filter(String find, int findCode, double maxPrice) {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
-            if(bundle.containsKey(CATEGORY_LIST)){
-                categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            }
-            switch (findCode) {
-                // No filter
-                case 0:
-                    adapter = new Book2Adapter(list_book, getContext());
-                    recyBook_search.setAdapter(adapter);
-                    break;
-                //Title
-                case 1:
-                    filterByTitle(find);
-                    break;
-                // Category
-                case 2:
-                    //filterByCategoryID(Integer.parseInt(find));
-                    break;
-                // Price
-                case 3:
-                    filterByPrice(Double.parseDouble(find));
-                    break;
-                // Price range
-                case 4:
-                    filterByPriceRange(Double.parseDouble(find), maxPrice);
-                    break;
-
-            }
         }
     }
 
     void filterByTitle(String find) {
-        searchList.clear();
+        if (searchList!= null) {
+            searchList.clear();
+        }
         Log.d("----------------------", find);
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
@@ -235,15 +208,18 @@ public class SearchFragment extends Fragment {
     }
 
     void filterByCategory(String categoryName){
-        searchList.clear();
+        if (searchList != null) {
+            searchList.clear();
+        }
         Log.d("----------------------", categoryName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
-            Category category = categoryList.get(book.getCategoryid());
+            Log.d("---", "categoryid: " + book.getCategoryid());
+            Category category = categoryList.get(book.getCategoryid()-1);
 
 
-            Log.d("---", "filterByCategoryName: " + categoryName);
-            Log.d("---", "filterByCategoryName: " + book.getCategoryid());
+            Log.d("---", "Find: " + categoryName);
+            Log.d("---", "filterByCategoryName: " + category.getCategoryname());
             if (category.getCategoryname() == categoryName) {
                 searchList.add(book);
             }
