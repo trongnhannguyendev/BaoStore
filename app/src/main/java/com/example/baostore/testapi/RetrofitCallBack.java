@@ -1,6 +1,7 @@
 package com.example.baostore.testapi;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.AUTHOR_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
@@ -481,7 +482,7 @@ public class RetrofitCallBack {
             public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
                 if(response.body().getResponseCode() == RESPONSE_OKAY){
                     List<Author> list = response.body().getData();
-                    bundle.putSerializable(PUBLISHER_LIST, (Serializable) list);
+                    bundle.putSerializable(AUTHOR_LIST, (Serializable) list);
 
                     fragment.setArguments(bundle);
                     activity.loadFragment(fragment);

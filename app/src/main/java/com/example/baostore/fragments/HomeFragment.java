@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
                 activity.loadSearchFragment(fragment, 0, null);
                 Log.d("---------HomeFrag", "0");
             } else {
-                activity.loadSearchFragment(fragment, 1, find);
+                activity.loadSearchFragment(fragment, 7, find);
                 Log.d("---------HomeFrag", "2");
                 Log.d("---------HomeFrag", "find");
             }
