@@ -39,14 +39,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnChangePass_forgotPass);
         service = GetRetrofit.getInstance(this).getRetrofit();
 
+        service= GetRetrofit.getInstance(this).getRetrofit();;
         // Change password
 
         btnConfirm.setOnClickListener(view -> {
             String email = edEmail.getText().toString().trim();
             String pass = edPass.getText().toString().trim();
             String rePass = edRePass.getText().toString().trim();
-
-
 
             if (!checkError(email, pass, rePass)) {
                 Intent intent =new Intent(ForgotPasswordActivity.this, CodeVerifyActivity.class);
@@ -59,12 +58,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 bundle.putInt(ACTION_CODE, 2);
                 intent.putExtras(bundle);
 
-                ApiService service = GetRetrofit.getInstance(this).getRetrofit();;
+
                 JsonObject object = new JsonObject();
                 object.addProperty(USER_EMAIL, email);
                 Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
                 call.enqueue(getVerificationCode(ForgotPasswordActivity.this, intent));
-
             }
         });
     }

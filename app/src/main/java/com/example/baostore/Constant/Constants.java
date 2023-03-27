@@ -87,5 +87,5 @@ public class Constants {
 
     public static final String VERIFICATION_CODE = "code";
 
-    public static final String ACTION_CODE = "code";
+    public static final String ACTION_CODE = "actionCode";
 }
