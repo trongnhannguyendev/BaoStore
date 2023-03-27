@@ -162,7 +162,7 @@ public class RetrofitCallBack {
     }
 
     public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
-        RegisterActivity activity = (RegisterActivity) context;
+        CodeVerifyActivity activity = (CodeVerifyActivity) context;
         Callback<UserResponse> callback = new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -176,15 +176,14 @@ public class RetrofitCallBack {
                             activity.finish();
                             context.startActivity(new Intent(context, LoginActivity.class));
                         } else {
-                            activity.turnEditingOn();
                             Toast.makeText(context, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                            Log.d("--", "onResponse: "+response.body().getMessage());
                         }
 
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable t) {
-                        activity.turnEditingOn();
                         Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
                         Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
                     }
@@ -233,6 +232,8 @@ public class RetrofitCallBack {
                 Log.d("--", "onResponse: "+response.body().getMessage());
                 if(responseCode == RESPONSE_OKAY){
                     Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                    activity.finish();
+                    context.startActivity(new Intent(context, LoginActivity.class));
                 }
             }
 

@@ -67,6 +67,9 @@ public class CodeVerifyActivity extends AppCompatActivity {
                     Toast.makeText(this, "Registering ...", Toast.LENGTH_SHORT).show();
                     JsonObject object = new JsonObject();
                     object.addProperty(USER_EMAIL, user.getEmail());
+                    object.addProperty(USER_PASSWORD, user.getPassword());
+                    object.addProperty(USER_FULL_NAME, user.getFullname());
+                    object.addProperty(USER_PHONE_NUMBER, user.getPhonenumber());
                     Call<UserResponse> call = service.checkUserEmailExist(object);
                     call.enqueue(getUserRegister(CodeVerifyActivity.this, object));
                 }
