@@ -33,24 +33,27 @@ public class BuyHistoryActivity extends AppCompatActivity {
     List<Order> list = new ArrayList<>();
     RecyclerView recyBuyHistory;
     Bundle bundle;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_buy_history);
 
         // header
         tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Lịch sử mua hàng");
         recyBuyHistory = findViewById(R.id.recyBuyHistory);
+        btnConfirm = findViewById(R.id.btnConfirm_bh);
+
         recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
 
+        service = GetRetrofit.getInstance().createRetrofit();
         bundle = getIntent().getExtras();
 
         loadData();
 
-        btnConfirm = findViewById(R.id.btnConfirm_bh);
+
         btnConfirm.setOnClickListener(view ->{
             finish();
         });
@@ -58,7 +61,7 @@ public class BuyHistoryActivity extends AppCompatActivity {
     }
 
     public void loadData(){
-        ApiService service = new GetRetrofit().getRetrofit();
+
         User user = SharedPrefManager.getInstance(this).getUser();
         JsonObject object = new JsonObject();
         object.addProperty(USER_ID, user.getUserid());

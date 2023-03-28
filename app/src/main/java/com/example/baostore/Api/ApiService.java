@@ -1,5 +1,6 @@
 package com.example.baostore.Api;
 
+import com.example.baostore.models.User;
 import com.example.baostore.responses.AddressResponse;
 import com.example.baostore.responses.AuthorResponse;
 import com.example.baostore.responses.BookImageResponse;
@@ -63,12 +64,12 @@ public interface ApiService {
     );
 
     @POST("active-user.php")
-    Call<Result> activeUser(
+    Call<UserResponse> activeUser(
             @Body JsonObject jsonObject
     );
 
     @POST("deactive-user.php")
-    Call<Result> deactiveUser(
+    Call<UserResponse> deactiveUser(
             @Body JsonObject jsonObject
     );
 

@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     ProgressBar progressBar;
     Bundle bundle;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         // Thêm HomeFragment vào FrameLayout
 
         fragment = new HomeFragment();
-        ApiService service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         User user = SharedPrefManager.getInstance(this).getUser();
 

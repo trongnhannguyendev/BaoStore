@@ -18,7 +18,6 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
-import com.example.baostore.testapi.AppHelper;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -33,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {

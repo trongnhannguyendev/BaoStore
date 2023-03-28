@@ -2,11 +2,7 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
-import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_OBJECT;
-import static com.example.baostore.Constant.Constants.USER_PASSWORD;
-import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
 import static com.example.baostore.testapi.RetrofitCallBack.getVerificationCode;
 
 import android.content.Intent;
@@ -14,9 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
 
@@ -25,13 +19,8 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
-import com.example.baostore.responses.UserResponse;
 import com.example.baostore.responses.VerificationCodeResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -57,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         btnRegister = findViewById(R.id.btnRegister);
 
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {

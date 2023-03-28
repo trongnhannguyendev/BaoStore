@@ -37,9 +37,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         edPass = findViewById(R.id.ednewPass_forgotPass);
         edRePass = findViewById(R.id.edReNewPass_forgotPass);
         btnConfirm = findViewById(R.id.btnChangePass_forgotPass);
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
-        service= GetRetrofit.getInstance(this).getRetrofit();;
         // Change password
 
         btnConfirm.setOnClickListener(view -> {

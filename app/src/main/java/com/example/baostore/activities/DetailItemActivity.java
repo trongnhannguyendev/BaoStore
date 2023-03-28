@@ -3,9 +3,6 @@ package com.example.baostore.activities;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_IMAGE_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
-import static com.example.baostore.Constant.Constants.BOOK_PRICE;
-import static com.example.baostore.Constant.Constants.BOOK_TITLE;
-import static com.example.baostore.Constant.Constants.BOOK_URL;
 import static com.example.baostore.Constant.Constants.CART_AMOUNT;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.testapi.RetrofitCallBack.cartAddItem;
@@ -45,6 +42,7 @@ public class DetailItemActivity extends AppCompatActivity {
     BookImageAdapter adapter;
     List<BookImage> list = new ArrayList<>();
     Book book;
+    ApiService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +54,8 @@ public class DetailItemActivity extends AppCompatActivity {
         recyImages = findViewById(R.id.recyImages_detailItem);
         btnAddToCart = findViewById(R.id.btnAddtocart_detail);
         btnToPayment = findViewById(R.id.btnPay_detail);
+
+        service = GetRetrofit.getInstance().createRetrofit();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -99,7 +99,7 @@ public class DetailItemActivity extends AppCompatActivity {
         object.addProperty(BOOK_ID, bookid);
         object.addProperty(CART_AMOUNT, 1);
 
-        ApiService service = new GetRetrofit().getRetrofit();
+
         Call<CartResponse> call = service.insertCart(object);
 
         call.enqueue(cartAddItem(this));

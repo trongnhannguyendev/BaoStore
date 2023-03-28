@@ -44,6 +44,7 @@ public class CartFragment extends Fragment {
     public Bundle bundle;
     public List<Cart> cartList;
     public List<Book> bookList;
+    ApiService service;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +54,7 @@ public class CartFragment extends Fragment {
 
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
-        ApiService service= new GetRetrofit().getRetrofit();
+        service= GetRetrofit.getInstance().createRetrofit();
 
         // màu icon progress
         cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);

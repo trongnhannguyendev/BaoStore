@@ -7,7 +7,6 @@ import static com.example.baostore.Constant.Constants.CART_TOTAL_PRICE;
 import static com.example.baostore.Constant.Constants.ODER_NOTE;
 import static com.example.baostore.Constant.Constants.ORDER_ADDRESS;
 import static com.example.baostore.Constant.Constants.ORDER_PAYMENT;
-import static com.example.baostore.Constant.Constants.ORDER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -51,6 +50,7 @@ public class CartPaymentActivity extends AppCompatActivity {
     ImageView imgBack;
     MotionButton btnConfirm;
     private CardView cvIconProgress;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +66,11 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvTotalPrice = findViewById(R.id.totalPrice_cpayment);
         btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
-        ApiService service = new GetRetrofit().getRetrofit();
-
+        service = GetRetrofit.getInstance().createRetrofit();
 
         Bundle bundle = getIntent().getExtras();
 
-        double price = Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString());
-        String orderDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
+        String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         String fullName =bundle.get(USER_FULL_NAME).toString();
         String phoneNunber = bundle.get(USER_PHONE_NUMBER).toString();
@@ -106,11 +104,6 @@ public class CartPaymentActivity extends AppCompatActivity {
             call.enqueue(insertOrder(this, cartList,bookList, user.getUserid()));
 
         });
-
-
-
-
-
 
         // màu icon progress
         cvIconProgress = findViewById(R.id.cvProgress_3);

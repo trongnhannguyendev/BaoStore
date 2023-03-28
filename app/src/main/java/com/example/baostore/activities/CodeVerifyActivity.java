@@ -8,7 +8,6 @@ import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.VERIFICATION_CODE;
 import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
-import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
 import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo2;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +42,7 @@ public class CodeVerifyActivity extends AppCompatActivity {
         edCode4 = findViewById(R.id.edCode4);
         btnVerify = findViewById(R.id.btnVerifyCode_verify);
 
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         int verificationCode =getIntent().getIntExtra(VERIFICATION_CODE,-11111);
         bundle = getIntent().getExtras();

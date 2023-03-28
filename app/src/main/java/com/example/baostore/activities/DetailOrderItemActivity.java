@@ -27,6 +27,7 @@ import retrofit2.Call;
 public class DetailOrderItemActivity extends AppCompatActivity {
     public TextView tvDate, tvTotalPrice, tvPaymentType, tvReceiverName, tvReceiverPhoneNumber,tvReceiverAddress;
     public RecyclerView recyOrderDetail;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class DetailOrderItemActivity extends AppCompatActivity {
 
         recyOrderDetail.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO: get order detail
+        service = GetRetrofit.getInstance().createRetrofit();
 
         Bundle bundle = getIntent().getExtras();
         Order order = (Order) bundle.getSerializable(ORDER_OBJECT);
@@ -57,7 +58,7 @@ public class DetailOrderItemActivity extends AppCompatActivity {
         JsonObject object = new JsonObject();
         object.addProperty(ORDER_ID,order.getOrderid());
 
-        ApiService service = GetRetrofit.getInstance(this).getRetrofit();
+
         Call<OrderDetailResponse> call = service.getOrderDetailById(object);
         call.enqueue(getOrderDetail(this, recyOrderDetail, tvTotalPrice));
     }

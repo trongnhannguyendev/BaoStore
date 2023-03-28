@@ -39,6 +39,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     private List<Book> bookList;
     Context context;
     CartFragment fragment;
+    ApiService service;
 
     public CartAdapter(List<Cart> list, List<Book> bookList, Context context, CartFragment fragment) {
         this.list = list;
@@ -64,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         Log.d("--", "Cart Bookid: "+ cart.getBookid());
         Log.d("--", "Bookid: : "+ book.getbookid());
 
-        ApiService service = new GetRetrofit().getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
         User user = SharedPrefManager.getInstance(context).getUser();
         JsonObject object = new JsonObject();
         object.addProperty(USER_ID, user.getUserid());

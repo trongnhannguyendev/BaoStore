@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     EditText edSearch;
     ImageView ivSearch;
     RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
-    BookAdapter adapter;
+    BookAdapter bookAdapter;
     Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
     MainActivity activity;
@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
         // Loại recycler view
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
+
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyCategory1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -77,12 +78,11 @@ public class HomeFragment extends Fragment {
         getBooks();
         getCategory();
 
-        adapter = new BookAdapter(list_book, getContext());
-        book2Adapter = new Book2Adapter(list_book, getContext());
+        bookAdapter = new BookAdapter(list_book, getContext());
         categoryAdapter = new CategoryAdapter(list_category, getContext());
 
-        recyBook_Popular.setAdapter(adapter);
-        recyBook_New.setAdapter(book2Adapter);
+        recyBook_Popular.setAdapter(bookAdapter);
+        recyBook_New.setAdapter(bookAdapter);
         recyCategory.setAdapter(categoryAdapter);
         recyCategory1.setAdapter(categoryAdapter);
 
@@ -151,10 +151,10 @@ public class HomeFragment extends Fragment {
         if (bundle != null && bundle.containsKey(BOOK_LIST)) {
             list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-            adapter = new BookAdapter(list_book, getContext());
+            bookAdapter = new BookAdapter(list_book, getContext());
             book2Adapter = new Book2Adapter(list_book, getContext());
 
-            recyBook_Popular.setAdapter(adapter);
+            recyBook_Popular.setAdapter(bookAdapter);
             recyBook_New.setAdapter(book2Adapter);
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());

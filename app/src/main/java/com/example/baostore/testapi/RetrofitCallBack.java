@@ -30,12 +30,10 @@ import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.BuyHistoryActivity;
-import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.CodeVerifyActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
-import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.OrderHistoryAdapter;
@@ -72,7 +70,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetrofitCallBack {
-    static ApiService service = new GetRetrofit().getRetrofit();
+    static ApiService service = GetRetrofit.getInstance().createRetrofit();
 
     // User
     public static Callback<UserResponse> getCheckLogin(Context context){
@@ -192,7 +190,7 @@ public class RetrofitCallBack {
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-
+                Log.d("--", "onFailure: "+t.toString());
             }
         };
 
@@ -201,7 +199,6 @@ public class RetrofitCallBack {
     }
 
     public static Callback<UserResponse> userUpdateInfo(Context context){
-        UserInforActivity activity = (UserInforActivity) context;
 
         Callback<UserResponse> update = new Callback<UserResponse>() {
             @Override

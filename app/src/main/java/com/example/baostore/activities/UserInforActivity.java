@@ -58,7 +58,7 @@ public class UserInforActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnConfirm_UserInfor);
         spnAddress = findViewById(R.id.spnAddress_info);
 
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){

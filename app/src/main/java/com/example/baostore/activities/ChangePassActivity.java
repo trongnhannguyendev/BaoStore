@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,7 +42,7 @@ public class ChangePassActivity extends AppCompatActivity {
         edReNewPass = findViewById(R.id.edReNewPass_cp);
         btnChangePass = findViewById(R.id.btnChangePass_cp);
 
-        service= GetRetrofit.getInstance(this).getRetrofit();
+        service= GetRetrofit.getInstance().createRetrofit();
         user= SharedPrefManager.getInstance(this).getUser();
 
         btnChangePass.setOnClickListener(view -> {

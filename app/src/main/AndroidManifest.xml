@@ -47,9 +47,6 @@
             android:name=".activities.CartPaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.OrderDetails"
-            android:exported="false" />
-        <activity
             android:name=".activities.BuyHistoryActivity"
             android:exported="false" />
         <activity

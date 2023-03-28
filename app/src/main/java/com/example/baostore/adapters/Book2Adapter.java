@@ -1,14 +1,7 @@
 package com.example.baostore.adapters;
 
-import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
-import static com.example.baostore.Constant.Constants.BOOK_CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
-import static com.example.baostore.Constant.Constants.BOOK_PRICE;
-import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
-import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
-import static com.example.baostore.Constant.Constants.BOOK_TITLE;
-import static com.example.baostore.Constant.Constants.BOOK_URL;
 import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
@@ -40,6 +33,7 @@ import retrofit2.Call;
 public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder> {
     private List<Book> bookList;
     Context context;
+    ApiService service;
 
     public Book2Adapter(List<Book> bookList, Context context) {
         this.bookList = bookList;
@@ -97,7 +91,7 @@ public class Book2Adapter extends RecyclerView.Adapter<Book2Adapter.MyViewHolder
                 object.addProperty(BOOK_ID, book.getbookid());
                 intent.putExtras(bundle);
 
-                ApiService service =new GetRetrofit().getRetrofit();
+                service =GetRetrofit.getInstance().createRetrofit();
                 Call<BookImageResponse> call = service.getImagesByBookID(object);
                 call.enqueue(BookImageGetAll(context,bundle,intent));
 
