@@ -1,6 +1,8 @@
 package com.example.baostore.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int userid;
     private String email;
     private String password;

@@ -28,7 +28,8 @@ public class ChangePassActivity extends AppCompatActivity {
     TextView tvTitleHeader;
     EditText edOldPass, edNewPass, edReNewPass;
     Button btnChangePass;
-
+    ApiService service;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,44 +43,45 @@ public class ChangePassActivity extends AppCompatActivity {
         edReNewPass = findViewById(R.id.edReNewPass_cp);
         btnChangePass = findViewById(R.id.btnChangePass_cp);
 
+        service= GetRetrofit.getInstance(this).getRetrofit();
+        user= SharedPrefManager.getInstance(this).getUser();
+
         btnChangePass.setOnClickListener(view -> {
+            String oldPass = edOldPass.getText().toString().trim();
+            String newPass = edNewPass.getText().toString().trim();
+            String reNewPass = edReNewPass.getText().toString().trim();
 
-            changePass();
+            if(!checkError(oldPass,newPass,reNewPass)){
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty(USER_EMAIL, user.getEmail());
+            jsonObject.addProperty(USER_PASSWORD, newPass);
 
+            Call<UserResponse> call = service.updatePassword(jsonObject);
 
+            call.enqueue(userUpdateInfo(this));
+            }
         });
 
     }
 
 
-    private void changePass() {
+    private boolean checkError(String oldPass, String newPass, String reNewPass) {
         boolean hasError = false;
-
-        String oldPass = edOldPass.getText().toString().trim();
-        String newPass = edNewPass.getText().toString().trim();
-        String reNewPass = edReNewPass.getText().toString().trim();
-
-        if (!newPass.equals(reNewPass)) {
-            Toast.makeText(this, getResources().getString(R.string.err_not_identical), Toast.LENGTH_SHORT).show();
-            return;
+        if(oldPass.isEmpty()){
+            edOldPass.setError(getResources().getString(R.string.err_pass_empty));
+            hasError = true;
         }
-        if (oldPass.isEmpty() || newPass.isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.err_pass_empty) + "", Toast.LENGTH_SHORT).show();
-            return;
+        if (newPass.isEmpty()){
+            edNewPass.setError(getResources().getString(R.string.err_pass_empty));
+            hasError = true;
+        }else if(newPass.length()<6){
+            edNewPass.setError(getResources().getString(R.string.err_password_length));
+            hasError = true;
+        } else if (!newPass.equals(reNewPass)) {
+            edReNewPass.setError(getResources().getString(R.string.err_not_identical));
+            hasError = true;
         }
-
-        ApiService service = new GetRetrofit().getRetrofit();
-
-        User user = SharedPrefManager.getInstance(this).getUser();
-
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_EMAIL, user.getEmail());
-        jsonObject.addProperty(USER_PASSWORD, oldPass);
-
-        Call<UserResponse> call = service.updatePassword(jsonObject);
-
-        call.enqueue(userUpdateInfo(this));
+        return hasError;
 
     }
 

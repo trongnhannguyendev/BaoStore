@@ -44,6 +44,7 @@ public class UserInforActivity extends AppCompatActivity {
     Address address;
     User user;
     Bundle bundle;
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class UserInforActivity extends AppCompatActivity {
         edEmail = findViewById(R.id.edMail_info);
         btnConfirm = findViewById(R.id.btnConfirm_UserInfor);
         spnAddress = findViewById(R.id.spnAddress_info);
+
+        service = GetRetrofit.getInstance(this).getRetrofit();
 
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
@@ -102,14 +105,24 @@ public class UserInforActivity extends AppCompatActivity {
             String address = edAddress.getText().toString().trim();
             String email = edEmail.getText().toString().trim();
 
-            if(fullName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || email.isEmpty()){
+            if(fullName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()){
                 Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
             } else{
                 if(!fullName.equals(user.getFullname())){
-                    updateFullName(fullName);
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, user.getEmail());
+                    object.addProperty(USER_FULL_NAME, fullName);
+                    Call<UserResponse> call = service.updateFullname(object);
+
+                    call.enqueue(userUpdateInfo(this));
                 }
                 if(!phoneNumber.equals(user.getPhonenumber())  && phoneNumber.length() == 10){
-                    updatePhoneNumber(phoneNumber);
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, user.getEmail());
+                    object.addProperty(USER_PHONE_NUMBER, phoneNumber);
+                    Call<UserResponse> call = service.updatePhoneNumber(object);
+
+                    call.enqueue(userUpdateInfo(this));
                 }
                 // TODO add update address list
 
@@ -124,33 +137,12 @@ public class UserInforActivity extends AppCompatActivity {
         JsonObject object = new JsonObject();
         object.addProperty(USER_EMAIL, newEmail);
 
-        ApiService service = new GetRetrofit().getRetrofit();
         Call<UserResponse> call = service.updateEmail(object);
 
         call.enqueue(userUpdateInfo(this));
 
     }
 
-    public void updatePhoneNumber(String newPhoneNumber){
-        JsonObject object = new JsonObject();
-        object.addProperty(USER_PHONE_NUMBER, newPhoneNumber);
 
-        ApiService service = new GetRetrofit().getRetrofit();
-        Call<UserResponse> call = service.updatePhoneNumber(object);
-
-        call.enqueue(userUpdateInfo(this));
-
-    }
-
-    public void updateFullName(String newFullName){
-        JsonObject object = new JsonObject();
-        object.addProperty(USER_FULL_NAME, newFullName);
-
-        ApiService service = new GetRetrofit().getRetrofit();
-        Call<UserResponse> call = service.updateFullname(object);
-
-        call.enqueue(userUpdateInfo(this));
-
-    }
 
 }

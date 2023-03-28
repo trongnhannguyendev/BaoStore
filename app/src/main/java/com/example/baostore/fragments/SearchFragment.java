@@ -29,6 +29,7 @@ import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.Publisher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO add list publisher, list author
@@ -55,12 +56,22 @@ public class SearchFragment extends Fragment {
         spnFind = v.findViewById(R.id.spnFind_search);
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        searchList = new ArrayList<>();
+
         bundle = getArguments();
-        if (bundle.containsKey(BOOK_SEARCH_CODE)) {
-            searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+        if (bundle!= null) {
+            if (bundle.containsKey(BOOK_SEARCH_CODE)) {
+                searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+            }
+            if (bundle.containsKey(BOOK_LIST)) {
+                list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
+            }
+            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
+            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
         }
 
-        String[] findwhat = {"Title", "Category", "Author", "Publisher", "Price"};
+        String[] findwhat = {"Title", "Category", "Author", "Publisher"};
         ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, findwhat);
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -69,8 +80,7 @@ public class SearchFragment extends Fragment {
         spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(), "Position: "+i, Toast.LENGTH_SHORT).show();
-                searchCode = i;
+                searchCode = i+1;
             }
 
             @Override
@@ -78,16 +88,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
-            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
-            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
-        }
-
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new Book2Adapter(list_book, getContext());
         recyBook_search.setAdapter(adapter);
 
         filterV1("");
@@ -102,6 +103,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (searchCode ==0){
+                    searchCode =1;
+                }
                 filterV1(newText);
                 return false;
             }
@@ -122,12 +126,7 @@ public class SearchFragment extends Fragment {
                 break;
                 // Title
             case 1:
-                String title ="";
-                if(bundle.containsKey(BOOK_SEARCH)) {
-                    title = bundle.getString(BOOK_SEARCH);
-                } else{
-                    title = findWhat;
-                }
+                String title =findWhat;
                 filterByTitle(title);
                 break;
                 //Category
@@ -148,48 +147,22 @@ public class SearchFragment extends Fragment {
             case 5:
                 double price = Double.parseDouble(findWhat);
                 filterByPrice(price);
+            case 6:
+                String categoryFromHome = bundle.getString(BOOK_SEARCH);
+                filterByCategory(categoryFromHome);
+                break;
+            case 7:
+                String titleFromHome =bundle.getString(BOOK_SEARCH);
+                filterByTitle(titleFromHome);
+                break;
 
-
-
-        }
-    }
-
-    void filter(String find, int findCode, double maxPrice) {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
-            if(bundle.containsKey(CATEGORY_LIST)){
-                categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            }
-            switch (findCode) {
-                // No filter
-                case 0:
-                    adapter = new Book2Adapter(list_book, getContext());
-                    recyBook_search.setAdapter(adapter);
-                    break;
-                //Title
-                case 1:
-                    filterByTitle(find);
-                    break;
-                // Category
-                case 2:
-                    //filterByCategoryID(Integer.parseInt(find));
-                    break;
-                // Price
-                case 3:
-                    filterByPrice(Double.parseDouble(find));
-                    break;
-                // Price range
-                case 4:
-                    filterByPriceRange(Double.parseDouble(find), maxPrice);
-                    break;
-
-            }
         }
     }
 
     void filterByTitle(String find) {
-        searchList.clear();
+        if (searchList!= null) {
+            searchList.clear();
+        }
         Log.d("----------------------", find);
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
@@ -235,16 +208,20 @@ public class SearchFragment extends Fragment {
     }
 
     void filterByCategory(String categoryName){
-        searchList.clear();
+        if (searchList != null) {
+            searchList.clear();
+        }
         Log.d("----------------------", categoryName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
-            Category category = categoryList.get(book.getCategoryid());
+            Log.d("---", "categoryid: " + book.getCategoryid());
+            Category category = categoryList.get(book.getCategoryid()-1);
 
 
-            Log.d("---", "filterByCategoryName: " + categoryName);
-            Log.d("---", "filterByCategoryName: " + book.getCategoryid());
-            if (category.getCategoryname() == categoryName) {
+            Log.d("---", "Find: " + categoryName);
+            Log.d("---", "filterByCategoryName: " + category.getCategoryname());
+            if (category.getCategoryname().toLowerCase().contains(categoryName.toLowerCase())) {
+                Log.d("--", "--found: "+category.getCategoryname().toLowerCase());
                 searchList.add(book);
             }
         }
@@ -260,9 +237,9 @@ public class SearchFragment extends Fragment {
             Publisher publisher = publisherList.get(i);
             Book book = list_book.get(i);
             publisher = publisherList.get(book.getPublisherid());
-            Log.d("---", "filterByPublisherName: " + publisherName);
+            Log.d("---", "find: " + publisherName);
             Log.d("---", "filterByPublisherName: " + publisher.getPublishername());
-            if (publisher.getPublishername() == publisherName) {
+            if (publisher.getPublishername().toLowerCase().contains(publisherName.toLowerCase())) {
                 searchList.add(book);
             }
         }
@@ -271,14 +248,13 @@ public class SearchFragment extends Fragment {
     }
     void filterByAuthor(String authorName){
         searchList.clear();
-
         Log.d("----------------------", authorName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
-            Author author = authorList.get(book.getbookid());
-            Log.d("---", "filterByAuthorName: " + authorName);
-            Log.d("---", "filterByAuthorName: " + author.getAuthorname());
-            if (author.getAuthorname() == authorName) {
+            Author author = authorList.get(book.getbookid()-1);
+            Log.d("---", "author name: " + authorName);
+            Log.d("---", "filter: " + author.getAuthorname());
+            if (author.getAuthorname().toLowerCase().contains(authorName.toLowerCase())) {
                 searchList.add(book);
             }
         }
