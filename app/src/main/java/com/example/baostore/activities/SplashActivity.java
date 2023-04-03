@@ -1,13 +1,16 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
-import static com.example.baostore.testapi.RetrofitCallBack.getCheckSaveUserSplash;
+import static com.example.baostore.Api.RetrofitCallBack.getCheckSaveUserSplash;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
@@ -27,6 +31,10 @@ public class SplashActivity extends AppCompatActivity {
     Intent i;
     ApiService service;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyLocale.onCreate(newBase,MyLocale.getLanguage(newBase)));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

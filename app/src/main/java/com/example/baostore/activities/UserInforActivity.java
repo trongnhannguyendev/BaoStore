@@ -4,8 +4,9 @@ import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
+import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
@@ -45,6 +47,8 @@ public class UserInforActivity extends AppCompatActivity {
     User user;
     Bundle bundle;
     ApiService service;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

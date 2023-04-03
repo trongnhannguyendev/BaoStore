@@ -1,6 +1,5 @@
 package com.example.baostore.Api;
 
-import static com.example.baostore.Constant.Constants.SHARED_PREF_NAME;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -15,6 +14,7 @@ import com.example.baostore.models.User;
 public class SharedPrefManager {
     private static SharedPrefManager mInstance;
     private static Context mCtx;
+    private static final String SHARED_PREF_NAME = "userPref";
 
 
 

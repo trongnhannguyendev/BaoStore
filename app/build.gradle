@@ -46,4 +46,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.github.momo-wallet:mobile-sdk:1.0.7'
 }

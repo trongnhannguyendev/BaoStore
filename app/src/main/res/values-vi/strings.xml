@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BaoStore</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -34,8 +35,6 @@
     <string name="splash_motto">Một thế giới sách đang chào đón bạn.</string>
     <string name="splash_header">Welcome to BaoStore</string>
 
-
-<!--    Login-->
     <string name="login_header">Đăng Nhập</string>
     <string name="edittext_hint_email">Email</string>
     <string name="edittext_hint_password">Mật khẩu</string>
@@ -49,6 +48,4 @@
         <item>Tiếng Anh</item>
         <item>Tiếng Pháp</item>
     </string-array>
-
-
 </resources>

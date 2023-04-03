@@ -2,7 +2,7 @@ package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
-import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
 import android.content.Intent;

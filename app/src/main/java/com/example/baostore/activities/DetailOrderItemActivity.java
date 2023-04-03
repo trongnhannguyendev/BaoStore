@@ -3,7 +3,7 @@ package com.example.baostore.activities;
 import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.ORDER_ID;
 import static com.example.baostore.Constant.Constants.ORDER_OBJECT;
-import static com.example.baostore.testapi.RetrofitCallBack.getOrderDetail;
+import static com.example.baostore.Api.RetrofitCallBack.getOrderDetail;
 
 import android.os.Bundle;
 import android.widget.TextView;

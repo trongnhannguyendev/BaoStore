@@ -8,12 +8,12 @@ import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
-import static com.example.baostore.testapi.RetrofitCallBack.cartGetAllByUserID;
-import static com.example.baostore.testapi.RetrofitCallBack.categoryGetAll;
-import static com.example.baostore.testapi.RetrofitCallBack.getAuthor;
-import static com.example.baostore.testapi.RetrofitCallBack.getPublisher;
-import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.bookGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.cartGetAllByUserID;
+import static com.example.baostore.Api.RetrofitCallBack.categoryGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.getAuthor;
+import static com.example.baostore.Api.RetrofitCallBack.getPublisher;
+import static com.example.baostore.Api.RetrofitCallBack.userAddressGetAll;
 
 import android.os.Bundle;
 import android.os.Handler;

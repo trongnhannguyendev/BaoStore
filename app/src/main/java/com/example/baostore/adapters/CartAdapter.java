@@ -2,7 +2,7 @@ package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.cartDeleteItem;
+import static com.example.baostore.Api.RetrofitCallBack.cartDeleteItem;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +27,7 @@ import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.CartResponse;
-import com.example.baostore.testapi.RetrofitCallBack;
+import com.example.baostore.Api.RetrofitCallBack;
 import com.google.gson.JsonObject;
 
 import java.util.List;

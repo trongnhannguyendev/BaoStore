@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.activities.MainActivity;
-import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CategoryAdapter;
 import com.example.baostore.models.Book;
@@ -36,7 +35,6 @@ public class HomeFragment extends Fragment {
     ImageView ivSearch;
     RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
     BookAdapter bookAdapter;
-    Book2Adapter book2Adapter;
     CategoryAdapter categoryAdapter;
     MainActivity activity;
     Bundle bundle;
@@ -152,10 +150,9 @@ public class HomeFragment extends Fragment {
             list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
             bookAdapter = new BookAdapter(list_book, getContext());
-            book2Adapter = new Book2Adapter(list_book, getContext());
 
             recyBook_Popular.setAdapter(bookAdapter);
-            recyBook_New.setAdapter(book2Adapter);
+            recyBook_New.setAdapter(bookAdapter);
 
             Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
         } else {

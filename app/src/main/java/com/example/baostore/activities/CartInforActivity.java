@@ -25,33 +25,43 @@ import com.example.baostore.models.User;
 import java.util.List;
 
 public class CartInforActivity extends AppCompatActivity {
+    EditText edFullName, edPhoneNumber, edAddress, edEmail;
     TextView tvTitleHeader;
     ImageView imgBack;
     private MotionButton btnConfirmCartInfor;
     private CardView cvIconProgress;
+
     private Utils utils;
     Bundle bundle;
 
-    EditText edFullName, edPhoneNumber, edAddress, edEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_infor);
 
+        tvTitleHeader = findViewById(R.id.title);
+        imgBack = findViewById(R.id.back_button);
+        cvIconProgress = findViewById(R.id.cvProgress_2);
+
+        edFullName = findViewById(R.id.edFullName_cartinfo);
+        edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
+        edAddress = findViewById(R.id.edAddress_cartinfo);
+        edEmail = findViewById(R.id.edEmail_cartinfo);
+        btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
+
+        utils = new Utils();
 
         // màu icon progress
-        cvIconProgress = findViewById(R.id.cvProgress_2);
         int color = getResources().getColor(R.color.ic_progress);
         cvIconProgress.setCardBackgroundColor(color);
 
-
         //header
-        tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Thông tin nhận hàng");
 
         //button back
-        imgBack = findViewById(R.id.back_button);
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,16 +69,7 @@ public class CartInforActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
         // Load user
-        edFullName = findViewById(R.id.edFullName_cartinfo);
-        edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
-        edAddress = findViewById(R.id.edAddress_cartinfo);
-        edEmail = findViewById(R.id.edEmail_cartinfo);
-
         User user = SharedPrefManager.getInstance(this).getUser();
 
         // Đổ địa chỉ
@@ -82,20 +83,17 @@ public class CartInforActivity extends AppCompatActivity {
                 if(address1.getIsdefault() == 1){
                     edAddress.setText(address1.getLocation());
                 }
-
             }
         } else{
             edAddress.setText("");
         }
-
-
 
         edFullName.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhonenumber());
         edEmail.setText(user.getEmail());
 
 // xử lý button
-        btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
+
         btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,56 +102,47 @@ public class CartInforActivity extends AppCompatActivity {
                 String fullName = edFullName.getText().toString().trim();
                 String address = edAddress.getText().toString().trim();
 
-                if(checkError(email, phoneNumber, fullName)){
-                    saveReceiver(address, phoneNumber,fullName);
+                if(!checkError(email, phoneNumber, fullName)){
+                    Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
+                    bundle.putString(ADDRESS_LOCATION, address);
+                    bundle.putString(USER_PHONE_NUMBER, phoneNumber);
+                    bundle.putString(USER_FULL_NAME, fullName);
+                    i.putExtras(bundle);
+                    startActivity(i);
                 }
-
-
-
             }
         });
 
     }
 
-    public void saveReceiver(String address, String phoneNumber, String fullName){
-        Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
-        bundle.putString(ADDRESS_LOCATION, address);
-        bundle.putString(USER_PHONE_NUMBER, phoneNumber);
-        bundle.putString(USER_FULL_NAME, fullName);
-        i.putExtras(bundle);
-
-        startActivity(i);
-    }
-
      private boolean checkError(String email, String phoneNumber, String fullname) {
-        utils = new Utils();
 
-        boolean noError = true;
+        boolean hasError = true;
 
         if (phoneNumber.isEmpty()) {
             edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_empty));
-            noError = false;
+            hasError = false;
         } else if (phoneNumber.length() != 10) {
             edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_format));
-            noError = false;
+            hasError = false;
         } else if (!utils.isNumeric(phoneNumber)) {
             edPhoneNumber.setError(getResources().getString(R.string.err_num_format));
-            noError = false;
+            hasError = false;
         }
 
         if (email.isEmpty()) {
             edEmail.setError(getResources().getString(R.string.err_email_empty));
-            noError = false;
+            hasError = false;
         } else if (!utils.checkEmailFormat(email)) {
             edEmail.setError(getResources().getString(R.string.err_num_format));
-            noError = false;
+            hasError = false;
         }
 
         if (fullname.isEmpty()) {
             edFullName.setError(getResources().getString(R.string.err_fullname_empty));
-            noError = false;
+            hasError = false;
         }
-        return noError;
+        return hasError;
     }
 
 }

@@ -11,11 +11,9 @@ import static com.example.baostore.Constant.Constants.ORDER_USER_NAME;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
-import static com.example.baostore.testapi.RetrofitCallBack.insertOrder;
+import static com.example.baostore.Api.RetrofitCallBack.insertOrder;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,11 +49,20 @@ public class CartPaymentActivity extends AppCompatActivity {
     MotionButton btnConfirm;
     private CardView cvIconProgress;
     ApiService service;
+    List<Cart> cartList;
+    List<Book> bookList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_payment);
+
+        cvIconProgress = findViewById(R.id.cvProgress_3);
+        tvTitleHeader = findViewById(R.id.title);
+        imgBack = findViewById(R.id.back_button);
+        btn_hide_show = findViewById(R.id.btn_hide_show);
+        layout_hide_show = findViewById(R.id.layout_hide_show);
+        img_funcpayment_arrow = findViewById(R.id.img_funcpayment_arrow);
 
         tvFullname = findViewById(R.id.tvFullname_cpayment);
         tvPhoneNumber = findViewById(R.id.tvPhoneNumber_cpayment);
@@ -67,19 +74,17 @@ public class CartPaymentActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
         service = GetRetrofit.getInstance().createRetrofit();
-
         Bundle bundle = getIntent().getExtras();
 
+        // Load dữ liệu lên Payment
         String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
         String fullName =bundle.get(USER_FULL_NAME).toString();
-        String phoneNunber = bundle.get(USER_PHONE_NUMBER).toString();
+        String phoneNumber = bundle.get(USER_PHONE_NUMBER).toString();
         String address = bundle.get(ADDRESS_LOCATION).toString();
         double totalPrice =Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString());
-        Log.d("--", "onCreate: "+ totalPrice);
 
         tvFullname.setText(fullName);
-        tvPhoneNumber.setText(phoneNunber);
+        tvPhoneNumber.setText(phoneNumber);
         tvAddress.setText(address);
         tvOrderDate.setText(orderDate);
         //tvBookPrice.setText(null);
@@ -87,14 +92,13 @@ public class CartPaymentActivity extends AppCompatActivity {
         tvTotalPrice.setText(new Utils().priceToString(totalPrice));
 
         User user= SharedPrefManager.getInstance(this).getUser();
-        List<Cart> cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
-        List<Book> bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
-
+        cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
+        bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
         btnConfirm.setOnClickListener(view ->{
             JsonObject object = new JsonObject();
             object.addProperty(ORDER_USER_NAME, fullName);
-            object.addProperty(USER_PHONE_NUMBER, phoneNunber);
+            object.addProperty(USER_PHONE_NUMBER, phoneNumber);
             object.addProperty(ORDER_ADDRESS, address);
             object.addProperty(ORDER_PAYMENT, 0);
             object.addProperty(ODER_NOTE, "None");
@@ -105,42 +109,6 @@ public class CartPaymentActivity extends AppCompatActivity {
 
         });
 
-        // màu icon progress
-        cvIconProgress = findViewById(R.id.cvProgress_3);
-        int color = getResources().getColor(R.color.ic_progress);
-        cvIconProgress.setCardBackgroundColor(color);
 
-        //header
-        tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText("Chi tiết thanh toán");
-
-        //button back
-        imgBack = findViewById(R.id.back_button);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        // hide show phương thức thanh toán
-        btn_hide_show = findViewById(R.id.btn_hide_show);
-        layout_hide_show = findViewById(R.id.layout_hide_show);
-        img_funcpayment_arrow = findViewById(R.id.img_funcpayment_arrow);
-        btn_hide_show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int isvisible = layout_hide_show.getVisibility();
-                if (isvisible == View.VISIBLE) {
-                    layout_hide_show.setVisibility(View.GONE);
-                    img_funcpayment_arrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
-
-
-                } else {
-                    layout_hide_show.setVisibility(View.VISIBLE);
-                    img_funcpayment_arrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_up));
-                }
-            }
-        });
     }
 }

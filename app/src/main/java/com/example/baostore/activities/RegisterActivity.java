@@ -3,7 +3,7 @@ package com.example.baostore.activities;
 import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_OBJECT;
-import static com.example.baostore.testapi.RetrofitCallBack.getVerificationCode;
+import static com.example.baostore.Api.RetrofitCallBack.getVerificationCode;
 
 import android.content.Intent;
 import android.os.Build;

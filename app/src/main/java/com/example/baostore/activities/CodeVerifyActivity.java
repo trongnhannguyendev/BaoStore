@@ -7,8 +7,8 @@ import static com.example.baostore.Constant.Constants.USER_OBJECT;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.VERIFICATION_CODE;
-import static com.example.baostore.testapi.RetrofitCallBack.getUserRegister;
-import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo2;
+import static com.example.baostore.Api.RetrofitCallBack.getUserRegister;
+import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
