@@ -3,6 +3,8 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+
+
 android {
     namespace 'com.example.baostore'
     compileSdk 33
@@ -29,6 +31,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
 
@@ -46,5 +50,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.github.momo-wallet:mobile-sdk:1.0.7'
+    implementation 'com.android.billingclient:billing:3.0.0'
 }

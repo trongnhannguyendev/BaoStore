@@ -1,5 +1,6 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
@@ -8,7 +9,6 @@ import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Constant.Constants.VERIFICATION_CODE;
 import static com.example.baostore.Api.RetrofitCallBack.getUserRegister;
-import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,7 +79,7 @@ public class CodeVerifyActivity extends AppCompatActivity {
                     object.addProperty(USER_EMAIL,user.getEmail());
                     object.addProperty(USER_PASSWORD,user.getPassword());
                     Call<UserResponse> passCall= service.updatePassword(object);
-                    passCall.enqueue(userUpdateInfo2(CodeVerifyActivity.this));
+                    passCall.enqueue(userUpdateInfo(CodeVerifyActivity.this,2));
                 }
             } else{
                 Toast.makeText(this, "Wrong verificationCode", Toast.LENGTH_SHORT).show();

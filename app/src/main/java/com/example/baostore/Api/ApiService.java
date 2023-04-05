@@ -43,6 +43,11 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("insert-address.php")
+    Call<AddressResponse> insertUserAddress(
+            @Body JsonObject jsonObject
+    );
+
     @POST("update-email.php")
     Call<UserResponse> updateEmail(
             @Body JsonObject jsonObject

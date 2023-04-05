@@ -198,7 +198,7 @@ public class RetrofitCallBack {
     return callback;
     }
 
-    public static Callback<UserResponse> userUpdateInfo(Context context){
+    public static Callback<UserResponse> userUpdateInfo(Context context, int goTo){
 
         Callback<UserResponse> update = new Callback<UserResponse>() {
             @Override
@@ -206,7 +206,15 @@ public class RetrofitCallBack {
                 int responseCode = response.body().getResponseCode();
                 Log.d("--", "onResponse: "+response.body().getMessage());
                 if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                    if (goTo == 1){
+                        Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                    }
+                    if (goTo ==2){
+                        CodeVerifyActivity activity = (CodeVerifyActivity) context;
+                        Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                        activity.finish();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
                 }
             }
 
@@ -219,29 +227,6 @@ public class RetrofitCallBack {
 
     }
 
-    public static Callback<UserResponse> userUpdateInfo2(Context context){
-        CodeVerifyActivity activity = (CodeVerifyActivity) context;
-
-        Callback<UserResponse> update = new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                int responseCode = response.body().getResponseCode();
-                Log.d("--", "onResponse: "+response.body().getMessage());
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
-                    activity.finish();
-                    context.startActivity(new Intent(context, LoginActivity.class));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
-            }
-        };
-        return update;
-
-    }
     // Book
     public static Callback<BookResponse> bookGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
@@ -445,6 +430,27 @@ public class RetrofitCallBack {
         return callback;
     }
 
+    public static Callback<AddressResponse> addressNoData(Context context){
+        Callback<AddressResponse> callback = new Callback<AddressResponse>() {
+            @Override
+            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode != RESPONSE_OKAY) {
+                    Toast.makeText(context, "Fail to update quantity", Toast.LENGTH_SHORT).show();
+                }
+                if (responseCode == RESPONSE_OKAY){
+                    Toast.makeText(context, "Insert success", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        };
+        return callback;
+    }
 
     public static Callback<CartResponse> cartDeleteItem(Context context, int actionCode){
         Callback<CartResponse> callback = new Callback<CartResponse>() {
@@ -481,7 +487,6 @@ public class RetrofitCallBack {
                 if (response.body().getResponseCode() == RESPONSE_OKAY) {
                     List<Publisher> list = response.body().getData();
                     bundle.putSerializable(PUBLISHER_LIST, (Serializable) list);
-
                     fragment.setArguments(bundle);
                     activity.loadFragment(fragment);
                 }

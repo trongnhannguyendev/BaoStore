@@ -31,7 +31,6 @@ import com.example.baostore.models.Publisher;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO add list publisher, list author
 public class SearchFragment extends Fragment {
     SearchView svSearch_search;
     Spinner spnFind;
@@ -53,6 +52,7 @@ public class SearchFragment extends Fragment {
         svSearch_search = v.findViewById(R.id.svSearch_search);
         recyBook_search = v.findViewById(R.id.recyBook_search);
         spnFind = v.findViewById(R.id.spnFind_search);
+
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
         searchList = new ArrayList<>();
@@ -70,8 +70,7 @@ public class SearchFragment extends Fragment {
             authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
         }
 
-        String[] findwhat = {"Title", "Category", "Author", "Publisher"};
-        ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, findwhat);
+        ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spnFind.setAdapter(spnAdapter);
@@ -87,7 +86,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        adapter = new BookAdapter(list_book, getContext());
+        adapter = new BookAdapter(list_book, getContext(),1);
         recyBook_search.setAdapter(adapter);
 
         filterV1("");
@@ -120,7 +119,7 @@ public class SearchFragment extends Fragment {
         switch (searchCode) {
             // All
             case 0:
-                adapter = new BookAdapter(list_book, getContext());
+                adapter = new BookAdapter(list_book, getContext(),1);
                 recyBook_search.setAdapter(adapter);
                 break;
                 // Title
@@ -172,7 +171,7 @@ public class SearchFragment extends Fragment {
 
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
 
     }
@@ -187,7 +186,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -202,7 +201,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -224,7 +223,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -242,7 +241,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),2);
         recyBook_search.setAdapter(adapter);
     }
     void filterByAuthor(String authorName){
@@ -257,7 +256,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 

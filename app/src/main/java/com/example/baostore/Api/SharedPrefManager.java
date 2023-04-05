@@ -8,6 +8,7 @@ import static com.example.baostore.Constant.Constants.USER_STATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.example.baostore.models.User;
 
@@ -15,7 +16,7 @@ public class SharedPrefManager {
     private static SharedPrefManager mInstance;
     private static Context mCtx;
     private static final String SHARED_PREF_NAME = "userPref";
-
+    private static final String USER_IMAGE = "user_image";
 
 
     private SharedPrefManager(Context context) {
@@ -66,4 +67,19 @@ public class SharedPrefManager {
         editor.apply();
         return true;
     }
+
+    public boolean saveUserImage(String string){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_IMAGE, string);
+        editor.apply();
+        return true;
+
+    }
+
+    public String getUserImage(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(USER_IMAGE, null);
+    }
+
 }

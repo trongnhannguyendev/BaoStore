@@ -35,10 +35,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     private List<Book> bookList;
     ApiService service;
     Context context;
+    int loadCode;
 
-    public BookAdapter(List<Book> bookList, Context context) {
+    public BookAdapter(List<Book> bookList, Context context, int loadCode) {
         this.bookList = bookList;
         this.context = context;
+        this.loadCode = loadCode;
     }
 
 
@@ -47,7 +49,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
-        View v = inflater.inflate(R.layout.item_layout_2, parent, false);
+        View v;
+        if (loadCode == 2) {
+            v = inflater.inflate(R.layout.item_layout_2, parent, false);
+        } else{
+            v = inflater.inflate(R.layout.item_layout_1, parent, false);
+        }
         return new MyViewHolder(v);
     }
 
@@ -105,7 +112,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvPrice, tvSalePrice;
         private ImageView ivBook;
 
@@ -115,6 +122,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             tvPrice = itemView.findViewById(R.id.original_price);
             tvSalePrice = itemView.findViewById(R.id.discounted_price);
             ivBook = itemView.findViewById(R.id.product_image);
+
         }
     }
 

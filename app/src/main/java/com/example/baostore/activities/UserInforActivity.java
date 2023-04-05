@@ -1,8 +1,15 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Api.RetrofitCallBack.addressNoData;
+import static com.example.baostore.Constant.Constants.ADDRESS_CITY;
+import static com.example.baostore.Constant.Constants.ADDRESS_DISTRICT;
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
+import static com.example.baostore.Constant.Constants.ADDRESS_LOCATION;
+import static com.example.baostore.Constant.Constants.ADDRESS_NAME;
+import static com.example.baostore.Constant.Constants.ADDRESS_WARD;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
+import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 
@@ -28,6 +35,7 @@ import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.AddressResponse;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
@@ -39,7 +47,7 @@ public class UserInforActivity extends AppCompatActivity {
     private Toolbar toolbar;
     TextView tvTitleHeader;
     ImageView imgBack;
-    EditText edfullname, edPhoneNumber, edAddress, edEmail;
+    EditText edfullname, edPhoneNumber, edNewAddress, edEmail;
     MotionButton btnConfirm;
     Spinner spnAddress;
     List<Address> addressList;
@@ -57,7 +65,7 @@ public class UserInforActivity extends AppCompatActivity {
 
         edfullname = findViewById(R.id.edFullname_info);
         edPhoneNumber = findViewById(R.id.edPhoneNumber_info);
-        edAddress = findViewById(R.id.edAddress_info);
+        edNewAddress = findViewById(R.id.edNewAddress_info);
         edEmail = findViewById(R.id.edMail_info);
         btnConfirm = findViewById(R.id.btnConfirm_UserInfor);
         spnAddress = findViewById(R.id.spnAddress_info);
@@ -85,8 +93,6 @@ public class UserInforActivity extends AppCompatActivity {
         edfullname.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhonenumber());
         edEmail.setText(user.getEmail());
-        edAddress.setText("");
-        edAddress.setEnabled(false);
         //header
         tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Thông tin cá nhân");
@@ -106,7 +112,7 @@ public class UserInforActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(view ->{
             String fullName = edfullname.getText().toString().trim();
             String phoneNumber = edPhoneNumber.getText().toString().trim();
-            String address = edAddress.getText().toString().trim();
+            String location = edNewAddress.getText().toString().trim();
             String email = edEmail.getText().toString().trim();
 
             if(fullName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()){
@@ -118,7 +124,7 @@ public class UserInforActivity extends AppCompatActivity {
                     object.addProperty(USER_FULL_NAME, fullName);
                     Call<UserResponse> call = service.updateFullname(object);
 
-                    call.enqueue(userUpdateInfo(this));
+                    call.enqueue(userUpdateInfo(this, 1));
                 }
                 if(!phoneNumber.equals(user.getPhonenumber())  && phoneNumber.length() == 10){
                     JsonObject object = new JsonObject();
@@ -126,9 +132,28 @@ public class UserInforActivity extends AppCompatActivity {
                     object.addProperty(USER_PHONE_NUMBER, phoneNumber);
                     Call<UserResponse> call = service.updatePhoneNumber(object);
 
-                    call.enqueue(userUpdateInfo(this));
+                    call.enqueue(userUpdateInfo(this, 1));
                 }
-                // TODO add update address list
+                if(!location.isEmpty()){
+                    String[] cutOutAddress = location.split(",");
+
+                    String ward = cutOutAddress[1];
+                    String district =cutOutAddress[2];
+                    String city = cutOutAddress[3];
+                    String addressName = cutOutAddress[0];
+
+
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_ID, user.getUserid());
+                    object.addProperty(ADDRESS_LOCATION, location);
+                    object.addProperty(ADDRESS_WARD, ward);
+                    object.addProperty(ADDRESS_DISTRICT, district);
+                    object.addProperty(ADDRESS_CITY, city);
+                    object.addProperty(ADDRESS_NAME, addressName);
+
+                    Call<AddressResponse> call= service.insertUserAddress(object);
+                    call.enqueue(addressNoData(this));
+                }
 
                 if(!email.equals(user.getEmail())){
                     updateEmail(email);
@@ -143,7 +168,7 @@ public class UserInforActivity extends AppCompatActivity {
 
         Call<UserResponse> call = service.updateEmail(object);
 
-        call.enqueue(userUpdateInfo(this));
+        call.enqueue(userUpdateInfo(this,1));
 
     }
 

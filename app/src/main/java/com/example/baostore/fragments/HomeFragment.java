@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
     ImageView ivSearch;
     RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
     BookAdapter bookAdapter;
+    BookAdapter bookAdapterHorizontal;
     CategoryAdapter categoryAdapter;
     MainActivity activity;
     Bundle bundle;
@@ -76,10 +77,11 @@ public class HomeFragment extends Fragment {
         getBooks();
         getCategory();
 
-        bookAdapter = new BookAdapter(list_book, getContext());
+        bookAdapter = new BookAdapter(list_book, getContext(),1);
+        bookAdapterHorizontal = new BookAdapter(list_book, getContext(),2);
         categoryAdapter = new CategoryAdapter(list_category, getContext());
 
-        recyBook_Popular.setAdapter(bookAdapter);
+        recyBook_Popular.setAdapter(bookAdapterHorizontal);
         recyBook_New.setAdapter(bookAdapter);
         recyCategory.setAdapter(categoryAdapter);
         recyCategory1.setAdapter(categoryAdapter);
@@ -149,7 +151,7 @@ public class HomeFragment extends Fragment {
         if (bundle != null && bundle.containsKey(BOOK_LIST)) {
             list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-            bookAdapter = new BookAdapter(list_book, getContext());
+            bookAdapter = new BookAdapter(list_book, getContext(),1);
 
             recyBook_Popular.setAdapter(bookAdapter);
             recyBook_New.setAdapter(bookAdapter);

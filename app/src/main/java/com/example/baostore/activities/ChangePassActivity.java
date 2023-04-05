@@ -59,7 +59,7 @@ public class ChangePassActivity extends AppCompatActivity {
             jsonObject.addProperty(USER_PASSWORD, newPass);
 
             Call<UserResponse> call = service.updatePassword(jsonObject);
-            call.enqueue(userUpdateInfo(this));
+            call.enqueue(userUpdateInfo(this, 1));
             }
         });
     }
