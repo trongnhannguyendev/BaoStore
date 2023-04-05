@@ -36,7 +36,7 @@ import java.util.List;
 import retrofit2.Call;
 
 public class DetailItemActivity extends AppCompatActivity {
-    TextView tvTitle, tvPrice, tvDescription;
+    TextView tvTitle, tvPrice, tvDescription, tvToPDF;
     MotionButton btnAddToCart, btnToPayment;
     RecyclerView recyImages;
     BookImageAdapter bookImageAdapter;
@@ -52,6 +52,7 @@ public class DetailItemActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tvTitle_detail);
         tvPrice = findViewById(R.id.tvPrice_detail);
         tvDescription = findViewById(R.id.tvDescription_detail);
+        tvToPDF = findViewById(R.id.tvToPDF_detail_item);
         recyImages = findViewById(R.id.recyImages_detailItem);
         btnAddToCart = findViewById(R.id.btnAddtocart_detail);
         btnToPayment = findViewById(R.id.btnPay_detail);
@@ -90,6 +91,11 @@ public class DetailItemActivity extends AppCompatActivity {
             Intent intent = new Intent();
             setResult(111, intent);
             finish();
+        });
+
+        tvToPDF.setOnClickListener(view->{
+            Intent intent = new Intent(DetailItemActivity.this, ViewPDFActivity.class);
+            startActivity(intent);
         });
     }
 
