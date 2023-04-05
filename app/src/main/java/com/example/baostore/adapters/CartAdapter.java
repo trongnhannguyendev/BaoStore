@@ -22,6 +22,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
@@ -151,7 +152,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         holder.ivCancel.setOnClickListener(view -> {
             deleteCart.enqueue(cartDeleteItem(context, 1));
-
+            MainActivity activity = (MainActivity) context;
+            activity.loadFragment(new CartFragment());
         });
 
     }

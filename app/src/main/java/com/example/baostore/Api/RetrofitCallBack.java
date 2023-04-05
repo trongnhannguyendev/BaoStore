@@ -394,13 +394,14 @@ public class RetrofitCallBack {
     }
 
     public static Callback<BookImageResponse> BookImageGetAll(Context context, Bundle bundle, Intent intent){
+        MainActivity activity = (MainActivity)context;
         Callback<BookImageResponse> callback = new Callback<BookImageResponse>() {
             @Override
             public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
                 List<BookImage> imageList = response.body().getData();
                 bundle.putSerializable(BOOK_IMAGE_LIST, (Serializable) imageList);
                 intent.putExtras(bundle);
-                context.startActivity(intent);
+                activity.openActivityForResult(intent);
             }
 
             @Override

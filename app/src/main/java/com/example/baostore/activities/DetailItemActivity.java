@@ -7,6 +7,7 @@ import static com.example.baostore.Constant.Constants.CART_AMOUNT;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Api.RetrofitCallBack.cartAddItem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ public class DetailItemActivity extends AppCompatActivity {
 
             String title = book.getTitle();
             double price = book.getPrice();
+
             // Book has no description
             String description;
             tvTitle.setText(title);
@@ -85,7 +87,9 @@ public class DetailItemActivity extends AppCompatActivity {
         });
 
         btnToPayment.setOnClickListener(view -> {
-            addCart();
+            Intent intent = new Intent();
+            setResult(111, intent);
+            finish();
         });
     }
 

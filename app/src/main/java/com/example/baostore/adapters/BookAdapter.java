@@ -23,6 +23,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.models.Book;
 import com.example.baostore.responses.BookImageResponse;
 import com.google.gson.JsonObject;
@@ -88,6 +89,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity activity = (MainActivity) context;
+
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
