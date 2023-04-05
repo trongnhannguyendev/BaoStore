@@ -5,7 +5,9 @@ import static com.example.baostore.Constant.Constants.ORDER_ID;
 import static com.example.baostore.Constant.Constants.ORDER_OBJECT;
 import static com.example.baostore.Api.RetrofitCallBack.getOrderDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
+import com.example.baostore.MyPaymentActivity;
 import com.example.baostore.R;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Order;
@@ -27,6 +30,7 @@ import retrofit2.Call;
 public class DetailOrderItemActivity extends AppCompatActivity {
     public TextView tvDate, tvTotalPrice, tvPaymentType, tvReceiverName, tvReceiverPhoneNumber,tvReceiverAddress;
     public RecyclerView recyOrderDetail;
+    Button btnToPayment;
     ApiService service;
 
     @Override
@@ -40,6 +44,7 @@ public class DetailOrderItemActivity extends AppCompatActivity {
         tvReceiverPhoneNumber = findViewById(R.id.tvReceiverPhoneNumber_detailorder);
         tvReceiverAddress = findViewById(R.id.tvReceiverAddress_orderhistoryitem);
         recyOrderDetail = findViewById(R.id.recyDetailOrder_detailorder);
+        btnToPayment = findViewById(R.id.btnToPayment);
 
         recyOrderDetail.setLayoutManager(new LinearLayoutManager(this));
 
@@ -61,5 +66,8 @@ public class DetailOrderItemActivity extends AppCompatActivity {
 
         Call<OrderDetailResponse> call = service.getOrderDetailById(object);
         call.enqueue(getOrderDetail(this, recyOrderDetail, tvTotalPrice));
+
+        btnToPayment.setOnClickListener(view->
+                startActivity(new Intent(DetailOrderItemActivity.this, MyPaymentActivity.class)));
     }
 }

@@ -172,6 +172,12 @@
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnToPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán"/>
     </LinearLayout>
 
 

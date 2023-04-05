@@ -27,7 +27,7 @@
             android:name=".activities.ViewPDFActivity"
             android:exported="false" />
         <activity
-            android:name=".PaymentActivity"
+            android:name=".MyPaymentActivity"
             android:exported="false" />
         <activity
             android:name=".activities.CodeVerifyActivity"
