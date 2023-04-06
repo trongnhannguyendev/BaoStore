@@ -89,12 +89,12 @@ public class HomeFragment extends Fragment {
         btnSearchNew.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
 
-            activity.loadFragment(fragment);
+            activity.loadSearchFragment(fragment,0,"");
         });
 
         btnSearchPopular.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
-            activity.loadFragment(fragment);
+            activity.loadSearchFragment(fragment,0,"");
         });
 
         ivSearch.setOnClickListener(view -> {

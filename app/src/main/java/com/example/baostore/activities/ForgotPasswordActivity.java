@@ -42,6 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         // Change password
 
         btnConfirm.setOnClickListener(view -> {
+            turnEditingOff();
             String email = edEmail.getText().toString().trim();
             String pass = edPass.getText().toString().trim();
             String rePass = edRePass.getText().toString().trim();
@@ -62,6 +63,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 object.addProperty(USER_EMAIL, email);
                 Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
                 call.enqueue(getVerificationCode(ForgotPasswordActivity.this, intent));
+            } else{
+                turnEditingOn();
             }
         });
     }
@@ -80,5 +83,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             hasError = true;
         }
         return hasError;
+    }
+
+    public void turnEditingOff(){
+        edEmail.setEnabled(false);
+        edPass.setEnabled(false);
+        edRePass.setEnabled(false);
+        btnConfirm.setEnabled(false);
+    }
+
+    public void turnEditingOn(){
+        edEmail.setEnabled(true);
+        edPass.setEnabled(true);
+        edRePass.setEnabled(true);
+        btnConfirm.setEnabled(true);
     }
 }

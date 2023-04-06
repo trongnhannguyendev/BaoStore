@@ -61,10 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Ánh xạ
-
-
-
 
         // Đăng ký
         btnRegister.setOnClickListener(view -> {

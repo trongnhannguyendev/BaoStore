@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.SettingsActivity;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.LoginActivity;
@@ -43,7 +44,7 @@ import java.io.InputStream;
 
 
 public class ProfileFragment extends Fragment {
-    LinearLayout btnUserInfor, btnChangePass, btnToCartHistory;
+    LinearLayout btnUserInfor, btnChangePass, btnToCartHistory, btnToSettings;
     MotionButton btnLogOut;
     TextView tvFullname;
     ImageView ivUserProfile;
@@ -59,6 +60,7 @@ public class ProfileFragment extends Fragment {
         btnUserInfor=view.findViewById(R.id.btnUserInfor);
         btnChangePass = view.findViewById(R.id.btnChangePass_profile);
         btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
+        btnToSettings = view.findViewById(R.id.btnToSettings_profile);
         ivUserProfile = view.findViewById(R.id.ivUser_profile);
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
@@ -105,6 +107,11 @@ public class ProfileFragment extends Fragment {
             photoPickerIntent.setType("image/*");
             getImageResult(photoPickerIntent);
             //startActivityForResult(photoPickerIntent, 1);
+        });
+
+        btnToSettings.setOnClickListener(v->{
+            Intent i = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(i);
         });
 
         // Đăng xuất

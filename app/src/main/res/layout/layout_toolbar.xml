@@ -5,7 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@drawable/custom_header">
+    style="@style/headerBackground">
 
     <!-- Add a LinearLayout to contain the title and back button -->
     <LinearLayout

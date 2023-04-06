@@ -4,21 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPaymentActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SettingsActivity" >
 
     <Button
-        android:id="@+id/btnMakePayment"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnLime"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Make payment"
-        />
+        android:text="Lime" />
 
     <Button
-        android:id="@+id/btnMakePayment_ggpay_billing"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnGreen"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Google pay"
-        />
-
+        android:text="Green" />
 </LinearLayout>

@@ -23,7 +23,6 @@ import retrofit2.Call;
 
 public class BuyHistoryActivity extends AppCompatActivity {
     TextView tvTitleHeader;
-    MotionButton btnConfirm;
     RecyclerView recyBuyHistory;
 
     Bundle bundle;
@@ -38,7 +37,6 @@ public class BuyHistoryActivity extends AppCompatActivity {
         tvTitleHeader = findViewById(R.id.title);
         tvTitleHeader.setText("Lịch sử mua hàng");
         recyBuyHistory = findViewById(R.id.recyBuyHistory);
-        btnConfirm = findViewById(R.id.btnConfirm_bh);
 
         recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
 
@@ -46,11 +44,6 @@ public class BuyHistoryActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
 
         loadData();
-
-        btnConfirm.setOnClickListener(view ->{
-            finish();
-        });
-
     }
 
     public void loadData(){

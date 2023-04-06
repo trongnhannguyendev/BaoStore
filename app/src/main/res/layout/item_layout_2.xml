@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên sản phẩm "
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 

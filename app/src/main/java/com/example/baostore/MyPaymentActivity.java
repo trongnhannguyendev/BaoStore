@@ -1,5 +1,10 @@
 package com.example.baostore;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -8,7 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-
+import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -20,11 +25,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyPaymentActivity extends AppCompatActivity {
-    Button btnMakePayment;
+    Button btnMakePayment, btnGgBilling;
     private static final String clientKey = "AQwusKD4K-4uW7Vu16IMPfvggch0k-g4bgBmwEcHuLjF3l5xmpzIc6HvOcxj1dE18AbMX5arDq-6KCyQ";
     public static final int PAYPAL_REQUEST_CODE = 123;
+
 
     private static PayPalConfiguration config = new PayPalConfiguration()
             // Start with mock environment.  When ready,
@@ -39,11 +47,16 @@ public class MyPaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         btnMakePayment = findViewById(R.id.btnMakePayment);
+        btnGgBilling = findViewById(R.id.btnMakePayment_ggpay_billing);
 
         btnMakePayment.setOnClickListener(view->{
             getPayment();
         });
+
+
     }
+
+
 
     private void getPayment(){
         String amount = "3";
@@ -104,5 +117,14 @@ public class MyPaymentActivity extends AppCompatActivity {
             }
         }
     }
+
+    protected ActivityResultLauncher paymentLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                }
+            }
+    );
 
 }

@@ -13,6 +13,7 @@ import static com.example.baostore.Api.RetrofitCallBack.getUserRegister;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ public class CodeVerifyActivity extends AppCompatActivity {
     Button btnVerify;
     ApiService service;
     Bundle bundle;
+    private boolean canExit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class CodeVerifyActivity extends AppCompatActivity {
         Log.d("--", "Action code: "+actionCode);
 
         btnVerify.setOnClickListener(view->{
+            turnEditingOff();
             String code1 = edCode1.getText().toString();
             String code2 = edCode2.getText().toString();
             String code3 = edCode3.getText().toString();
@@ -83,9 +86,45 @@ public class CodeVerifyActivity extends AppCompatActivity {
                 }
             } else{
                 Toast.makeText(this, "Wrong verificationCode", Toast.LENGTH_SHORT).show();
+                turnEditingOn();
             }
+
         });
 
 
+    }
+
+    public void turnEditingOff(){
+        edCode1.setEnabled(false);
+        edCode2.setEnabled(false);
+        edCode3.setEnabled(false);
+        edCode4.setEnabled(false);
+        btnVerify.setEnabled(false);
+    }
+
+    public void turnEditingOn(){
+        edCode1.setEnabled(true);
+        edCode2.setEnabled(true);
+        edCode3.setEnabled(true);
+        edCode4.setEnabled(true);
+        btnVerify.setEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canExit) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            canExit = !canExit;
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    canExit = false;
+                }
+            }, 1000);
+        }
     }
 }

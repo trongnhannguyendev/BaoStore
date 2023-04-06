@@ -599,20 +599,21 @@ public class RetrofitCallBack {
 
     @NonNull
     public static Callback<OrderDetailResponse> getOrderDetail(Context context, RecyclerView recy, TextView tvTotalPrice){
-        Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
+        return new Callback<OrderDetailResponse>() {
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 if (response.body().getResponseCode() == 1) {
                     List<OrderDetail> orderDetailList = response.body().getData();
-                    Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
-                    OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
-                    Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
-                    recy.setAdapter(adapter);
+                        Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
+                        OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
+                        Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
+                        recy.setAdapter(adapter);
+
                     int totalAmount =0;
                     for (int i = 0; i < orderDetailList.size(); i++) {
                         totalAmount += orderDetailList.get(i).getTotal();
                     }
-                    tvTotalPrice.setText(new Utils().priceToString( totalAmount));
+                    tvTotalPrice.setText(totalAmount+"");
 
                 }
             }
@@ -622,7 +623,6 @@ public class RetrofitCallBack {
                 Log.d("--", "onFailure: "+t.toString());
             }
         };
-        return callback;
     }
 
     public static Callback<OrderDetailResponse> insertOrderDetail(Context context, JsonObject object){

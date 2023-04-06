@@ -41,7 +41,7 @@ public class SearchFragment extends Fragment {
     List<Author> authorList;
     RecyclerView recyBook_search;
     BookAdapter adapter;
-    int searchCode = 1;
+    int searchCode = 0;
     Bundle bundle;
 
     @Override
