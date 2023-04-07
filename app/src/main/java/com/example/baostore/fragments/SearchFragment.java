@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,7 @@ import java.util.List;
 public class SearchFragment extends Fragment {
     SearchView svSearch_search;
     Spinner spnFind;
+    TextView tvEmpty;
     List<Book> list_book;
     List<Book> searchList;
     List<Category> categoryList;
@@ -52,6 +54,7 @@ public class SearchFragment extends Fragment {
         svSearch_search = v.findViewById(R.id.svSearch_search);
         recyBook_search = v.findViewById(R.id.recyBook_search);
         spnFind = v.findViewById(R.id.spnFind_search);
+        tvEmpty  =v.findViewById(R.id.tvEmptyMsg_search);
 
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -109,6 +112,13 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+            }
+        });
+
         return v;
 
 
@@ -155,7 +165,13 @@ public class SearchFragment extends Fragment {
                 break;
 
         }
+        if (searchList.isEmpty()){
+            tvEmpty.setVisibility(View.VISIBLE);
+        } else if(tvEmpty.getVisibility() == View.VISIBLE){
+            tvEmpty.setVisibility(View.GONE);
+        }
     }
+
 
     void filterByTitle(String find) {
         if (searchList!= null) {

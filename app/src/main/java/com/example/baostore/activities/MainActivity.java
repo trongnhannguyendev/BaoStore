@@ -38,6 +38,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.fragments.HomeFragment;
 import com.example.baostore.fragments.ProfileFragment;
@@ -50,6 +51,7 @@ import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -127,64 +129,35 @@ public class MainActivity extends AppCompatActivity {
 
         //Điều hướng navigation
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            progressBar.setVisibility(View.VISIBLE);
             switch (item.getItemId()) {
                 case R.id.Home:
-                    progressBar.setVisibility(View.VISIBLE);
                     fragment = new HomeFragment();
-                    if(bundle == null || !bundle.containsKey(CATEGORY_LIST)){
-                        categoryResponseCall.enqueue(categoryGetAll(this, bundle, fragment));
-                        bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
-                    } else{
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
-                    }
+                    fragment.setArguments(bundle);
+                    loadFragment(fragment);
+
                     return true;
                 case R.id.Search:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
-                    if(bundle == null ){
-                        if(!bundle.containsKey(BOOK_LIST)) {
-                            bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(CATEGORY_LIST)){
-                            categoryResponseCall.enqueue(categoryGetAll(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(PUBLISHER_LIST)){
-                            publisherResponseCall.enqueue(getPublisher(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(AUTHOR_LIST)){
-                            authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
-                        }
-                    } else{
-                        fragment.setArguments(bundle);
-                        loadSearchFragment(fragment,0,null);
-                    }
+                    fragment.setArguments(bundle);
+                    loadSearchFragment(fragment,0,null);
+
                     progressBar.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.Cart:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
-
                     fragment = new CartFragment();
+                    fragment.setArguments(bundle);
                     cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle, fragment));
 
-                    if(!bundle.containsKey(ADDRESS_LIST)){
-                        Log.d("--", "No address list");
-                        addressResponseCall.enqueue(userAddressGetAll(this, bundle, fragment));
-                    }
+
                     return true;
                 case R.id.User:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Người dùng");
                     fragment = new ProfileFragment();
-                    if(!bundle.containsKey(ADDRESS_LIST)) {
-                        addressResponseCall.enqueue(userAddressGetAll(this, bundle, fragment));
-                    }
-                    else{
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
-                    }
+                    fragment.setArguments(bundle);
+                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -260,6 +233,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
     );
+
+    public void createSnackbar(View v,String msg){
+        Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.setAnchorView(bottomNavigationView);
+        snackbar.show();
+    }
 
 
     // Nhấn back 2 lần để thoát app

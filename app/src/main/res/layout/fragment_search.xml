@@ -48,4 +48,14 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvEmptyMsg_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:text="No item match"/>
 </FrameLayout>

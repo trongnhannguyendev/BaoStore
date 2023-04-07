@@ -30,9 +30,6 @@
             android:name=".activities.ViewPDFActivity"
             android:exported="false" />
         <activity
-            android:name=".MyPaymentActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.CodeVerifyActivity"
             android:exported="false" />
         <activity

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.net.URL;
@@ -14,17 +15,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
-    public void createSnackBar(View v, String msg) {
-        Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.show();
-    }
-
     public String priceToString(double price) {
 
         Locale locale = new Locale("vi", "VN");

@@ -1,6 +1,5 @@
 package com.example.baostore.activities;
 
-import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.ORDER_ID;
 import static com.example.baostore.Constant.Constants.ORDER_OBJECT;
 import static com.example.baostore.Api.RetrofitCallBack.getOrderDetail;
@@ -20,12 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.MyPaymentActivity;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
-import com.example.baostore.models.Book;
 import com.example.baostore.models.Order;
-import com.example.baostore.models.OrderDetail;
 import com.example.baostore.responses.OrderDetailResponse;
 import com.google.gson.JsonObject;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -39,7 +35,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import retrofit2.Call;
 

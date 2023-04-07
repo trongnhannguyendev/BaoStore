@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        spnLanguage = findViewById(R.id.spnLanguage_login);
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -72,48 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         edPassword = findViewById(R.id.edPassword_login);
         service = GetRetrofit.getInstance().createRetrofit();
 
-        int initValue=0;
-        String language = MyLocale.getLanguage(this);
-        switch (language){
-            case "vi":
-                initValue =0;
-                break;
-            case "en":
-                initValue = 1;
-                break;
-            case "fr":
-                initValue = 2;
-                break;
-
-        }
-        spnLanguage.setSelection(initValue, false);
-
-
-        spnLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (adapterView.getSelectedItemPosition()){
-                    case 0:
-                        MyLocale.setLocale(LoginActivity.this,"vi");
-                        break;
-                    case 1:
-                        MyLocale.setLocale(LoginActivity.this,"en");
-                        break;
-                    case 2:
-                        MyLocale.setLocale(LoginActivity.this,"fr");
-                        break;
-                }
-
-                recreate();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         btnLogin.setOnClickListener(view -> {
             // Tắt chỉnh sửa khi đang send query
