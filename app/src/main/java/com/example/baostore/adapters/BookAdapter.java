@@ -64,7 +64,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Book book = bookList.get(position);
         Utils utils = new Utils();
 
-
         double price = book.getPrice();
         holder.tvTitle.setText(book.getTitle());
         holder.tvPrice.setText(utils.priceToString(price));
@@ -74,7 +73,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = new Utils().loadImageFromURL(book.getUrl());
+                Bitmap bitmap = utils.loadImageFromURL(book.getUrl());
                 holder.ivBook.post(new Runnable() {
                     @Override
                     public void run() {
@@ -89,14 +88,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity activity = (MainActivity) context;
 
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(BOOK_OBJECT, book);
 
-                Log.d("--BookAdapter", book.getbookid()+"");
+                Log.d(context.getString(R.string.debug_adapter_book), book.getbookid()+"");
 
                 JsonObject object = new JsonObject();
                 object.addProperty(BOOK_ID, book.getbookid());

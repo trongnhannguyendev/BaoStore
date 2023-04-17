@@ -2,6 +2,7 @@ package com.example.baostore.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.telephony.SmsManager;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,6 +22,11 @@ public class Utils {
         NumberFormat priceFormat = NumberFormat.getCurrencyInstance(locale);
 
         return priceFormat.format(price);
+    }
+
+    public double currencyConversion(){
+
+        return -1;
     }
 
     public Date SringToDate(String date) {
@@ -61,6 +67,17 @@ public class Utils {
 
     public String logEnqueueMsg(boolean callError, int responseCode, String callMsg){
         return "\nerror: "+callError+"\nResponse code: " +responseCode+ "\nMessage: "+callMsg;
+    }
+
+    public boolean sendPhoneMessage(String phoneNum, String msg){
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNum, null, msg, null, null);
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

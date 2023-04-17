@@ -15,6 +15,7 @@ import static com.example.baostore.Api.RetrofitCallBack.getAuthor;
 import static com.example.baostore.Api.RetrofitCallBack.getPublisher;
 import static com.example.baostore.Api.RetrofitCallBack.userAddressGetAll;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -246,6 +247,10 @@ public class MainActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    public void createToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 
     // Nhấn back 2 lần để thoát app
     @Override
@@ -253,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         if (canExit) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            createToast("Press again to exit");
             canExit = !canExit;
 
             Handler handler = new Handler();

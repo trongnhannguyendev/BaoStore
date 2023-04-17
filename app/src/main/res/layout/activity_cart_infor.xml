@@ -76,18 +76,15 @@
                 android:text="0123456789"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/edAddress_cartinfo"
+
+            <Spinner
+                android:id="@+id/spnAddresses_cartinfo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/custom_form_2"
-                android:drawableStart="@drawable/ic_address"
                 android:drawablePadding="10dp"
-
                 android:paddingLeft="8dp"
-                android:text="123 Âu cơ, quận Tân Bình, TP HCM"
-                android:textSize="20dp" />
+                android:layout_marginBottom="20dp"/>
 
             <EditText
                 android:id="@+id/edEmail_cartinfo"

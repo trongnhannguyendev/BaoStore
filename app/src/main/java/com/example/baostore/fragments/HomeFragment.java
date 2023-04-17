@@ -103,11 +103,11 @@ public class HomeFragment extends Fragment {
             activity.setSearchSelection();
             if (find.isEmpty()) {
                 activity.loadSearchFragment(fragment, 0, null);
-                Log.d("---------HomeFrag", "0");
+                Log.d(getString(R.string.debug_frag_home), "Send search code: 0 - Search empty!");
             } else {
                 activity.loadSearchFragment(fragment, 7, find);
-                Log.d("---------HomeFrag", "2");
-                Log.d("---------HomeFrag", "find");
+                Log.d(getString(R.string.debug_frag_home), "Send search code: 7 - search by title");
+                Log.d(getString(R.string.debug_frag_home), "Send title: "+find);
             }
 
 
@@ -156,7 +156,7 @@ public class HomeFragment extends Fragment {
             recyBook_Popular.setAdapter(bookAdapter);
             recyBook_New.setAdapter(bookAdapter);
 
-            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+            Log.d(getString(R.string.debug_frag_home), "Check bundle book:"+list_book.get(0).getTitle());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment {
             categoryAdapter = new CategoryAdapter(list_category, getContext());
 
             recyCategory.setAdapter(categoryAdapter);
-            Log.d("--HomeFrag", list_category.get(0).getCategoryname());
+            Log.d(getString(R.string.debug_frag_home), "Check bundle category:"+list_category.get(0).getCategoryname());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {

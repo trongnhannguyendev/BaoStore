@@ -48,6 +48,11 @@ public interface ApiService {
             @Body JsonObject jsonObject
     );
 
+    @POST("remove-address.php")
+    Call<AddressResponse> removeUserAddress(
+            @Body JsonObject jsonObject
+    );
+
     @POST("update-email.php")
     Call<UserResponse> updateEmail(
             @Body JsonObject jsonObject

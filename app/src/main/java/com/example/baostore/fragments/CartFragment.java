@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -79,12 +78,12 @@ public class CartFragment extends Fragment {
                     Intent i = new Intent(getActivity(), CartInforActivity.class);
                     bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
                     bundle.putSerializable(CART_LIST, (Serializable) cartList);
-                    Log.d("--CartFrag", totalCartPrice + "");
+                    Log.d(getString(R.string.debug_frag_cart), "Total cart price: "+totalCartPrice);
 
                     i.putExtras(bundle);
                     startActivity(i);
                 } else{
-                    activity.createSnackbar(v, "Giỏ hàng trống");
+                    activity.createSnackbar(v, getString(R.string.text_cart_empty));
                 }
 
         });
@@ -104,7 +103,7 @@ public class CartFragment extends Fragment {
 
             for (int i = 0; i < cartList.size(); i++) {
                 totalCartPrice += cartList.get(i).getPrice() * cartList.get(i).getAmount();
-                Log.d("--", "getCart: " +totalCartPrice+"");
+                Log.d(getString(R.string.debug_frag_cart), "Counting total price: " +totalCartPrice);
             }
             tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
@@ -112,7 +111,7 @@ public class CartFragment extends Fragment {
 
             recyCart.setAdapter(adapter);
 
-            Log.d("---------------------------CartFrag", cartList.get(0).getTitle());
+            Log.d(getString(R.string.debug_frag_cart), cartList.get(0).getTitle());
         }
     }
 

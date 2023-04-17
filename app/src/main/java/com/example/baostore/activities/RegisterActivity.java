@@ -1,9 +1,14 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Api.RetrofitCallBack.getUserRegister;
+import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
+import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_OBJECT;
 import static com.example.baostore.Api.RetrofitCallBack.getVerificationCode;
+import static com.example.baostore.Constant.Constants.USER_PASSWORD;
+import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 
 import android.content.Intent;
 import android.os.Build;
@@ -19,6 +24,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.User;
+import com.example.baostore.responses.UserResponse;
 import com.example.baostore.responses.VerificationCodeResponse;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.gson.JsonObject;
@@ -28,7 +34,7 @@ import java.io.Serializable;
 import retrofit2.Call;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText edEmail, edPass, edRePass, edPhoneNumber, edFullName;
+    EditText edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
     Utils utils;
     ActionCodeSettings actionCodeSettings;
@@ -38,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        edEmail = findViewById(R.id.edEmail_reg);
         edPass = findViewById(R.id.edPassword_reg);
         edRePass = findViewById(R.id.edRePassword_reg);
         edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
@@ -66,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(view -> {
             turnEditingOff();
             // Lấy dữ liệu
-            String email = edEmail.getText().toString().trim();
+            String email = getIntent().getStringExtra(USER_EMAIL);
             String pass = edPass.getText().toString().trim();
             String pass_re = edRePass.getText().toString().trim();
             String phoneNumber = edPhoneNumber.getText().toString().trim();
@@ -74,29 +79,21 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Chạy đăng ký nếu không có lỗi
             if (!checkError(email, pass, pass_re, phoneNumber, fullname)) {
-                User user = new User();
-                user.setEmail(email);
-                user.setPassword(pass);
-                user.setPhonenumber(phoneNumber);
-                user.setFullname(fullname);
-
-                // Lưu user vào bundle qua verify code
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(USER_OBJECT, (Serializable) user);
-                bundle.putInt(ACTION_CODE, 1);
-                Intent intent = new Intent(RegisterActivity.this, CodeVerifyActivity.class);
-                intent.putExtras(bundle);
                 JsonObject object = new JsonObject();
                 object.addProperty(USER_EMAIL, email);
-                Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
-                call.enqueue(getVerificationCode(RegisterActivity.this, intent));
+                object.addProperty(USER_PASSWORD, pass);
+                object.addProperty(USER_PHONE_NUMBER, phoneNumber);
+                object.addProperty(USER_FULL_NAME, fullname);
 
-
+                Call<UserResponse> call = service.registerUser(object);
+                call.enqueue(getUserRegister(this, object));
             } else{
                 turnEditingOn();
             }
 
         });
+
+
 
     }
 
@@ -127,14 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
             hasError = true;
         }
 
-        if (email.isEmpty()) {
-            edEmail.setError(getResources().getString(R.string.err_email_empty));
-            hasError = true;
-        } else if (!utils.checkEmailFormat(email)) {
-            edEmail.setError(getResources().getString(R.string.err_num_format));
-            hasError = true;
-        }
-
         if (fullname.isEmpty()) {
             edFullName.setError(getResources().getString(R.string.err_fullname_empty));
             hasError = true;
@@ -143,7 +132,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void turnEditingOff(){
-        edEmail.setEnabled(false);
         edPass.setEnabled(false);
         edRePass.setEnabled(false);
         edPhoneNumber.setEnabled(false);
@@ -154,7 +142,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void turnEditingOn(){
-        edEmail.setEnabled(true);
         edPass.setEnabled(true);
         edRePass.setEnabled(true);
         edPhoneNumber.setEnabled(true);

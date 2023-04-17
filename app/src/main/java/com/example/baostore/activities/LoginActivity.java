@@ -1,5 +1,6 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Api.RetrofitCallBack.getCheckLogin;
@@ -53,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent i = new Intent(LoginActivity.this, CodeVerifyActivity.class);
+                i.putExtra(ACTION_CODE, 2);
                 startActivity(i);
             }
         });
@@ -61,7 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         // Chuyển màn hình quên mật khẩu
         tvForgotPass = findViewById(R.id.tvForgotPass);
         tvForgotPass.setOnClickListener(view ->{
-            Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            Intent i = new Intent(LoginActivity.this, CodeVerifyActivity.class);
+            i.putExtra(ACTION_CODE, 1);
             startActivity(i);
         });
 

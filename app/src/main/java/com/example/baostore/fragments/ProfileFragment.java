@@ -32,6 +32,7 @@ import com.example.baostore.SettingsActivity;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.LoginActivity;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.models.User;
 
@@ -49,6 +50,7 @@ public class ProfileFragment extends Fragment {
     TextView tvFullname;
     ImageView ivUserProfile;
     Bundle bundle;
+    Intent i;
 
     String currentPhotoPath;
     @Override
@@ -61,7 +63,9 @@ public class ProfileFragment extends Fragment {
         btnChangePass = view.findViewById(R.id.btnChangePass_profile);
         btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
         btnToSettings = view.findViewById(R.id.btnToSettings_profile);
+        btnLogOut=view.findViewById(R.id.btnLogOut);
         ivUserProfile = view.findViewById(R.id.ivUser_profile);
+
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
         tvFullname.setText(user.getFullname());
@@ -92,13 +96,13 @@ public class ProfileFragment extends Fragment {
         });
 
         btnChangePass.setOnClickListener(v ->{
-            Intent i = new Intent(getActivity(), ChangePassActivity.class);
+            i = new Intent(getActivity(), ChangePassActivity.class);
             i.putExtras(bundle);
             startActivity(i);
         });
 
         btnToCartHistory.setOnClickListener(v ->{
-            Intent i = new Intent(getActivity(), BuyHistoryActivity.class);
+            i = new Intent(getActivity(), BuyHistoryActivity.class);
             startActivity(i);
         });
 
@@ -110,12 +114,12 @@ public class ProfileFragment extends Fragment {
         });
 
         btnToSettings.setOnClickListener(v->{
-            Intent i = new Intent(getActivity(), SettingsActivity.class);
+            i = new Intent(getActivity(), SettingsActivity.class);
             startActivity(i);
         });
 
         // Đăng xuất
-        btnLogOut=view.findViewById(R.id.btnLogOut);
+
         btnLogOut.setOnClickListener(v -> {
             getActivity().finish();
             SharedPrefManager.getInstance(getContext()).logout();
@@ -161,13 +165,13 @@ public class ProfileFragment extends Fragment {
 
                         } catch (FileNotFoundException e){
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                            ((MainActivity)getContext()).createToast(getString(R.string.err_file_not_found));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
 
                     } else{
-                        Toast.makeText(getContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
+                        ((MainActivity)getContext()).createToast(getString(R.string.text_something_wrong));
                     }
                 }
             });
@@ -192,11 +196,12 @@ public class ProfileFragment extends Fragment {
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                ((MainActivity)getContext()).createToast(getString(R.string.text_something_wrong));
+
             }
 
         }else {
-            Toast.makeText(getContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
+            ((MainActivity)getContext()).createToast(getString(R.string.image_not_picked));
         }
     }
 

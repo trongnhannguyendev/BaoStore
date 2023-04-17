@@ -2,16 +2,20 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Api.RetrofitCallBack.getCheckSaveUserSplash;
+import static com.example.baostore.testapi.AppHelper.pushNotification;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +46,8 @@ public class SplashActivity extends AppCompatActivity {
 
         service = GetRetrofit.getInstance().createRetrofit();
 
+
+
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -53,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pushNotification(SplashActivity.this, "Splash", "Click on splash");
                 // Kiểm tra dữ liệu người dùng tồn tại
                 if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
                     finish();
@@ -71,5 +78,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

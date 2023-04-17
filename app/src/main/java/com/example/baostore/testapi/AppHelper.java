@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
 
@@ -16,13 +17,13 @@ public class AppHelper {
         Intent notIntent = new Intent(context.getApplicationContext(), SplashActivity.class);
         notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendInt = PendingIntent.getActivity(context, 0,
-                notIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                notIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationChannel channel = new NotificationChannel("123", "BAOSTORE", NotificationManager.IMPORTANCE_DEFAULT);
 
         Intent fullScreenIntent = new Intent(context, SplashActivity.class);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
-                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                fullScreenIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,"123")
                 .setSmallIcon(R.drawable.logo)

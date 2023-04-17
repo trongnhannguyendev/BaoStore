@@ -12,16 +12,21 @@ import android.widget.Spinner;
 
 import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.activities.LoginActivity;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class SettingsActivity extends AppCompatActivity {
 
     Spinner spnLanguage;
+    MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        toolbar = findViewById(R.id.mtbSetting);
         spnLanguage = findViewById(R.id.spnLanguage_settings);
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.language));
@@ -67,6 +72,10 @@ public class SettingsActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+        });
+
+        toolbar.setNavigationOnClickListener(view->{
+            finish();
         });
     }
 }

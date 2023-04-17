@@ -68,9 +68,15 @@ public class SearchFragment extends Fragment {
             if (bundle.containsKey(BOOK_LIST)) {
                 list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
             }
-            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
-            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+            if (bundle.containsKey(CATEGORY_LIST)) {
+                categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+            }
+            if (bundle.containsKey(PUBLISHER_LIST)) {
+                publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
+            }
+            if (bundle.containsKey(AUTHOR_LIST)) {
+                authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+            }
         }
 
         ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));

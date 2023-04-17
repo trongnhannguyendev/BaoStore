@@ -14,9 +14,13 @@ import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -78,10 +82,27 @@ public class UserInforActivity extends AppCompatActivity {
             for(Address address1: addressList){
                 Log.d("----UserInforActivity", address1.getLocation());
             }
-            Log.d("---",addressList.toString());
-
+            Address address1 = new Address();
+            address1.setLocation("Add new address");
+            addressList.add(address1);
             AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
             spnAddress.setAdapter(adapter);
+
+            spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Toast.makeText(UserInforActivity.this, "position: "+i+"size: "+addressList.size(), Toast.LENGTH_SHORT).show();
+                    if (i == addressList.size()-1){
+                        Intent intent = new Intent(UserInforActivity.this, AddAddressActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
         }
 
@@ -106,6 +127,16 @@ public class UserInforActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 onBackPressed();
+            }
+        });
+
+        edfullname.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionID, KeyEvent keyEvent) {
+                if(actionID == EditorInfo.IME_ACTION_DONE && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    Toast.makeText(UserInforActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                }
+                return false;
             }
         });
 
@@ -152,7 +183,7 @@ public class UserInforActivity extends AppCompatActivity {
                     object.addProperty(ADDRESS_NAME, addressName);
 
                     Call<AddressResponse> call= service.insertUserAddress(object);
-                    call.enqueue(addressNoData(this));
+                    call.enqueue(addressNoData(this,0));
                 }
 
                 if(!email.equals(user.getEmail())){
