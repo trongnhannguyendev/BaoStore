@@ -66,11 +66,25 @@
     </string-array>
 
     <string-array name="search_item">
-        <item>Title</item>
-        <item>Category</item>
-        <item>Author</item>
-        <item>Publisher</item>
+        <item>Tiêu đề</item>
+        <item>Danh mục</item>
+        <item>Tác giả</item>
+        <item>Nhà xuất bản</item>
     </string-array>
+
+    <string-array name="sort_item">
+        <item>Chữ cái tăng dần</item>
+        <item>Chữ cái giảm dần</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+
+    </string-array>
+
+    <array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </array>
+
 
     <string-array name="district">
         <item>1</item>

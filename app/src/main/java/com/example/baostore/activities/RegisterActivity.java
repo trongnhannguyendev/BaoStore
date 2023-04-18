@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edPass, edRePass, edPhoneNumber, edFullName;
     MotionButton btnCancel, btnRegister;
     Utils utils;
-    ActionCodeSettings actionCodeSettings;
     ApiService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

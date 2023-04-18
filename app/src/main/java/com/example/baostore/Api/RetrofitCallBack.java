@@ -665,6 +665,7 @@ public class RetrofitCallBack {
                 if (response.body().getResponseCode() == RESPONSE_OKAY){
                     intent.putExtra(VERIFICATION_CODE, response.body().getData().getCode());
                     ((CodeVerifyActivity)context).turnEditingOn();
+                    ((CodeVerifyActivity)context).turnVerifyFieldsOn();
                 }
             }
 

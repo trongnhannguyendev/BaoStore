@@ -54,7 +54,6 @@ public class CartInforActivity extends AppCompatActivity {
 
         edFullName = findViewById(R.id.edFullName_cartinfo);
         edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
-        edAddress = findViewById(R.id.edAddress_cartinfo);
         edEmail = findViewById(R.id.edEmail_cartinfo);
         btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
         spnAddress = findViewById(R.id.spnAddresses_cartinfo);

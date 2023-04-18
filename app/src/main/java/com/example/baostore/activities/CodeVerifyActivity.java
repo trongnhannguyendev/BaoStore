@@ -17,9 +17,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
@@ -29,16 +32,18 @@ import com.example.baostore.models.User;
 import com.example.baostore.models.VerificationCode;
 import com.example.baostore.responses.UserResponse;
 import com.example.baostore.responses.VerificationCodeResponse;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.JsonObject;
 
 import okhttp3.internal.Util;
 import retrofit2.Call;
 
 public class CodeVerifyActivity extends AppCompatActivity {
+    LinearLayout llSend, llVerify;
     EditText edEmail, edVerifyCode;
     Button btnVerify, btnSend;
+    MaterialToolbar toolbar;
     ApiService service;
-    Bundle bundle;
     int actionCode;
     String email;
     Intent intent ;
@@ -47,10 +52,17 @@ public class CodeVerifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_code);
 
+        llSend = findViewById(R.id.llsend);
+        llVerify = findViewById(R.id.llverify);
         edEmail = findViewById(R.id.edEmail_verifycode);
         edVerifyCode = findViewById(R.id.edVerifyCode);
         btnVerify = findViewById(R.id.btnVerifyCode_verify);
         btnSend = findViewById(R.id.btnEmail_verifyCode);
+        toolbar = findViewById(R.id.toolbar_vc);
+
+
+
+        turnVerifyFieldsOff();
 
         intent = new Intent();
         edVerifyCode.setEnabled(false);
@@ -95,6 +107,13 @@ public class CodeVerifyActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     public void turnEditingOff(){
@@ -125,5 +144,14 @@ public class CodeVerifyActivity extends AppCompatActivity {
         return hasError;
     }
 
+    public void turnVerifyFieldsOn(){
+        llSend.setVisibility(View.GONE);
+        llVerify.setVisibility(View.VISIBLE);
+    }
+
+    public void turnVerifyFieldsOff(){
+        llSend.setVisibility(View.VISIBLE);
+        llVerify.setVisibility(View.GONE);
+    }
 
 }

@@ -8,7 +8,7 @@ public class Book implements Serializable {
     private int totalPage;
     private String description;
     private String releasedate;
-    private double price;
+    private Double price;
     private int quantity;
     private int categoryid;
     private int authorid;
@@ -19,14 +19,14 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(int bookid, String title, double price, String url) {
+    public Book(int bookid, String title, Double price, String url) {
         this.bookid = bookid;
         this.title = title;
         this.price = price;
         this.url = url;
     }
 
-    public Book(int bookid, String title, double price, int quantity, int categoryid, int authorid, int publisherid, String url) {
+    public Book(int bookid, String title, Double price, int quantity, int categoryid, int authorid, int publisherid, String url) {
         this.bookid = bookid;
         this.title = title;
         this.price = price;
@@ -37,7 +37,7 @@ public class Book implements Serializable {
         this.url = url;
     }
 
-    public Book(int bookid, String title, int totalPage, String description, String releasedate, double price, int quantity, int categoryid, int authorid, int publisherid, int state, String url) {
+    public Book(int bookid, String title, int totalPage, String description, String releasedate, Double price, int quantity, int categoryid, int authorid, int publisherid, int state, String url) {
         this.bookid = bookid;
         this.title = title;
         this.totalPage = totalPage;
@@ -92,11 +92,11 @@ public class Book implements Serializable {
         this.releasedate = releasedate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

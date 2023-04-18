@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,12 +31,15 @@ import com.example.baostore.models.Category;
 import com.example.baostore.models.Publisher;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
+    RelativeLayout rlSearchOption;
     SearchView svSearch_search;
     Spinner spnFind;
-    TextView tvEmpty;
+    TextView tvEmpty, tvToggle;
     List<Book> list_book;
     List<Book> searchList;
     List<Category> categoryList;
@@ -55,6 +59,8 @@ public class SearchFragment extends Fragment {
         recyBook_search = v.findViewById(R.id.recyBook_search);
         spnFind = v.findViewById(R.id.spnFind_search);
         tvEmpty  =v.findViewById(R.id.tvEmptyMsg_search);
+        tvToggle = v.findViewById(R.id.toggleAction);
+        rlSearchOption = v.findViewById(R.id.llSearchOptions);
 
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -98,7 +104,6 @@ public class SearchFragment extends Fragment {
         adapter = new BookAdapter(list_book, getContext(),1);
         recyBook_search.setAdapter(adapter);
 
-        filterV1("");
 
 
         svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -122,6 +127,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onChanged() {
                 super.onChanged();
+            }
+        });
+
+        tvToggle.setOnClickListener(view->{
+            if(rlSearchOption.getVisibility() != View.VISIBLE){
+                rlSearchOption.setVisibility(View.VISIBLE);
+            } else{
+                rlSearchOption.setVisibility(View.GONE);
             }
         });
 
@@ -178,6 +191,42 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    public void sortBy(int sortCode){
+        if(sortCode == 1) {
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return book.getTitle().compareTo(t1.getTitle());
+                }
+            });
+        }
+
+        if (sortCode == 2){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return t1.getTitle().compareTo(book.getTitle());
+                }
+            });
+        }
+
+        if (sortCode == 3){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return book.getPrice().compareTo(t1.getPrice());
+                }
+            });
+        }
+        if (sortCode == 4){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return t1.getPrice().compareTo(book.getPrice());
+                }
+            });
+        }
+    }
 
     void filterByTitle(String find) {
         if (searchList!= null) {

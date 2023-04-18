@@ -23,6 +23,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.responses.AddressResponse;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -31,6 +32,7 @@ public class AddAddressActivity extends AppCompatActivity {
     EditText edAddressName;
     Spinner spnWard, spnDistrict;
     ArrayAdapter<String> wardAdapter;
+    MaterialToolbar toolbar;
     Button btnAdd;
     ApiService service = GetRetrofit.getInstance().createRetrofit();
 
@@ -42,10 +44,15 @@ public class AddAddressActivity extends AppCompatActivity {
         spnWard = findViewById(R.id.spnWard);
         edAddressName = findViewById(R.id.edAddressName);
         btnAdd = findViewById(R.id.btnAdd_address);
+        toolbar = findViewById(R.id.mtb_aa);
 
 
         ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.district));
         spnDistrict.setAdapter(districtAdapter);
+
+        toolbar.setNavigationOnClickListener(view->{
+            finish();
+        });
 
         spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
