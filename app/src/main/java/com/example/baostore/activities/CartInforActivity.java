@@ -124,7 +124,7 @@ public class CartInforActivity extends AppCompatActivity {
                     String fullName = edFullName.getText().toString().trim();
                     String address = edAddress.getText().toString().trim();
 
-                    if (checkError(email, phoneNumber, fullName)) {
+                    if (!checkError(email, phoneNumber, fullName)) {
                         Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
                         bundle.putString(ADDRESS_LOCATION, address);
                         bundle.putString(USER_PHONE_NUMBER, phoneNumber);
@@ -139,30 +139,30 @@ public class CartInforActivity extends AppCompatActivity {
 
      private boolean checkError(String email, String phoneNumber, String fullname) {
 
-        boolean hasError = true;
+        boolean hasError = false;
 
         if (phoneNumber.isEmpty()) {
             edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_empty));
-            hasError = false;
+            hasError = true;
         } else if (phoneNumber.length() != 10) {
             edPhoneNumber.setError(getResources().getString(R.string.err_phonenumber_format));
-            hasError = false;
+            hasError = true;
         } else if (!utils.isNumeric(phoneNumber)) {
             edPhoneNumber.setError(getResources().getString(R.string.err_num_format));
-            hasError = false;
+            hasError = true;
         }
 
         if (email.isEmpty()) {
             edEmail.setError(getResources().getString(R.string.err_email_empty));
-            hasError = false;
+            hasError = true;
         } else if (!utils.checkEmailFormat(email)) {
             edEmail.setError(getResources().getString(R.string.err_num_format));
-            hasError = false;
+            hasError = true;
         }
 
         if (fullname.isEmpty()) {
             edFullName.setError(getResources().getString(R.string.err_fullname_empty));
-            hasError = false;
+            hasError = true;
         }
         return hasError;
     }

@@ -85,6 +85,11 @@
         <item>70.0</item>
     </array>
 
+    <array name="payment_type">
+        <item>Khi nhận hàng</item>
+        <item>Paypal</item>
+    </array>
+
 
     <string-array name="district">
         <item>1</item>

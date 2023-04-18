@@ -21,20 +21,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:background="@drawable/custom_card">
 
     <EditText
         android:id="@+id/edAddressName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:maxLines="1"
         android:text="Địa chỉ" />
 
     <TextView
         android:id="@+id/tvDistrict"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_below="@+id/edAddressName"
@@ -45,6 +49,7 @@
         android:id="@+id/spnDistrict"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
         android:layout_below="@+id/edAddressName"
         android:layout_toRightOf="@+id/tvDistrict"/>
 
@@ -52,6 +57,7 @@
         android:id="@+id/tvWard"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_below="@+id/tvDistrict"
@@ -62,12 +68,15 @@
         android:id="@+id/spnWard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/tvWard"
         android:layout_below="@+id/spnDistrict"/>
 
     <TextView
         android:id="@+id/tvCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:textAlignment="center"

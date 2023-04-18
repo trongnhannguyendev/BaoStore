@@ -313,7 +313,8 @@
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
-                        <TextView
+                        <Spinner
+                            android:id="@+id/spnPaymentType_cp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
@@ -323,11 +324,6 @@
                             android:textColor="@color/black"
                             android:textSize="12dp" />
 
-                        <ImageView
-                            android:id="@+id/img_funcpayment_arrow"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_arrow_down" />
                     </LinearLayout>
 
                     <LinearLayout
