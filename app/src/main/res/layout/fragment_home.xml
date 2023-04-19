@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:hint="Bạn muốn tìm gì ?"
+            android:hint="@string/hint_search_for"
             android:lines="1"
             android:maxLines="1"
             android:inputType="text"/>
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sản phẩm nổi bật"
+                    android:text="@string/subtitle_popular"
                     android:textColor="#3D5ED6"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Xem tất cả >>"
+                    android:text="@string/nav_to_search"
                     android:textAlignment="textEnd"
 
                     android:textSize="14dp" />
@@ -154,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sản phẩm Mới"
+                            android:text="@string/subtitle_new"
                             android:textColor="#3D5ED6"
                             android:textSize="20dp"
                             android:textStyle="bold" />
@@ -163,7 +163,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Xem tất cả >>"
+                            android:text="@string/nav_to_search"
                             android:textAlignment="textEnd"
 
                             android:textSize="14dp" />

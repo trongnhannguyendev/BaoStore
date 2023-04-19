@@ -131,7 +131,7 @@ public class CartPaymentActivity extends AppCompatActivity {
         bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
         btnConfirm.setOnClickListener(view ->{
-            long paymentType = spnPaymentType.getSelectedItemId();
+            int paymentType = spnPaymentType.getSelectedItemPosition();
             if (paymentType == 0){
                 insertItem(fullName,phoneNumber,address, user);
 
@@ -161,9 +161,9 @@ public class CartPaymentActivity extends AppCompatActivity {
     }
 
     private void getPayment(){
-        double amount = totalPrice;
+        double amount = totalPrice*0.000043 ;
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "USD", "Course Fees",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "USD", "Book Fees",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         // Creating Paypal Payment activity intent

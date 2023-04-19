@@ -21,6 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/custom_card">
 
@@ -32,7 +33,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:maxLines="1"
-        android:text="Địa chỉ" />
+        android:hint="Địa chỉ" />
 
     <TextView
         android:id="@+id/tvDistrict"
@@ -40,7 +41,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:textSize="20sp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:layout_below="@+id/edAddressName"
         android:textColor="@color/black"
         android:text="Phường"/>
@@ -59,7 +60,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:textSize="20sp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:layout_below="@+id/tvDistrict"
         android:textColor="@color/black"
         android:text="Quận"/>
@@ -91,10 +92,11 @@
         android:id="@+id/btnAdd_address"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/custom_button_1"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|bottom"
         android:layout_below="@+id/tvCity"
         android:textSize="20dp"
         android:textStyle="bold"

@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/Home"
-        android:title="Trang chủ"
+        android:title="@string/bot_nav_home"
         android:icon="@drawable/ic_home" />
 
     <item
 
         android:id="@+id/Search"
-        android:title=""
+        android:title="@string/bot_nav_search"
         android:icon="@drawable/ic_search" />
 
     <item
         android:id="@+id/Cart"
-        android:title="Giỏ hàng"
+        android:title="@string/bot_nav_cart"
         android:icon="@drawable/ic_cart" />
 
     <item
         android:id="@+id/User"
-        android:title="Tôi"
+        android:title="@string/bot_nav_user"
         android:icon="@drawable/ic_user" />
 </menu>

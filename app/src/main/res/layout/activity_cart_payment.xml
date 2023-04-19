@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:padding="10dp"
-                        android:text="Chi tiết thanh toán"
+                        android:text="@string/title_cart_payment"
                         android:textColor="@color/black"
                         android:textSize="24dp"
                         android:textStyle="bold" />
@@ -80,7 +80,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Họ và tên"
+                            android:text="@string/text_fullname"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -106,7 +106,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Số điện thoại"
+                            android:text="@string/text_phonenumber"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -132,7 +132,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Địa chỉ"
+                            android:text="@string/text_address"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -159,7 +159,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Ngày"
+                            android:text="@string/text_date"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -186,7 +186,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Ghi chú"
+                            android:text="@string/text_note"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -212,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="Tổng chi phí"
+                        android:text="@string/subtitle_total_cost"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -230,7 +230,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Tiền ship"
+                            android:text="@string/text_shipping_price"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -262,7 +262,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Tổng"
+                            android:text="@string/text_total_price"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -309,7 +309,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Phương thức thanh toán"
+                            android:text="@string/text_payment_type"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -396,7 +396,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Nhập mã voucher"
+                            android:text="@string/text_voucher"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -440,7 +440,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@drawable/custom_button_blue"
-            android:text="Xác nhận"
+            android:text="@string/button_confirm"
             android:textAllCaps="false"
             android:textColor="#001AFF"
             android:textSize="20dp"

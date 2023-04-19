@@ -33,7 +33,7 @@
     <string name="splash_motto">You are about to enter a world of books.</string>
     <string name="splash_header">Welcome to BaoStore</string>
 
-    <string name="login_header">Login</string>
+    <string name="header_login">Login</string>
     <string name="edittext_hint_email">Email</string>
     <string name="edittext_hint_password">Password</string>
     <string name="button_submit_login">Login</string>

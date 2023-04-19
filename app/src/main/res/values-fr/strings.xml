@@ -34,7 +34,7 @@
     <string name="splash_motto">Vous êtes sur le point d\'entrer dans un monde de livres.</string>
     <string name="splash_header">Bienvenue dans le BaoStore</string>
 
-    <string name="login_header">Login</string>
+    <string name="header_login">Login</string>
     <string name="edittext_hint_email">Adresse courriel</string>
     <string name="edittext_hint_password">Passe</string>
     <string name="button_submit_login">Login</string>

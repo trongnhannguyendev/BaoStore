@@ -35,7 +35,7 @@
     <string name="splash_motto">Một thế giới sách đang chào đón bạn.</string>
     <string name="splash_header">Welcome to BaoStore</string>
 
-    <string name="login_header">Đăng Nhập</string>
+    <string name="header_login">Đăng Nhập</string>
     <string name="edittext_hint_email">Email</string>
     <string name="edittext_hint_password">Mật khẩu</string>
     <string name="button_submit_login">Đăng nhập</string>

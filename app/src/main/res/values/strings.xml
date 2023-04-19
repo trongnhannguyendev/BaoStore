@@ -31,6 +31,22 @@
 
     <string name="enqueue_failure">Something wrong happen</string>
 
+    <string name="hint_email">Email</string>
+    <string name="hint_fullname">Họ tên</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="hint_re_password">Nhập lại mật khẩu</string>
+    <string name="hint_password_old">Nhập mật khẩu cũ</string>
+    <string name="hint_password_new">Nhập mật khẩu mới</string>
+    <string name="hint_re_password_new">Nhập lại mật khẩu mới</string>
+    <string name="hint_phonenumber">Số Điện Thoại</string>
+    <string name="hint_verification_code">Mã xác nhận</string>
+    <string name="hint_search_for">Bạn muốn tìm gì ?</string>
+
+    <string name="header_register">Đăng ký</string>
+    <string name="header_login">Đăng Nhập</string>
+    <string name="title_cart_info">Thông tin người nhận</string>
+    <string name="title_cart_payment">Chi tiết thanh toán</string>
+
     <string name="msg_exit_app">Nhấn lại để thoát app</string>
     <string name="err_account_deactivate">Tài khoản đã bị vô hiệu hóa</string>
     <string name="err_email_not_found">Email không tồn tại</string>
@@ -41,14 +57,65 @@
 
 
     <!--    Login-->
-    <string name="login_header">Đăng Nhập</string>
-    <string name="edittext_hint_email">Email</string>
-    <string name="edittext_hint_password">Mật khẩu</string>
+
     <string name="button_submit_login">Đăng nhập</string>
     <string name="button_to_forgot_pass">Quên mật khẩu</string>
-    <string name="register_text">Bạn chưa có tài khoản ???</string>
+    <string name="to_register_text">Bạn chưa có tài khoản ???</string>
     <string name="button_register">Đăng kí</string>
+    <string name="button_cancel">Hủy</string>
+    <string name="button_confirm">Xác nhận</string>
 
+
+    <!--    bottom navigation-->
+    <string name="bot_nav_home">Trang chủ</string>
+    <string name="bot_nav_search">Tìm kiếm</string>
+    <string name="bot_nav_cart">Giỏ hàng</string>
+    <string name="bot_nav_user">Tôi</string>
+
+    <!--    Home Frag-->
+    <string name="subtitle_popular">Sản phẩm nổi bật</string>
+    <string name="subtitle_new">Sản phẩm mới</string>
+    <string name="nav_to_search">Xem tất cả >></string>
+
+
+    <!-- Search Frag-->
+    <string name="dropdown_search_advance">Lựa chọn nâng cao</string>
+    <string name="search_option">Tìm kiếm theo: </string>
+    <string name="sort_option">Sắp xếp theo: </string>
+    <string name="no_item_match">Không tìm được sản phẩm</string>
+
+
+    <!-- Cart Frag-->
+    <string name="cart_total">Tổng</string>
+    <string name="cart_temp_price">Giá</string>
+
+    <!-- Profile Frag-->
+    <string name="nav_personal_info">Thông tin cá nhân</string>
+    <string name="nav_order_history">Lịch sử mua hàng</string>
+    <string name="nav_change_password">Thay đổi mật khẩu</string>
+    <string name="nav_settings">Cài đặt</string>
+    <string name="button_logout">Đăng xuất</string>
+
+    <!-- Cart Payment Activity-->
+    <string name="text_fullname">Họ và tên</string>
+    <string name="text_phonenumber">Số điện thoại</string>
+    <string name="text_address">Địa chỉ</string>
+    <string name="text_date">Ngày</string>
+    <string name="text_note">Ghi chú</string>
+    <string name="subtitle_total_cost">Tổng chi phí</string>
+    <string name="text_shipping_price">Tiền ship</string>
+    <string name="text_total_price">Tổng</string>
+    <string name="text_payment_type">Phương thức thanh toán</string>
+    <string name="text_voucher">Nhập mã voucher</string>
+
+    <!-- Book Detail Activity-->
+    <string name="button_add_cart">Thêm vào giỏ hàng</string>
+    <string name="button_add_and_to_cart">Thanh toán</string>
+
+
+
+    <!-- Order Detail Activity-->
+    <string name="order_total">Thành tiền</string>
 
     <string name="text_language">Ngôn ngữ</string>
     <string name="text_setting">Cài đặt</string>
@@ -57,6 +124,8 @@
     <string name="image_not_picked">Bạn chưa chọn hình</string>
     <string name="text_register_success">Đăng ký thành công</string>
     <string name="text_register_fail">Đăng ký thất bại</string>
+    <string name="text_preview_book">Xem trước</string>
+    <string name="subtitle_receiver">Thông tin nhận hàng</string>
 
 
     <string-array name="language">

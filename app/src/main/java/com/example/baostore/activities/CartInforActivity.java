@@ -122,7 +122,8 @@ public class CartInforActivity extends AppCompatActivity {
                     String email = edEmail.getText().toString().trim();
                     String phoneNumber = edPhoneNumber.getText().toString().trim();
                     String fullName = edFullName.getText().toString().trim();
-                    String address = edAddress.getText().toString().trim();
+                    Address address2 = (Address) spnAddress.getSelectedItem();
+                    String address = address2.getLocation();
 
                     if (!checkError(email, phoneNumber, fullName)) {
                         Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);

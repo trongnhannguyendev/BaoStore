@@ -99,7 +99,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_1"
-            android:text="Xác nhận"
+            android:text="@string/button_confirm"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20dp"

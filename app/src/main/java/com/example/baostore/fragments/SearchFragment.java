@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,8 +38,9 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
     RelativeLayout rlSearchOption;
+    LinearLayout llRecy;
     SearchView svSearch_search;
-    Spinner spnFind;
+    Spinner spnFind, spnSortBy;
     TextView tvEmpty, tvToggle;
     List<Book> list_book;
     List<Book> searchList;
@@ -58,9 +60,11 @@ public class SearchFragment extends Fragment {
         svSearch_search = v.findViewById(R.id.svSearch_search);
         recyBook_search = v.findViewById(R.id.recyBook_search);
         spnFind = v.findViewById(R.id.spnFind_search);
+        spnSortBy = v.findViewById(R.id.spnSortBy_search);
         tvEmpty  =v.findViewById(R.id.tvEmptyMsg_search);
         tvToggle = v.findViewById(R.id.toggleAction);
         rlSearchOption = v.findViewById(R.id.llSearchOptions);
+        llRecy = v.findViewById(R.id.llRecy_fs);
 
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -87,8 +91,11 @@ public class SearchFragment extends Fragment {
 
         ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spnFind.setAdapter(spnAdapter);
+
+        ArrayAdapter spnAdapterSort = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sort_item));
+        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnSortBy.setAdapter(spnAdapterSort);
 
         spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -98,6 +105,25 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int sortCode = i;
+                if(sortCode == 1) {
+                    Collections.sort(searchList, new Comparator<Book>() {
+                        @Override
+                        public int compare(Book book, Book t1) {
+                            return book.getTitle().compareTo(t1.getTitle());
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -133,8 +159,14 @@ public class SearchFragment extends Fragment {
         tvToggle.setOnClickListener(view->{
             if(rlSearchOption.getVisibility() != View.VISIBLE){
                 rlSearchOption.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 220, 0, 0);
+                llRecy.setLayoutParams(lp);
             } else{
                 rlSearchOption.setVisibility(View.GONE);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 170, 0, 0);
+                llRecy.setLayoutParams(lp);
             }
         });
 
@@ -184,6 +216,7 @@ public class SearchFragment extends Fragment {
                 break;
 
         }
+        sortBy();
         if (searchList.isEmpty()){
             tvEmpty.setVisibility(View.VISIBLE);
         } else if(tvEmpty.getVisibility() == View.VISIBLE){
@@ -191,7 +224,8 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    public void sortBy(int sortCode){
+    public void sortBy(){
+        long sortCode = spnSortBy.getSelectedItemId();
         if(sortCode == 1) {
             Collections.sort(searchList, new Comparator<Book>() {
                 @Override
