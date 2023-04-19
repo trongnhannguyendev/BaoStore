@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -25,6 +24,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.CartInforActivity;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.adapters.CartAdapter;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
@@ -44,6 +44,8 @@ public class CartFragment extends Fragment {
     public Bundle bundle;
     public List<Cart> cartList;
     public List<Book> bookList;
+    ApiService service;
+    MainActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +55,8 @@ public class CartFragment extends Fragment {
 
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
-        ApiService service= new GetRetrofit().getRetrofit();
+        service= GetRetrofit.getInstance().createRetrofit();
+        activity = (MainActivity) getContext();
 
         // màu icon progress
         cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
@@ -71,17 +74,18 @@ public class CartFragment extends Fragment {
         getCart();
 
         btnConfirmCart.setOnClickListener(v -> {
-            try{
-            Intent i = new Intent(getActivity(), CartInforActivity.class);
-            bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
-            bundle.putSerializable(CART_LIST, (Serializable) cartList);
-            Log.d("--CartFrag",totalCartPrice+"");
+                if (!cartList.isEmpty()) {
+                    Intent i = new Intent(getActivity(), CartInforActivity.class);
+                    bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
+                    bundle.putSerializable(CART_LIST, (Serializable) cartList);
+                    Log.d(getString(R.string.debug_frag_cart), "Total cart price: "+totalCartPrice);
 
-            i.putExtras(bundle);
-            startActivity(i);
-            } catch (Exception e){
-                Toast.makeText(getContext(), "Giỏ hàng trống !!", Toast.LENGTH_SHORT).show();
-            }
+                    i.putExtras(bundle);
+                    startActivity(i);
+                } else{
+                    activity.createSnackbar(v, getString(R.string.text_cart_empty));
+                }
+
         });
         return view;
     }
@@ -99,7 +103,7 @@ public class CartFragment extends Fragment {
 
             for (int i = 0; i < cartList.size(); i++) {
                 totalCartPrice += cartList.get(i).getPrice() * cartList.get(i).getAmount();
-                Log.d("--", "getCart: " +totalCartPrice+"");
+                Log.d(getString(R.string.debug_frag_cart), "Counting total price: " +totalCartPrice);
             }
             tvTotalPrice.setText(new Utils().priceToString(totalCartPrice));
 
@@ -107,15 +111,7 @@ public class CartFragment extends Fragment {
 
             recyCart.setAdapter(adapter);
 
-            Log.d("---------------------------CartFrag", cartList.get(0).getTitle());
-        } else {
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getCart();
-                }
-            }, 1000);
+            Log.d(getString(R.string.debug_frag_cart), cartList.get(0).getTitle());
         }
     }
 

@@ -6,53 +6,104 @@
     android:layout_height="match_parent"
     tools:context=".activities.CodeVerifyActivity">
 
-
-
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_vc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_header"
+        app:titleCentered="true"
+        app:title="Verify code"
+        app:titleTextColor="@color/white"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/white"
+        />
 
 
     <LinearLayout
-        android:id="@+id/ll_verifycode"
+        android:id="@+id/llsend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_vc"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_card"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="15dp">
+    <EditText
+        android:id="@+id/edEmail_verifycode"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/myToolbar"
+        android:drawableStart="@drawable/ic_mail_2"
+        android:drawablePadding="10dp"
+        android:paddingLeft="8dp"
+        android:textSize="20dp"
+        android:background="@drawable/custom_form_2"
+        android:hint="@string/hint_email"/>
 
-        android:gravity="center">
-
-        <EditText
-            android:id="@+id/edCode1"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:maxLength="1"/>
-        <EditText
-            android:id="@+id/edCode2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:maxLength="1"/>
-        <EditText
-            android:id="@+id/edCode3"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:maxLength="1" />
-        <EditText
-            android:id="@+id/edCode4"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:maxLength="1"/>
+        <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnEmail_verifyCode"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_1"
+            android:layout_marginTop="10dp"
+            android:text="@string/button_confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnVerifyCode_verify"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llverify"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_verifycode"
-        android:layout_centerHorizontal="true"
-        android:text="Verify"/>
+        android:layout_below="@id/llsend"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:background="@drawable/custom_card"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <EditText
+            android:id="@+id/edVerifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btnEmail_verifyCode"
+            android:drawableStart="@drawable/ic_key"
+            android:drawablePadding="10dp"
+            android:paddingLeft="8dp"
+            android:maxLines="4"
+            android:textSize="20dp"
+            android:background="@drawable/custom_form_2"
+            android:hint="@string/hint_verification_code"/>
+
+        <androidx.constraintlayout.utils.widget.MotionButton
+            android:id="@+id/btnVerifyCode_verify"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/custom_button_1"
+
+
+            android:text="@string/button_confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>

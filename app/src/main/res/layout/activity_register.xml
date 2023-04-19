@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                android:layout_margin="10dp"
-                android:text="Đăng Kí"
+                android:text="@string/header_register"
                 android:textAlignment="center"
                 android:textColor="#3D5ED6"
                 android:textSize="32dp" />
@@ -60,18 +60,16 @@
                 android:padding="5dp">
 
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="#fff"
-                    android:src="@drawable/ic_user_1" />
+
 
                 <EditText
                     android:id="@+id/edFullName_reg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="36dp"
+                    android:drawableStart="@drawable/ic_user_1"
+                    android:drawablePadding="12dp"
                     android:background="#fff"
-                    android:hint="Họ tên"
+                    android:hint="@string/hint_fullname"
                     android:lineSpacingMultiplier="1"
                     android:lines="1"
                     android:maxLines="1"
@@ -92,19 +90,14 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
 
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="#fff"
-                    android:src="@drawable/ic_lock" />
-
                 <EditText
                     android:id="@+id/edPassword_reg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="36dp"
                     android:background="#fff"
-                    android:hint="Mật khẩu"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/hint_password"
                     android:lineSpacingMultiplier="1"
                     android:lines="1"
                     android:maxLines="1"
@@ -124,19 +117,15 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
 
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="#fff"
-                    android:src="@drawable/ic_lock" />
 
                 <EditText
                     android:id="@+id/edRePassword_reg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="36dp"
                     android:background="#fff"
-                    android:hint="Nhập Lại Mật khẩu"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/hint_re_password"
                     android:lineSpacingMultiplier="1"
                     android:lines="1"
                     android:maxLines="1"
@@ -145,37 +134,7 @@
                     android:textSize="20dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/custom_form_1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="5dp">
 
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="#fff"
-                    android:src="@drawable/ic_mail" />
-
-                <EditText
-                    android:id="@+id/edEmail_reg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#fff"
-                    android:hint="Email"
-                    android:lineSpacingMultiplier="1"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:inputType="textEmailAddress"
-                    android:paddingLeft="10dp"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -187,20 +146,15 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="5dp">
-
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="#fff"
-                    android:src="@drawable/call" />
 
                 <EditText
                     android:id="@+id/edPhoneNumber_reg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="36dp"
                     android:background="#fff"
-                    android:hint="Số Điện Thoại"
+                    android:drawableStart="@drawable/call"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/hint_phonenumber"
                     android:lineSpacingMultiplier="1"
                     android:lines="1"
                     android:maxLines="1"
@@ -221,7 +175,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="50dp"
                     android:background="@drawable/custom_button_1"
-                    android:text="Hủy"
+                    android:text="@string/button_cancel"
                     android:textAllCaps="false"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="295dp"
@@ -234,7 +188,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="50dp"
                     android:background="@drawable/custom_button_1"
-                    android:text="Đăng Kí"
+                    android:text="@string/button_register"
                     android:textAllCaps="false"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="295dp"

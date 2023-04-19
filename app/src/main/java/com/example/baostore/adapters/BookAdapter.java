@@ -1,16 +1,8 @@
 package com.example.baostore.adapters;
 
-import static com.example.baostore.Constant.Constants.BOOK_AUTHOR_ID;
-import static com.example.baostore.Constant.Constants.BOOK_CATEGORY_ID;
 import static com.example.baostore.Constant.Constants.BOOK_ID;
-import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_OBJECT;
-import static com.example.baostore.Constant.Constants.BOOK_PRICE;
-import static com.example.baostore.Constant.Constants.BOOK_PUBLISHER_ID;
-import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
-import static com.example.baostore.Constant.Constants.BOOK_TITLE;
-import static com.example.baostore.Constant.Constants.BOOK_URL;
-import static com.example.baostore.testapi.RetrofitCallBack.BookImageGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.BookImageGetAll;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +23,7 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.DetailItemActivity;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.models.Book;
 import com.example.baostore.responses.BookImageResponse;
 import com.google.gson.JsonObject;
@@ -41,11 +34,14 @@ import retrofit2.Call;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
     private List<Book> bookList;
+    ApiService service;
     Context context;
+    int loadCode;
 
-    public BookAdapter(List<Book> bookList, Context context) {
+    public BookAdapter(List<Book> bookList, Context context, int loadCode) {
         this.bookList = bookList;
         this.context = context;
+        this.loadCode = loadCode;
     }
 
 
@@ -54,7 +50,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
-        View v = inflater.inflate(R.layout.item_layout_2, parent, false);
+        View v;
+        if (loadCode == 2) {
+            v = inflater.inflate(R.layout.item_layout_2, parent, false);
+        } else{
+            v = inflater.inflate(R.layout.item_layout_1, parent, false);
+        }
         return new MyViewHolder(v);
     }
 
@@ -62,7 +63,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Book book = bookList.get(position);
         Utils utils = new Utils();
-
 
         double price = book.getPrice();
         holder.tvTitle.setText(book.getTitle());
@@ -73,7 +73,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = new Utils().loadImageFromURL(book.getUrl());
+                Bitmap bitmap = utils.loadImageFromURL(book.getUrl());
                 holder.ivBook.post(new Runnable() {
                     @Override
                     public void run() {
@@ -88,18 +88,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(view.getContext(), DetailItemActivity.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(BOOK_OBJECT, book);
 
-                Log.d("--BookAdapter", book.getbookid()+"");
+                Log.d(context.getString(R.string.debug_adapter_book), book.getbookid()+"");
 
                 JsonObject object = new JsonObject();
                 object.addProperty(BOOK_ID, book.getbookid());
                 intent.putExtras(bundle);
 
-                ApiService service =new GetRetrofit().getRetrofit();
+                service =GetRetrofit.getInstance().createRetrofit();
                 Call<BookImageResponse> call = service.getImagesByBookID(object);
                 call.enqueue(BookImageGetAll(context,bundle,intent));
             }
@@ -112,7 +113,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvPrice, tvSalePrice;
         private ImageView ivBook;
 
@@ -122,6 +123,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
             tvPrice = itemView.findViewById(R.id.original_price);
             tvSalePrice = itemView.findViewById(R.id.discounted_price);
             ivBook = itemView.findViewById(R.id.product_image);
+
         }
     }
 

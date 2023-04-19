@@ -1,15 +1,20 @@
 package com.example.baostore.activities;
 
+import static com.example.baostore.Constant.Constants.ACTION_CODE;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
-import static com.example.baostore.testapi.RetrofitCallBack.getCheckLogin;
+import static com.example.baostore.Api.RetrofitCallBack.getCheckLogin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +24,7 @@ import androidx.constraintlayout.utils.widget.MotionButton;
 import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.R;
+import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.responses.UserResponse;
 import com.google.gson.JsonObject;
 
@@ -27,13 +33,17 @@ import retrofit2.Call;
 public class LoginActivity extends AppCompatActivity {
     TextView tvRegister, tvForgotPass;
     MotionButton btnLogin;
+    Spinner spnLanguage;
     EditText edEmail, edPassword;
     ApiService service;
     boolean canExit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -44,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent i = new Intent(LoginActivity.this, CodeVerifyActivity.class);
+                i.putExtra(ACTION_CODE, 2);
                 startActivity(i);
             }
         });
@@ -52,7 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         // Chuyển màn hình quên mật khẩu
         tvForgotPass = findViewById(R.id.tvForgotPass);
         tvForgotPass.setOnClickListener(view ->{
-            Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            Intent i = new Intent(LoginActivity.this, CodeVerifyActivity.class);
+            i.putExtra(ACTION_CODE, 1);
             startActivity(i);
         });
 
@@ -60,29 +72,27 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edEmail = findViewById(R.id.edEmail_login);
         edPassword = findViewById(R.id.edPassword_login);
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Tắt chỉnh sửa khi đang send query
-                turnEditingOff();
-                String email = edEmail.getText().toString().trim();
-                String password = edPassword.getText().toString().trim();
 
-                if(!checkError(email, password)) {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty(USER_EMAIL, email);
-                    jsonObject.addProperty(USER_PASSWORD, password);
+        btnLogin.setOnClickListener(view -> {
+            // Tắt chỉnh sửa khi đang send query
+            turnEditingOff();
+            String email = edEmail.getText().toString().trim();
+            String password = edPassword.getText().toString().trim();
 
-                    Call<UserResponse> checkLogin = service.userLogin(jsonObject);
-                    checkLogin.enqueue(getCheckLogin(LoginActivity.this));
+            if(!checkError(email, password)) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty(USER_EMAIL, email);
+                jsonObject.addProperty(USER_PASSWORD, password);
 
-                } else{
-                    turnEditingOn();
-                }
+                Call<UserResponse> checkLogin = service.userLogin(jsonObject);
+                checkLogin.enqueue(getCheckLogin(LoginActivity.this));
 
+            } else{
+                turnEditingOn();
             }
+
         });
     }
 

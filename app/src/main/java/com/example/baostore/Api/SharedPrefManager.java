@@ -1,6 +1,5 @@
 package com.example.baostore.Api;
 
-import static com.example.baostore.Constant.Constants.SHARED_PREF_NAME;
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -9,14 +8,15 @@ import static com.example.baostore.Constant.Constants.USER_STATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
-import com.example.baostore.Utils.AppConstant;
 import com.example.baostore.models.User;
 
 public class SharedPrefManager {
     private static SharedPrefManager mInstance;
     private static Context mCtx;
-
+    private static final String SHARED_PREF_NAME = "userPref";
+    private static final String USER_IMAGE = "user_image";
 
 
     private SharedPrefManager(Context context) {
@@ -68,26 +68,18 @@ public class SharedPrefManager {
         return true;
     }
 
-    public static void setUserLoginToken(String token) {
+    public boolean saveUserImage(String string){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(AppConstant.USER_LOGIN_TOKEN, token).apply();
+        editor.putString(USER_IMAGE, string);
+        editor.apply();
+        return true;
+
     }
 
-    public static String getUserLoginToken() {
+    public String getUserImage(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(AppConstant.USER_LOGIN_TOKEN, null);
+        return sharedPreferences.getString(USER_IMAGE, null);
     }
 
-    public static void setUserLoginState(Boolean state) {
-        // xet trang thai dang nhap user
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(AppConstant.IS_USER_LOGIN, state).apply();
-    }
-
-    public static boolean getUserLoginState() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(AppConstant.IS_USER_LOGIN, false);
-    }
 }

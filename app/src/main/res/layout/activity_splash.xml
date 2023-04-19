@@ -25,11 +25,13 @@
                 android:layout_height="wrap_content"
 
 
-                android:text="Welcome to BaoStore"
+                android:text="@string/splash_header"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="40dp"
                 android:textStyle="bold" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -57,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="70dp"
 
-                android:text="Một thế giới sách đang chào đón bạn."
+                android:text="@string/splash_motto"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="20dp"

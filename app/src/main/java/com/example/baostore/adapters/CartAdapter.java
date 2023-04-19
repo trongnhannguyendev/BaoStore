@@ -2,7 +2,7 @@ package com.example.baostore.adapters;
 
 import static com.example.baostore.Constant.Constants.BOOK_ID;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.cartDeleteItem;
+import static com.example.baostore.Api.RetrofitCallBack.cartDeleteItem;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,12 +22,13 @@ import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
 import com.example.baostore.Utils.Utils;
+import com.example.baostore.activities.MainActivity;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Cart;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.CartResponse;
-import com.example.baostore.testapi.RetrofitCallBack;
+import com.example.baostore.Api.RetrofitCallBack;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     private List<Book> bookList;
     Context context;
     CartFragment fragment;
+    ApiService service;
 
     public CartAdapter(List<Cart> list, List<Book> bookList, Context context, CartFragment fragment) {
         this.list = list;
@@ -50,8 +52,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context myContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(myContext);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.item_cart, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(v);
         return viewHolder;
@@ -64,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         Log.d("--", "Cart Bookid: "+ cart.getBookid());
         Log.d("--", "Bookid: : "+ book.getbookid());
 
-        ApiService service = new GetRetrofit().getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
         User user = SharedPrefManager.getInstance(context).getUser();
         JsonObject object = new JsonObject();
         object.addProperty(USER_ID, user.getUserid());
@@ -150,7 +151,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         holder.ivCancel.setOnClickListener(view -> {
             deleteCart.enqueue(cartDeleteItem(context, 1));
-
+            MainActivity activity = (MainActivity) context;
+            activity.loadFragment(new CartFragment());
         });
 
     }

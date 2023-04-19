@@ -2,14 +2,13 @@ package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
 import static com.example.baostore.Constant.Constants.USER_PASSWORD;
-import static com.example.baostore.testapi.RetrofitCallBack.userUpdateInfo;
+import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,16 +33,19 @@ public class ChangePassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_pass);
-        // header
-        tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText("Thay đổi mật khẩu");
 
+        tvTitleHeader = findViewById(R.id.title);
+
+        imgBack = findViewById(R.id.back_button);
         edOldPass = findViewById(R.id.edOldPass_cp);
         edNewPass = findViewById(R.id.edNewPass_cp);
         edReNewPass = findViewById(R.id.edReNewPass_cp);
         btnChangePass = findViewById(R.id.btnChangePass_cp);
 
-        service= GetRetrofit.getInstance(this).getRetrofit();
+        // header
+        tvTitleHeader.setText("Thay đổi mật khẩu");
+
+        service= GetRetrofit.getInstance().createRetrofit();
         user= SharedPrefManager.getInstance(this).getUser();
 
         btnChangePass.setOnClickListener(view -> {
@@ -57,13 +59,10 @@ public class ChangePassActivity extends AppCompatActivity {
             jsonObject.addProperty(USER_PASSWORD, newPass);
 
             Call<UserResponse> call = service.updatePassword(jsonObject);
-
-            call.enqueue(userUpdateInfo(this));
+            call.enqueue(userUpdateInfo(this, 1));
             }
         });
-
     }
-
 
     private boolean checkError(String oldPass, String newPass, String reNewPass) {
         boolean hasError = false;
@@ -82,7 +81,6 @@ public class ChangePassActivity extends AppCompatActivity {
             hasError = true;
         }
         return hasError;
-
     }
 
 

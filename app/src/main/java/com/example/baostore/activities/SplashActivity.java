@@ -1,14 +1,21 @@
 package com.example.baostore.activities;
 
 import static com.example.baostore.Constant.Constants.USER_EMAIL;
-import static com.example.baostore.testapi.RetrofitCallBack.getCheckSaveUserSplash;
+import static com.example.baostore.Api.RetrofitCallBack.getCheckSaveUserSplash;
+import static com.example.baostore.testapi.AppHelper.pushNotification;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,9 +23,9 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.MyLocale;
 import com.example.baostore.models.User;
 import com.example.baostore.responses.UserResponse;
-import com.example.baostore.testapi.AppHelper;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -29,11 +36,17 @@ public class SplashActivity extends AppCompatActivity {
     ApiService service;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyLocale.onCreate(newBase,MyLocale.getLanguage(newBase)));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
+
+
 
         // ẩn thanh pin
         if (Build.VERSION.SDK_INT >= 16) {
@@ -46,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pushNotification(SplashActivity.this, "Splash", "Click on splash");
                 // Kiểm tra dữ liệu người dùng tồn tại
                 if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
                     finish();
@@ -64,5 +78,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

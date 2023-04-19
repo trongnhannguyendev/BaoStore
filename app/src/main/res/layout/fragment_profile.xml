@@ -27,9 +27,10 @@
                 app:cardCornerRadius="180dp">
 
                 <ImageView
+                    android:id="@+id/ivUser_profile"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-
+                    android:scaleType="centerCrop"
                     android:src="@drawable/img_person_1" />
 
             </androidx.cardview.widget.CardView>
@@ -61,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:drawableRight="@drawable/ic_arrow_next_3"
                 android:padding="8dp"
-                android:text="Thông tin cá nhân"
+                android:text="@string/nav_personal_info"
                 android:textColor="@color/black"
                 android:textSize="16dp"
 
@@ -81,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:drawableRight="@drawable/ic_arrow_next_3"
                 android:padding="8dp"
-                android:text="Lịch sử mua hàng"
+                android:text="@string/nav_order_history"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -100,11 +101,31 @@
                 android:layout_height="match_parent"
                 android:drawableRight="@drawable/ic_arrow_next_3"
                 android:padding="8dp"
-                android:text="Thay đổi mật khẩu"
+                android:text="@string/nav_change_password"
                 android:textColor="@color/black"
-
                 android:textSize="16dp"
                 android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnToSettings_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_form_2"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_arrow_next_3"
+                android:padding="8dp"
+                android:text="@string/nav_settings"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
 
@@ -121,7 +142,7 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:background="@drawable/custom_button_1"
-            android:text="Đăng xuất"
+            android:text="@string/button_logout"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20dp"

@@ -1,4 +1,4 @@
-package com.example.baostore.testapi;
+package com.example.baostore.Api;
 
 import static com.example.baostore.Constant.Constants.ADDRESS_LIST;
 import static com.example.baostore.Constant.Constants.AUTHOR_LIST;
@@ -24,20 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.baostore.Api.ApiService;
-import com.example.baostore.Api.GetRetrofit;
-import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
-import com.example.baostore.Utils.Utils;
 import com.example.baostore.activities.BuyHistoryActivity;
-import com.example.baostore.activities.ChangePassActivity;
 import com.example.baostore.activities.DetailItemActivity;
 import com.example.baostore.activities.CodeVerifyActivity;
+import com.example.baostore.activities.ForgotPasswordActivity;
 import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
-import com.example.baostore.activities.UserInforActivity;
 import com.example.baostore.adapters.OrderHistoryAdapter;
 import com.example.baostore.adapters.OrderItemAdapter;
 import com.example.baostore.fragments.CartFragment;
@@ -72,7 +67,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetrofitCallBack {
-    static ApiService service = new GetRetrofit().getRetrofit();
+    static ApiService service = GetRetrofit.getInstance().createRetrofit();
 
     // User
     public static Callback<UserResponse> getCheckLogin(Context context){
@@ -121,7 +116,7 @@ public class RetrofitCallBack {
                 if(userResponse.getResponseCode() == RESPONSE_OKAY) {
                     User getUser = userResponse.getData().get(0);
 
-                    Log.d("---CheckSaveUserSplash",
+                    Log.d(context.getString(R.string.debug_callback),
                             "User id: " + getUser.getUserid() +
                                     "\nFull name: " + getUser.getFullname()+
                                     "\nState: " + getUser.getState());
@@ -154,7 +149,7 @@ public class RetrofitCallBack {
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                Toast.makeText(context, R.string.enqueue_failure, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.text_something_wrong, Toast.LENGTH_SHORT).show();
                 Log.d(context.getString(R.string.debug_SplashActivity), t.toString());
             }
         };
@@ -162,7 +157,7 @@ public class RetrofitCallBack {
     }
 
     public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
-        CodeVerifyActivity activity = (CodeVerifyActivity) context;
+        RegisterActivity activity = (RegisterActivity) context;
         Callback<UserResponse> callback = new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -172,27 +167,27 @@ public class RetrofitCallBack {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                         if (response.body().getResponseCode() == RESPONSE_OKAY) {
-                            Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.text_register_success), Toast.LENGTH_SHORT).show();
                             activity.finish();
                             context.startActivity(new Intent(context, LoginActivity.class));
                         } else {
-                            Toast.makeText(context, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-                            Log.d("--", "onResponse: "+response.body().getMessage());
+                            Toast.makeText(context, context.getString(R.string.text_register_fail), Toast.LENGTH_SHORT).show();
+                            Log.d(context.getString(R.string.debug_callback), "onResponse: "+response.body().getMessage());
                         }
 
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable t) {
-                        Log.d(String.valueOf(R.string.debug_RegisterActivity), String.valueOf(t.getMessage()));
-                        Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                        Log.d(String.valueOf(R.string.debug_callback), String.valueOf(t.getMessage()));
+                        Toast.makeText(context, context.getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-
+                Log.d(String.valueOf(R.string.debug_callback), "onFailure: "+t.toString());
             }
         };
 
@@ -200,8 +195,7 @@ public class RetrofitCallBack {
     return callback;
     }
 
-    public static Callback<UserResponse> userUpdateInfo(Context context){
-        UserInforActivity activity = (UserInforActivity) context;
+    public static Callback<UserResponse> userUpdateInfo(Context context, int goTo){
 
         Callback<UserResponse> update = new Callback<UserResponse>() {
             @Override
@@ -209,7 +203,15 @@ public class RetrofitCallBack {
                 int responseCode = response.body().getResponseCode();
                 Log.d("--", "onResponse: "+response.body().getMessage());
                 if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                    if (goTo == 1){
+                        Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                    }
+                    if (goTo ==2){
+                        ForgotPasswordActivity activity = (ForgotPasswordActivity) context;
+                        Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
+                        activity.finish();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
                 }
             }
 
@@ -222,29 +224,6 @@ public class RetrofitCallBack {
 
     }
 
-    public static Callback<UserResponse> userUpdateInfo2(Context context){
-        CodeVerifyActivity activity = (CodeVerifyActivity) context;
-
-        Callback<UserResponse> update = new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                int responseCode = response.body().getResponseCode();
-                Log.d("--", "onResponse: "+response.body().getMessage());
-                if(responseCode == RESPONSE_OKAY){
-                    Toast.makeText(context, "Update completed!", Toast.LENGTH_SHORT).show();
-                    activity.finish();
-                    context.startActivity(new Intent(context, LoginActivity.class));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_UserInforActivity),t.toString());
-            }
-        };
-        return update;
-
-    }
     // Book
     public static Callback<BookResponse> bookGetAll(Context context, Bundle bundle, Fragment fragment){
         MainActivity activity = (MainActivity) context;
@@ -356,8 +335,7 @@ public class RetrofitCallBack {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 int responseCode = response.body().getResponseCode();
-                Log.d("--", "Cart response: "+responseCode);
-                Log.d((String.valueOf(R.string.debug_CartFragment)), responseCode+"");
+                Log.d(context.getResources().getString(R.string.debug_callback), "response code: "+responseCode);
                 if(responseCode == RESPONSE_OKAY) {
                     List<Cart> listCart = response.body().getData();
 
@@ -370,13 +348,13 @@ public class RetrofitCallBack {
                     activity.loadFragment(fragment);
 
                 }else{
-                    Log.d(String.valueOf(R.string.debug_CartFragment), response.body().getMessage());
+                    Log.d(context.getResources().getString(R.string.debug_frag_cart), "Message: "+response.body().getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<CartResponse> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_CartFragment), t.toString());
+                Log.d(context.getString(R.string.debug_callback), t.toString());
             }
         };
         return callback;
@@ -412,13 +390,14 @@ public class RetrofitCallBack {
     }
 
     public static Callback<BookImageResponse> BookImageGetAll(Context context, Bundle bundle, Intent intent){
+        MainActivity activity = (MainActivity)context;
         Callback<BookImageResponse> callback = new Callback<BookImageResponse>() {
             @Override
             public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
                 List<BookImage> imageList = response.body().getData();
                 bundle.putSerializable(BOOK_IMAGE_LIST, (Serializable) imageList);
                 intent.putExtras(bundle);
-                context.startActivity(intent);
+                activity.openActivityForResult(intent);
             }
 
             @Override
@@ -448,6 +427,41 @@ public class RetrofitCallBack {
         return callback;
     }
 
+    public static Callback<AddressResponse> addressNoData(Context context, int code){
+        Callback<AddressResponse> callback = new Callback<AddressResponse>() {
+            @Override
+            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                int responseCode = response.body().getResponseCode();
+                if (responseCode == RESPONSE_OKAY) {
+                    if (code == 1) {
+                        context.startActivity(new Intent(context, MainActivity.class));
+                    }
+                    if (context != null) {
+
+                        Toast.makeText(context, "Complete update quantity", Toast.LENGTH_SHORT).show();
+                    } else{
+                        Log.d("Callback", "Fail to update quantity");
+                    }
+
+                }
+                if (responseCode == RESPONSE_OKAY){
+                    if (context!= null){
+                        Toast.makeText(context, "Insert success", Toast.LENGTH_SHORT).show();
+                    } else{
+                        Log.d("Callback", "Insert success");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponse> call, Throwable t) {
+                Toast.makeText(context, "Something wrong happen", Toast.LENGTH_SHORT).show();
+                Log.d("----Cartadapter", t.toString());
+            }
+        };
+        return callback;
+    }
 
     public static Callback<CartResponse> cartDeleteItem(Context context, int actionCode){
         Callback<CartResponse> callback = new Callback<CartResponse>() {
@@ -484,7 +498,6 @@ public class RetrofitCallBack {
                 if (response.body().getResponseCode() == RESPONSE_OKAY) {
                     List<Publisher> list = response.body().getData();
                     bundle.putSerializable(PUBLISHER_LIST, (Serializable) list);
-
                     fragment.setArguments(bundle);
                     activity.loadFragment(fragment);
                 }
@@ -596,20 +609,21 @@ public class RetrofitCallBack {
 
     @NonNull
     public static Callback<OrderDetailResponse> getOrderDetail(Context context, RecyclerView recy, TextView tvTotalPrice){
-        Callback<OrderDetailResponse> callback = new Callback<OrderDetailResponse>() {
+        return new Callback<OrderDetailResponse>() {
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 if (response.body().getResponseCode() == 1) {
                     List<OrderDetail> orderDetailList = response.body().getData();
-                    Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
-                    OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
-                    Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
-                    recy.setAdapter(adapter);
+                        Log.d("--callback", "onResponse: "+ orderDetailList.get(0).getBookid());
+                        OrderItemAdapter adapter = new OrderItemAdapter(orderDetailList, context);
+                        Toast.makeText(context, orderDetailList.get(0).getQuantity()+"", Toast.LENGTH_SHORT).show();
+                        recy.setAdapter(adapter);
+
                     int totalAmount =0;
                     for (int i = 0; i < orderDetailList.size(); i++) {
                         totalAmount += orderDetailList.get(i).getTotal();
                     }
-                    tvTotalPrice.setText(new Utils().priceToString( totalAmount));
+                    tvTotalPrice.setText(totalAmount+"");
 
                 }
             }
@@ -619,7 +633,6 @@ public class RetrofitCallBack {
                 Log.d("--", "onFailure: "+t.toString());
             }
         };
-        return callback;
     }
 
     public static Callback<OrderDetailResponse> insertOrderDetail(Context context, JsonObject object){
@@ -651,13 +664,15 @@ public class RetrofitCallBack {
             public void onResponse(Call<VerificationCodeResponse> call, Response<VerificationCodeResponse> response) {
                 if (response.body().getResponseCode() == RESPONSE_OKAY){
                     intent.putExtra(VERIFICATION_CODE, response.body().getData().getCode());
-                    context.startActivity(intent);
+                    ((CodeVerifyActivity)context).turnEditingOn();
+                    ((CodeVerifyActivity)context).turnVerifyFieldsOn();
                 }
             }
 
             @Override
             public void onFailure(Call<VerificationCodeResponse> call, Throwable t) {
                 Log.d("--", "onFailure: "+t.toString());
+
             }
         };
         return callback;

@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -23,27 +25,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
-import com.example.baostore.adapters.Book2Adapter;
+import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.models.Author;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
 import com.example.baostore.models.Publisher;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-// TODO add list publisher, list author
 public class SearchFragment extends Fragment {
+    RelativeLayout rlSearchOption;
+    LinearLayout llRecy;
     SearchView svSearch_search;
-    Spinner spnFind;
+    Spinner spnFind, spnSortBy;
+    TextView tvEmpty, tvToggle;
     List<Book> list_book;
     List<Book> searchList;
     List<Category> categoryList;
     List<Publisher> publisherList;
     List<Author> authorList;
     RecyclerView recyBook_search;
-    Book2Adapter adapter;
-    int searchCode = 1;
+    BookAdapter adapter;
+    int searchCode = 0;
     Bundle bundle;
 
     @Override
@@ -54,6 +60,12 @@ public class SearchFragment extends Fragment {
         svSearch_search = v.findViewById(R.id.svSearch_search);
         recyBook_search = v.findViewById(R.id.recyBook_search);
         spnFind = v.findViewById(R.id.spnFind_search);
+        spnSortBy = v.findViewById(R.id.spnSortBy_search);
+        tvEmpty  =v.findViewById(R.id.tvEmptyMsg_search);
+        tvToggle = v.findViewById(R.id.toggleAction);
+        rlSearchOption = v.findViewById(R.id.llSearchOptions);
+        llRecy = v.findViewById(R.id.llRecy_fs);
+
         recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
         searchList = new ArrayList<>();
@@ -66,16 +78,24 @@ public class SearchFragment extends Fragment {
             if (bundle.containsKey(BOOK_LIST)) {
                 list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
             }
-            categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
-            authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+            if (bundle.containsKey(CATEGORY_LIST)) {
+                categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+            }
+            if (bundle.containsKey(PUBLISHER_LIST)) {
+                publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
+            }
+            if (bundle.containsKey(AUTHOR_LIST)) {
+                authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+            }
         }
 
-        String[] findwhat = {"Title", "Category", "Author", "Publisher"};
-        ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, findwhat);
+        ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spnFind.setAdapter(spnAdapter);
+
+        ArrayAdapter spnAdapterSort = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sort_item));
+        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnSortBy.setAdapter(spnAdapterSort);
 
         spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -88,10 +108,28 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        adapter = new Book2Adapter(list_book, getContext());
+        spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int sortCode = i;
+                if(sortCode == 1) {
+                    Collections.sort(searchList, new Comparator<Book>() {
+                        @Override
+                        public int compare(Book book, Book t1) {
+                            return book.getTitle().compareTo(t1.getTitle());
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        adapter = new BookAdapter(list_book, getContext(),1);
         recyBook_search.setAdapter(adapter);
 
-        filterV1("");
 
 
         svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -111,6 +149,27 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+            }
+        });
+
+        tvToggle.setOnClickListener(view->{
+            if(rlSearchOption.getVisibility() != View.VISIBLE){
+                rlSearchOption.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 220, 0, 0);
+                llRecy.setLayoutParams(lp);
+            } else{
+                rlSearchOption.setVisibility(View.GONE);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 170, 0, 0);
+                llRecy.setLayoutParams(lp);
+            }
+        });
+
         return v;
 
 
@@ -121,7 +180,7 @@ public class SearchFragment extends Fragment {
         switch (searchCode) {
             // All
             case 0:
-                adapter = new Book2Adapter(list_book, getContext());
+                adapter = new BookAdapter(list_book, getContext(),1);
                 recyBook_search.setAdapter(adapter);
                 break;
                 // Title
@@ -157,6 +216,50 @@ public class SearchFragment extends Fragment {
                 break;
 
         }
+        sortBy();
+        if (searchList.isEmpty()){
+            tvEmpty.setVisibility(View.VISIBLE);
+        } else if(tvEmpty.getVisibility() == View.VISIBLE){
+            tvEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    public void sortBy(){
+        long sortCode = spnSortBy.getSelectedItemId();
+        if(sortCode == 1) {
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return book.getTitle().compareTo(t1.getTitle());
+                }
+            });
+        }
+
+        if (sortCode == 2){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return t1.getTitle().compareTo(book.getTitle());
+                }
+            });
+        }
+
+        if (sortCode == 3){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return book.getPrice().compareTo(t1.getPrice());
+                }
+            });
+        }
+        if (sortCode == 4){
+            Collections.sort(searchList, new Comparator<Book>() {
+                @Override
+                public int compare(Book book, Book t1) {
+                    return t1.getPrice().compareTo(book.getPrice());
+                }
+            });
+        }
     }
 
     void filterByTitle(String find) {
@@ -173,7 +276,7 @@ public class SearchFragment extends Fragment {
 
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
 
     }
@@ -188,7 +291,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -203,7 +306,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -225,7 +328,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 
@@ -243,7 +346,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),2);
         recyBook_search.setAdapter(adapter);
     }
     void filterByAuthor(String authorName){
@@ -258,7 +361,7 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new Book2Adapter(searchList, getContext());
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
 

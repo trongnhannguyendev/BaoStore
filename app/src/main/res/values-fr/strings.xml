@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BaoStore</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="err_email_empty">L\'email ne peut pas être vide</string>
+    <string name="err_num_format">Doit taper un nombre</string>
+    <string name="err_email_format">Mauvais format de courrier électronique</string>
+    <string name="err_pass_empty">Le mot de passe ne peut pas être vide</string>
+    <string name="err_phonenumber_empty">Le numéro de téléphone ne peut pas être vide</string>
+    <string name="err_phonenumber_format">Le numéro de téléphone doit comporter 10 chiffres</string>
+    <string name="err_fullname_empty">Le nom complet ne peut être vide</string>
+    <string name="err_password_length">Le mot de passe doit comporter plus de 6 caractères</string>
+    <string name="err_not_identical">Les mots de passe ne correspondent pas</string>
+    <string name="err_fail_login">Nom d\'utilisateur ou mot de passe incorrect</string>
+
+    <string name="debug_SplashActivity">---SplashActivity</string>
+    <string name="debug_LoginActivity">---LoginActivity</string>
+    <string name="debug_RegisterActivity">---RegisterActivity</string>
+
+    <string name="debug_MainActivity">---MainActivity</string>
+    <string name="debug_CartAdapter">---CartAdapter</string>
+    <string name="debug_CartFragment">---CartFragment</string>
+    <string name="debug_UserInforActivity">---UserInforActivity</string>
+
+    <string name="enqueue_failure">Il se passe quelque chose d\'anormal</string>
+
+    <string name="msg_exit_app">Appuyer à nouveau pour quitter</string>
+    <string name="err_account_deactivate">Le compte a été désactivé</string>
+    <string name="err_email_not_found">L\'e-mail n\'existe pas</string>
+
+    <string name="splash_motto">Vous êtes sur le point d\'entrer dans un monde de livres.</string>
+    <string name="splash_header">Bienvenue dans le BaoStore</string>
+
+    <string name="header_login">Login</string>
+    <string name="edittext_hint_email">Adresse courriel</string>
+    <string name="edittext_hint_password">Passe</string>
+    <string name="button_submit_login">Login</string>
+    <string name="button_to_forgot_pass">mot de passe oublié</string>
+    <string name="register_text">Vous n\'êtes pas encore membre ???</string>
+    <string name="button_register">registre</string>
+
+    <string-array name="language">
+        <item>Vietnamese</item>
+        <item>English</item>
+        <item>French</item>
+    </string-array>
+
+</resources>

@@ -2,8 +2,10 @@ package com.example.baostore.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.telephony.SmsManager;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.net.URL;
@@ -14,23 +16,17 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
-    public void createSnackBar(View v, String msg) {
-        Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.show();
-    }
-
     public String priceToString(double price) {
 
         Locale locale = new Locale("vi", "VN");
         NumberFormat priceFormat = NumberFormat.getCurrencyInstance(locale);
 
         return priceFormat.format(price);
+    }
+
+    public double currencyConversion(){
+
+        return -1;
     }
 
     public Date SringToDate(String date) {
@@ -71,6 +67,17 @@ public class Utils {
 
     public String logEnqueueMsg(boolean callError, int responseCode, String callMsg){
         return "\nerror: "+callError+"\nResponse code: " +responseCode+ "\nMessage: "+callMsg;
+    }
+
+    public boolean sendPhoneMessage(String phoneNum, String msg){
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNum, null, msg, null, null);
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

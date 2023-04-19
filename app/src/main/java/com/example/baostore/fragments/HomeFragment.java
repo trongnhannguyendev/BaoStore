@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baostore.R;
 import com.example.baostore.activities.MainActivity;
-import com.example.baostore.adapters.Book2Adapter;
 import com.example.baostore.adapters.BookAdapter;
 import com.example.baostore.adapters.CategoryAdapter;
 import com.example.baostore.models.Book;
@@ -35,8 +34,8 @@ public class HomeFragment extends Fragment {
     EditText edSearch;
     ImageView ivSearch;
     RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
-    BookAdapter adapter;
-    Book2Adapter book2Adapter;
+    BookAdapter bookAdapter;
+    BookAdapter bookAdapterHorizontal;
     CategoryAdapter categoryAdapter;
     MainActivity activity;
     Bundle bundle;
@@ -69,6 +68,7 @@ public class HomeFragment extends Fragment {
         // Loại recycler view
         recyBook_Popular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyBook_New.setLayoutManager(new LinearLayoutManager(getContext()));
+
         recyCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyCategory1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -77,24 +77,24 @@ public class HomeFragment extends Fragment {
         getBooks();
         getCategory();
 
-        adapter = new BookAdapter(list_book, getContext());
-        book2Adapter = new Book2Adapter(list_book, getContext());
+        bookAdapter = new BookAdapter(list_book, getContext(),1);
+        bookAdapterHorizontal = new BookAdapter(list_book, getContext(),2);
         categoryAdapter = new CategoryAdapter(list_category, getContext());
 
-        recyBook_Popular.setAdapter(adapter);
-        recyBook_New.setAdapter(book2Adapter);
+        recyBook_Popular.setAdapter(bookAdapterHorizontal);
+        recyBook_New.setAdapter(bookAdapter);
         recyCategory.setAdapter(categoryAdapter);
         recyCategory1.setAdapter(categoryAdapter);
 
         btnSearchNew.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
 
-            activity.loadFragment(fragment);
+            activity.loadSearchFragment(fragment,0,"");
         });
 
         btnSearchPopular.setOnClickListener(view -> {
             Fragment fragment = new SearchFragment();
-            activity.loadFragment(fragment);
+            activity.loadSearchFragment(fragment,0,"");
         });
 
         ivSearch.setOnClickListener(view -> {
@@ -103,11 +103,11 @@ public class HomeFragment extends Fragment {
             activity.setSearchSelection();
             if (find.isEmpty()) {
                 activity.loadSearchFragment(fragment, 0, null);
-                Log.d("---------HomeFrag", "0");
+                Log.d(getString(R.string.debug_frag_home), "Send search code: 0 - Search empty!");
             } else {
                 activity.loadSearchFragment(fragment, 7, find);
-                Log.d("---------HomeFrag", "2");
-                Log.d("---------HomeFrag", "find");
+                Log.d(getString(R.string.debug_frag_home), "Send search code: 7 - search by title");
+                Log.d(getString(R.string.debug_frag_home), "Send title: "+find);
             }
 
 
@@ -151,13 +151,12 @@ public class HomeFragment extends Fragment {
         if (bundle != null && bundle.containsKey(BOOK_LIST)) {
             list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-            adapter = new BookAdapter(list_book, getContext());
-            book2Adapter = new Book2Adapter(list_book, getContext());
+            bookAdapter = new BookAdapter(list_book, getContext(),1);
 
-            recyBook_Popular.setAdapter(adapter);
-            recyBook_New.setAdapter(book2Adapter);
+            recyBook_Popular.setAdapter(bookAdapter);
+            recyBook_New.setAdapter(bookAdapter);
 
-            Log.d("---------------------------HomeFrag", list_book.get(0).getTitle());
+            Log.d(getString(R.string.debug_frag_home), "Check bundle book:"+list_book.get(0).getTitle());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -177,7 +176,7 @@ public class HomeFragment extends Fragment {
             categoryAdapter = new CategoryAdapter(list_category, getContext());
 
             recyCategory.setAdapter(categoryAdapter);
-            Log.d("--HomeFrag", list_category.get(0).getCategoryname());
+            Log.d(getString(R.string.debug_frag_home), "Check bundle category:"+list_category.get(0).getCategoryname());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {

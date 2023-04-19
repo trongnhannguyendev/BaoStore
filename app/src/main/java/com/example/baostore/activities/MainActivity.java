@@ -8,13 +8,15 @@ import static com.example.baostore.Constant.Constants.BOOK_SEARCH_CODE;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.USER_ID;
-import static com.example.baostore.testapi.RetrofitCallBack.bookGetAll;
-import static com.example.baostore.testapi.RetrofitCallBack.cartGetAllByUserID;
-import static com.example.baostore.testapi.RetrofitCallBack.categoryGetAll;
-import static com.example.baostore.testapi.RetrofitCallBack.getAuthor;
-import static com.example.baostore.testapi.RetrofitCallBack.getPublisher;
-import static com.example.baostore.testapi.RetrofitCallBack.userAddressGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.bookGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.cartGetAllByUserID;
+import static com.example.baostore.Api.RetrofitCallBack.categoryGetAll;
+import static com.example.baostore.Api.RetrofitCallBack.getAuthor;
+import static com.example.baostore.Api.RetrofitCallBack.getPublisher;
+import static com.example.baostore.Api.RetrofitCallBack.userAddressGetAll;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -24,6 +26,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -33,6 +39,7 @@ import com.example.baostore.Api.ApiService;
 import com.example.baostore.Api.GetRetrofit;
 import com.example.baostore.Api.SharedPrefManager;
 import com.example.baostore.R;
+import com.example.baostore.Utils.Utils;
 import com.example.baostore.fragments.CartFragment;
 import com.example.baostore.fragments.HomeFragment;
 import com.example.baostore.fragments.ProfileFragment;
@@ -45,6 +52,7 @@ import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -57,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     ProgressBar progressBar;
     Bundle bundle;
+    ApiService service;
+    boolean canExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         // Thêm HomeFragment vào FrameLayout
 
         fragment = new HomeFragment();
-        ApiService service = GetRetrofit.getInstance(this).getRetrofit();
+        service = GetRetrofit.getInstance().createRetrofit();
 
         User user = SharedPrefManager.getInstance(this).getUser();
 
@@ -120,64 +130,35 @@ public class MainActivity extends AppCompatActivity {
 
         //Điều hướng navigation
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            progressBar.setVisibility(View.VISIBLE);
             switch (item.getItemId()) {
                 case R.id.Home:
-                    progressBar.setVisibility(View.VISIBLE);
                     fragment = new HomeFragment();
-                    if(bundle == null || !bundle.containsKey(CATEGORY_LIST)){
-                        categoryResponseCall.enqueue(categoryGetAll(this, bundle, fragment));
-                        bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
-                    } else{
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
-                    }
+                    fragment.setArguments(bundle);
+                    loadFragment(fragment);
+
                     return true;
                 case R.id.Search:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Tìm kiếm");
                     fragment = new SearchFragment();
-                    if(bundle == null ){
-                        if(!bundle.containsKey(BOOK_LIST)) {
-                            bookResponseCall.enqueue(bookGetAll(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(CATEGORY_LIST)){
-                            categoryResponseCall.enqueue(categoryGetAll(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(PUBLISHER_LIST)){
-                            publisherResponseCall.enqueue(getPublisher(this, bundle, fragment));
-                        }
-                        if(!bundle.containsKey(AUTHOR_LIST)){
-                            authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
-                        }
-                    } else{
-                        fragment.setArguments(bundle);
-                        loadSearchFragment(fragment,0,null);
-                    }
+                    fragment.setArguments(bundle);
+                    loadSearchFragment(fragment,0,null);
+
                     progressBar.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.Cart:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Giỏ hàng");
-
                     fragment = new CartFragment();
+                    fragment.setArguments(bundle);
                     cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle, fragment));
 
-                    if(!bundle.containsKey(ADDRESS_LIST)){
-                        Log.d("--", "No address list");
-                        addressResponseCall.enqueue(userAddressGetAll(this, bundle, fragment));
-                    }
+
                     return true;
                 case R.id.User:
-                    progressBar.setVisibility(View.VISIBLE);
                     tvTitleHeader.setText("Người dùng");
                     fragment = new ProfileFragment();
-                    if(!bundle.containsKey(ADDRESS_LIST)) {
-                        addressResponseCall.enqueue(userAddressGetAll(this, bundle, fragment));
-                    }
-                    else{
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
-                    }
+                    fragment.setArguments(bundle);
+                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -235,15 +216,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Nhấn back 2 lần để thoát app
-    boolean canExit = false;
+    public void openActivityForResult(Intent intent){
+        myResultLauncher.launch(intent);
+    }
 
+    protected ActivityResultLauncher myResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d("--", "onActivityResult: "+result.getResultCode());
+                    if(result.getResultCode()==111){
+                        Intent data = result.getData();
+                        Fragment fragment1 = new CartFragment();
+                        loadFragment(fragment1);
+                        bottomNavigationView.setSelectedItemId(R.id.Cart);
+                    }
+                }
+            }
+    );
+
+    public void createSnackbar(View v,String msg){
+        Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.setAnchorView(bottomNavigationView);
+        snackbar.show();
+    }
+
+    public void createToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    // Nhấn back 2 lần để thoát app
     @Override
     public void onBackPressed() {
         if (canExit) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            createToast("Press again to exit");
             canExit = !canExit;
 
             Handler handler = new Handler();
@@ -254,7 +269,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 1000);
         }
-
-
     }
 }

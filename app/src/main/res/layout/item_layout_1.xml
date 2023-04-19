@@ -26,6 +26,7 @@
             android:layout_marginStart="16dp"
             android:layout_toRightOf="@id/product_image"
             android:text="Tên sản phẩm"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
