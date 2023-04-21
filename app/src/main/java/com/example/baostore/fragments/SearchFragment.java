@@ -112,14 +112,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int sortCode = i;
-                if(sortCode == 1) {
-                    Collections.sort(searchList, new Comparator<Book>() {
-                        @Override
-                        public int compare(Book book, Book t1) {
-                            return book.getTitle().compareTo(t1.getTitle());
-                        }
-                    });
-                }
+                sortBy();
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -176,7 +170,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void filterV1 (String findWhat) {
-        Log.d("--SearchFragment", "Search code: " + searchCode);
+        Log.d(getString(R.string.debug_frag_search), "Search code: " + searchCode);
         switch (searchCode) {
             // All
             case 0:
@@ -225,7 +219,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void sortBy(){
-        long sortCode = spnSortBy.getSelectedItemId();
+        long sortCode = spnSortBy.getSelectedItemPosition();
         if(sortCode == 1) {
             Collections.sort(searchList, new Comparator<Book>() {
                 @Override
@@ -266,7 +260,7 @@ public class SearchFragment extends Fragment {
         if (searchList!= null) {
             searchList.clear();
         }
-        Log.d("----------------------", find);
+        Log.d(getString(R.string.debug_frag_search), find);
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
@@ -283,7 +277,7 @@ public class SearchFragment extends Fragment {
 
     void filterByPrice(double find) {
         searchList.clear();
-        Log.d("----------------------", find + "");
+        Log.d(getString(R.string.debug_frag_search), find + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book;
             book = list_book.get(i);
@@ -317,14 +311,14 @@ public class SearchFragment extends Fragment {
         Log.d("----------------------", categoryName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
-            Log.d("---", "categoryid: " + book.getCategoryid());
+            Log.d(getString(R.string.debug_frag_search), "categoryid: " + book.getCategoryid());
             Category category = categoryList.get(book.getCategoryid()-1);
 
 
-            Log.d("---", "Find: " + categoryName);
-            Log.d("---", "filterByCategoryName: " + category.getCategoryname());
+            Log.d(getString(R.string.debug_frag_search), "Find: " + categoryName);
+            Log.d(getString(R.string.debug_frag_search), "filterByCategoryName: " + category.getCategoryname());
             if (category.getCategoryname().toLowerCase().contains(categoryName.toLowerCase())) {
-                Log.d("--", "--found: "+category.getCategoryname().toLowerCase());
+                Log.d(getString(R.string.debug_frag_search), "--found: "+category.getCategoryname().toLowerCase());
                 searchList.add(book);
             }
         }
@@ -335,13 +329,13 @@ public class SearchFragment extends Fragment {
     void filterByPublisher(String publisherName){
         searchList.clear();
 
-        Log.d("----------------------", publisherName + "");
+        Log.d(getString(R.string.debug_frag_search), publisherName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Publisher publisher = publisherList.get(i);
             Book book = list_book.get(i);
             publisher = publisherList.get(book.getPublisherid());
-            Log.d("---", "find: " + publisherName);
-            Log.d("---", "filterByPublisherName: " + publisher.getPublishername());
+            Log.d(getString(R.string.debug_frag_search), "find: " + publisherName);
+            Log.d(getString(R.string.debug_frag_search), "filterByPublisherName: " + publisher.getPublishername());
             if (publisher.getPublishername().toLowerCase().contains(publisherName.toLowerCase())) {
                 searchList.add(book);
             }
@@ -355,8 +349,8 @@ public class SearchFragment extends Fragment {
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
             Author author = authorList.get(book.getbookid()-1);
-            Log.d("---", "author name: " + authorName);
-            Log.d("---", "filter: " + author.getAuthorname());
+            Log.d(getString(R.string.debug_frag_search), "author name: " + authorName);
+            Log.d(getString(R.string.debug_frag_search), "filter: " + author.getAuthorname());
             if (author.getAuthorname().toLowerCase().contains(authorName.toLowerCase())) {
                 searchList.add(book);
             }

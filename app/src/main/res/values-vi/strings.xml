@@ -4,7 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Catch error -->
+    <!-- Error -->
     <string name="err_email_empty">Cần phải nhập email</string>
     <string name="err_num_format">Phải là số</string>
     <string name="err_email_format">Không đúng dịnh dạng email</string>
@@ -16,36 +16,533 @@
     <string name="err_not_identical">Mật khẩu không trùng khớp</string>
     <string name="err_fail_login">Sai tên đăng nhập hoặc mật khẩu</string>
 
-
+    <!-- Debug-->
     <string name="debug_SplashActivity">---SplashActivity</string>
     <string name="debug_LoginActivity">---LoginActivity</string>
     <string name="debug_RegisterActivity">---RegisterActivity</string>
-
     <string name="debug_MainActivity">---MainActivity</string>
     <string name="debug_CartAdapter">---CartAdapter</string>
-    <string name="debug_CartFragment">---CartFragment</string>
     <string name="debug_UserInforActivity">---UserInforActivity</string>
-
+    <string name="debug_activity_detail_item">--DetailItemActivity</string>
+    <string name="debug_frag_home">--HomeFrag</string>
+    <string name="debug_frag_search">--SearchFrag</string>
+    <string name="debug_frag_cart">--HomeFrag</string>
+    <string name="debug_callback">--HomeFrag</string>
+    <string name="debug_adapter_book">--BookAdapter</string>
+    <string name="debug_adapter_order_history">--OrderHistoryAdapter</string>
     <string name="enqueue_failure">Something wrong happen</string>
+
+    <!-- Hint-->
+    <string name="hint_email">Email</string>
+    <string name="hint_fullname">Họ tên</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="hint_re_password">Nhập lại mật khẩu</string>
+    <string name="hint_password_old">Nhập mật khẩu cũ</string>
+    <string name="hint_password_new">Nhập mật khẩu mới</string>
+    <string name="hint_re_password_new">Nhập lại mật khẩu mới</string>
+    <string name="hint_phonenumber">Số Điện Thoại</string>
+    <string name="hint_verification_code">Mã xác nhận</string>
+    <string name="hint_search_for">Bạn muốn tìm gì ?</string>
+
+
+    <!-- Headery-->
+    <string name="header_register">Đăng ký</string>
+    <string name="header_login">Đăng Nhập</string>
+    <string name="header_cart_payment">Thanh toán hóa đơn</string>
+    <string name="header_buy_history">Lịch sử mua hàng</string>
+    <string name="header_cart_info">Thông tin nhận hàng</string>
+    <string name="header_change_pass">Thay đổi mật khẩu</string>
+    <string name="header_user_info">Thông tin cá nhân</string>
+
+
+
 
     <string name="msg_exit_app">Nhấn lại để thoát app</string>
     <string name="err_account_deactivate">Tài khoản đã bị vô hiệu hóa</string>
     <string name="err_email_not_found">Email không tồn tại</string>
+    <string name="err_file_not_found">Không tìm thấy file</string>
 
     <string name="splash_motto">Một thế giới sách đang chào đón bạn.</string>
     <string name="splash_header">Welcome to BaoStore</string>
 
-    <string name="header_login">Đăng Nhập</string>
-    <string name="edittext_hint_email">Email</string>
-    <string name="edittext_hint_password">Mật khẩu</string>
+
+    <!--    Login-->
+
     <string name="button_submit_login">Đăng nhập</string>
     <string name="button_to_forgot_pass">Quên mật khẩu</string>
-    <string name="register_text">Bạn chưa có tài khoản ???</string>
+    <string name="to_register_text">Bạn chưa có tài khoản ???</string>
     <string name="button_register">Đăng kí</string>
+    <string name="button_cancel">Hủy</string>
+    <string name="button_confirm">Xác nhận</string>
+
+
+    <!--    bottom navigation-->
+    <string name="bot_nav_home">Trang chủ</string>
+    <string name="bot_nav_search">Tìm kiếm</string>
+    <string name="bot_nav_cart">Giỏ hàng</string>
+    <string name="bot_nav_user">Tôi</string>
+
+    <!--    Home Frag-->
+    <string name="subtitle_popular">Sản phẩm nổi bật</string>
+    <string name="subtitle_new">Sản phẩm mới</string>
+    <string name="nav_to_search">Xem tất cả >></string>
+
+
+    <!-- Search Frag-->
+    <string name="dropdown_search_advance">Lựa chọn nâng cao</string>
+    <string name="search_option">Tìm kiếm theo: </string>
+    <string name="sort_option">Sắp xếp theo: </string>
+    <string name="no_item_match">Không tìm được sản phẩm</string>
+
+
+    <!-- Cart Frag-->
+    <string name="cart_total">Tổng</string>
+    <string name="cart_temp_price">Giá</string>
+    <string name="title_cart_info">Thông tin người nhận</string>
+    <string name="title_cart_payment">Chi tiết thanh toán</string>
+
+    <!-- Profile Frag-->
+    <string name="nav_personal_info">Thông tin cá nhân</string>
+    <string name="nav_order_history">Lịch sử mua hàng</string>
+    <string name="nav_change_password">Thay đổi mật khẩu</string>
+    <string name="nav_settings">Cài đặt</string>
+    <string name="button_logout">Đăng xuất</string>
+
+    <!-- Cart Payment Activity-->
+    <string name="text_fullname">Họ và tên</string>
+    <string name="text_phonenumber">Số điện thoại</string>
+    <string name="text_address">Địa chỉ</string>
+    <string name="text_date">Ngày</string>
+    <string name="text_note">Ghi chú</string>
+    <string name="subtitle_total_cost">Tổng chi phí</string>
+    <string name="text_shipping_price">Tiền ship</string>
+    <string name="text_total_price">Tổng</string>
+    <string name="text_payment_type">Phương thức thanh toán</string>
+    <string name="text_voucher">Nhập mã voucher</string>
+
+    <!-- Book Detail Activity-->
+    <string name="button_add_cart">Thêm vào giỏ hàng</string>
+    <string name="button_add_and_to_cart">Thanh toán</string>
+
+
+
+    <!-- Order Detail Activity-->
+    <string name="order_total">Thành tiền</string>
+
+    <!-- Khác-->
+    <string name="text_language">Ngôn ngữ</string>
+    <string name="text_setting">Cài đặt</string>
+    <string name="text_cart_empty">Giỏ hàng trống</string>
+    <string name="text_something_wrong">Tác vụ thất bại, vui lòng thử lại sau</string>
+    <string name="image_not_picked">Bạn chưa chọn hình</string>
+    <string name="text_register_success">Đăng ký thành công</string>
+    <string name="text_register_fail">Đăng ký thất bại</string>
+    <string name="text_preview_book">Xem trước</string>
+    <string name="subtitle_receiver">Thông tin nhận hàng</string>
+    <string name="snackbar_dismiss">Đã hiểu</string>
+    <string name="backpressed_exit">Nhấn lại để thoát</string>
+
+
 
     <string-array name="language">
         <item>Tiếng Việt</item>
         <item>Tiếng Anh</item>
         <item>Tiếng Pháp</item>
+    </string-array>
+
+    <string-array name="search_item">
+        <item>Tiêu đề</item>
+        <item>Danh mục</item>
+        <item>Tác giả</item>
+        <item>Nhà xuất bản</item>
+    </string-array>
+
+    <string-array name="sort_item">
+        <item>Chữ cái tăng dần</item>
+        <item>Chữ cái giảm dần</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+
+    </string-array>
+
+    <array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </array>
+
+    <array name="payment_type">
+        <item>Khi nhận hàng</item>
+        <item>Paypal</item>
+    </array>
+
+
+    <string-array name="district">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>Bình Tân</item>
+        <item>Bình Thạnh</item>
+        <item>Gò Vấp</item>
+        <item>Phú Nhuận</item>
+        <item>Tân Bình</item>
+        <item>Tân Phú</item>
+        <item>Bình Chánh</item>
+        <item>Cát Giờ</item>
+        <item>Củ Chi</item>
+        <item>Hóc Môn</item>
+        <item>Nhà Bè</item>
+    </string-array>
+
+    <string-array name="ward_1">
+        <item>Bến Nghé</item>
+        <item>Bến Thành</item>
+        <item>Cầu Kho</item>
+        <item>Cầu Ông Lãnh</item>
+        <item>Cô Giang</item>
+        <item>Đa Kao</item>
+        <item>Nguyễn Cư Trinh</item>
+        <item>Nguyễn Cư Trinh</item>
+        <item>Phạm Ngũ Lão</item>
+        <item>Tân Định</item>
+    </string-array>
+    <string-array name="ward_2">
+        <item>An Khánh</item>
+        <item>An Lợi Đông</item>
+        <item>An Phú</item>
+        <item>Bình An</item>
+        <item>Bình Khánh</item>
+        <item>Bình Trưng Đông</item>
+        <item>Bình Trưng Tây</item>
+        <item>Cát Lái</item>
+        <item>Thạnh Mỹ Lợi</item>
+        <item>Thảo Điền</item>
+        <item>Thủ Thiêm</item>
+    </string-array>
+
+    <string-array name="ward_3">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>Võ Thị Sáu</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="ward_4">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>18</item>
+    </string-array>
+
+    <string-array name="ward_5">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="ward_7">
+        <item>Phường Bình Thuận</item>
+        <item>Phường Phú Mỹ</item>
+        <item>Phường Phú Thuận</item>
+        <item>Phường Tân Hưng</item>
+        <item>Phường Tân Kiểng</item>
+        <item>Phường Tân Phong</item>
+        <item>Phường Tân Phú</item>
+        <item>Phường Tân Quy</item>
+        <item>Phường Tân Thuận Đông</item>
+        <item>Phường Tân Thuận Tây</item>
+    </string-array>
+
+    <string-array name="ward_8">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+    </string-array>
+
+    <string-array name="ward_9">
+        <item>Hiệp Phú</item>
+        <item>Long Bình</item>
+        <item>Long Phước</item>
+        <item>Long Thạnh Mỹ</item>
+        <item>Long Trường, Phú Hữu</item>
+        <item>Phước Bình</item>
+        <item>Phước Long A</item>
+        <item>Phước Long B</item>
+        <item>Tân Phú</item>
+        <item>Tăng Nhơn Phú A</item>
+        <item>Tăng Nhơn Phú B</item>
+        <item>Trường Thạnh</item>
+    </string-array>
+
+    <string-array name="ward_10">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+
+    <string-array name="ward_12">
+        <item>Phường An Phú Đông</item>
+        <item> Phường Đông Hưng Thuận</item>
+        <item>Phường Hiệp Thành</item>
+        <item>Phường Tân Chánh Hiệp</item>
+        <item> Phường Tân Hưng Thuận</item>
+        <item> Phường Tân Thới Hiệp</item>
+        <item> Phường Tân Thới Nhất</item>
+        <item> Phường Thạnh Lộc</item>
+        <item> Phường Thạnh Xuân</item>
+        <item>  Phường Thới An</item>
+        <item> Phường Trung Mỹ Tây</item>
+    </string-array>
+
+    <string-array name="ward_binhtan">
+        <item>     Phường An Lạc</item>
+        <item>  Phường An Lạc A</item>
+        <item>  Phường Bình Hưng Hòa</item>
+        <item>  Phường Bình Hưng Hoà A</item>
+        <item> Phường Bình Hưng Hoà B</item>
+        <item> Phường Bình Trị Đông</item>
+        <item> Phường Bình Trị Đông A</item>
+        <item> Phường Bình Trị Đông B</item>
+        <item> Phường Tân Tạo</item>
+        <item> Phường Tân Tạo A</item>
+    </string-array>
+
+    <string-array name="ward_binhthanh">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+    </string-array>
+
+    <string-array name="ward_govap">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+    </string-array>
+
+    <string-array name="ward_phunhuan">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>13</item>
+        <item>15</item>
+        <item>17</item>
+    </string-array>
+
+    <string-array name="ward_tanbinh">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+
+    <string-array name="ward_tanphu">
+        <item>   Phường Hiệp Tân</item>
+        <item>  Phường Hoà Thạnh</item>
+        <item>  Phường Phú Thạnh</item>
+        <item>  Phường Phú Thọ Hoà</item>
+        <item> Phường Phú Trung</item>
+        <item> Phường Sơn Kỳ</item>
+        <item> Phường Tân Qúy</item>
+        <item>  Phường Tân Sơn Nhì</item>
+        <item>  Phường Tân Thành</item>
+        <item>  Phường Tân Thới Hoà</item>
+        <item>  Phường Tây Thạnh</item>
+    </string-array>
+
+    <string-array name="ward_binhchanh">
+        <item>Thị trấn Tân Túc</item>
+        <item>  Xã An Phú Tây</item>
+        <item>  Xã Bình Chánh</item>
+        <item>  Xã Bình Hưng</item>
+        <item> Xã Bình Lợi</item>
+        <item> Xã Đa Phước</item>
+        <item>  Xã Hưng Long</item>
+        <item>  Xã Lê Minh Xuân</item>
+        <item>  Xã Phạm Văn Hai</item>
+        <item>  Xã Phong Phú</item>
+        <item>  Xã Quy Đức</item>
+        <item>  Xã Tân Kiên</item>
+        <item>  Xã Tân Nhựt</item>
+        <item>  Xã Tân Quý Tây</item>
+        <item>  Xã Vĩnh Lộc A</item>
+        <item>  Xã Vĩnh Lộc B</item>
+    </string-array>
+
+    <string-array name="ward_cangio">
+
+        <item>Thị trấn Cần Thạnh</item>
+        <item>Xã An Thới Đông</item>
+        <item>Xã Bình Khánh</item>
+        <item>Xã Long Hòa</item>
+        <item>Xã Lý Nhơn</item>
+        <item>Xã Tam Thôn Hiệp</item>
+        <item>Xã Thạnh An</item>
+    </string-array>
+
+    <string-array name="ward_cuchi">
+        <item>Thị trấn Củ Chi</item>
+        <item>Xã An Nhơn Tây</item>
+        <item>Xã An Phú</item>
+        <item>Xã Bình Mỹ</item>
+        <item>Xã Hòa Phú</item>
+        <item>Xã Nhuận Đức</item>
+        <item>Xã Phạm Văn Cội</item>
+        <item>Xã Phú Hòa Đông</item>
+        <item>   Xã Phú Mỹ Hưng</item>
+        <item>  Xã Phước Hiệp</item>
+        <item>  Xã Phước Thạnh</item>
+        <item>  Xã Phước Vĩnh An</item>
+        <item>  Xã Tân An Hội</item>
+        <item>   Xã Tân Phú Trung</item>
+        <item>  Xã Tân Thạnh Đông</item>
+        <item>  Xã Tân Thạnh Tây</item>
+        <item>  Xã Tân Thông Hội</item>
+        <item> Xã Thái Mỹ</item>
+        <item>  Xã Trung An</item>
+        <item> Xã Trung Lập Hạ</item>
+        <item>  Xã Trung Lập Thượng</item>
+    </string-array>
+
+    <string-array name="ward_hocmon">
+        <item>   Thị trấn Hóc Môn</item>
+        <item>  Xã Bà Điểm</item>
+        <item>  Xã Đông Thạnh</item>
+        <item>  Xã Nhị Bình</item>
+        <item>  Xã Tân Hiệp</item>
+        <item> Xã Tân Thới Nhì</item>
+        <item>   Xã Tân Xuân</item>
+        <item>  Xã Thới Tam Thôn</item>
+        <item>  Xã Trung Chánh</item>
+        <item>  Xã Xuân Thới Đông</item>
+        <item>  Xã Xuân Thới Sơn</item>
+        <item>  Xã Xuân Thới Thượng</item>
+    </string-array>
+
+    <string-array name="ward_nhabe">
+
+        <item>  Thị trấn Nhà Bè</item>
+        <item>  Xã Hiệp Phước</item>
+        <item>  Xã Long Thới</item>
+        <item> Xã Nhơn Đức</item>
+        <item> Xã Phú Xuân</item>
+        <item> Xã Phước Kiển</item>
+        <item> Xã Phước Lộc</item>
     </string-array>
 </resources>

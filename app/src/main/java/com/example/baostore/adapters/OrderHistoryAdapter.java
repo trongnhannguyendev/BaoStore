@@ -49,7 +49,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         //holder.tvTotalQuantity.setText("3");
         holder.tvBuyDate.setText(order.getCreatedate().toString());
 
-        Log.d("--OrderHistoryAdapter", "onBindViewHolder: " + order.getState());
+        Log.d(context.getString(R.string.debug_adapter_order_history), "onBindViewHolder: " + order.getState());
         if(order.getState() == 0){
             holder.tvOrderStatus.setText("Đơn hàng đang chờ xác nhận");
             holder.ivOrderStatus.setImageResource(R.drawable.ic_verify);
@@ -66,7 +66,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             holder.tvOrderStatus.setText("Đang chờ đã hủy");
             holder.ivOrderStatus.setImageResource(R.drawable.ic_cancel);
         }
-        // TODO: send order detail
 
         holder.tvToOrderHistory.setOnClickListener(view ->{
             Bundle bundle = new Bundle();

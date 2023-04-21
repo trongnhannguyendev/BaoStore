@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Catch error -->
+    <!-- Error -->
     <string name="err_email_empty">Cần phải nhập email</string>
     <string name="err_num_format">Phải là số</string>
     <string name="err_email_format">Không đúng dịnh dạng email</string>
@@ -15,22 +15,23 @@
     <string name="err_not_identical">Mật khẩu không trùng khớp</string>
     <string name="err_fail_login">Sai tên đăng nhập hoặc mật khẩu</string>
 
-
+    <!-- Debug-->
     <string name="debug_SplashActivity">---SplashActivity</string>
     <string name="debug_LoginActivity">---LoginActivity</string>
     <string name="debug_RegisterActivity">---RegisterActivity</string>
-
     <string name="debug_MainActivity">---MainActivity</string>
     <string name="debug_CartAdapter">---CartAdapter</string>
     <string name="debug_UserInforActivity">---UserInforActivity</string>
+    <string name="debug_activity_detail_item">--DetailItemActivity</string>
     <string name="debug_frag_home">--HomeFrag</string>
+    <string name="debug_frag_search">--SearchFrag</string>
     <string name="debug_frag_cart">--HomeFrag</string>
     <string name="debug_callback">--HomeFrag</string>
     <string name="debug_adapter_book">--BookAdapter</string>
-
-
+    <string name="debug_adapter_order_history">--OrderHistoryAdapter</string>
     <string name="enqueue_failure">Something wrong happen</string>
 
+    <!-- Hint-->
     <string name="hint_email">Email</string>
     <string name="hint_fullname">Họ tên</string>
     <string name="hint_password">Mật khẩu</string>
@@ -42,10 +43,18 @@
     <string name="hint_verification_code">Mã xác nhận</string>
     <string name="hint_search_for">Bạn muốn tìm gì ?</string>
 
+
+    <!-- Headery-->
     <string name="header_register">Đăng ký</string>
     <string name="header_login">Đăng Nhập</string>
-    <string name="title_cart_info">Thông tin người nhận</string>
-    <string name="title_cart_payment">Chi tiết thanh toán</string>
+    <string name="header_cart_payment">Thanh toán hóa đơn</string>
+    <string name="header_buy_history">Lịch sử mua hàng</string>
+    <string name="header_cart_info">Thông tin nhận hàng</string>
+    <string name="header_change_pass">Thay đổi mật khẩu</string>
+    <string name="header_user_info">Thông tin cá nhân</string>
+
+
+
 
     <string name="msg_exit_app">Nhấn lại để thoát app</string>
     <string name="err_account_deactivate">Tài khoản đã bị vô hiệu hóa</string>
@@ -88,6 +97,8 @@
     <!-- Cart Frag-->
     <string name="cart_total">Tổng</string>
     <string name="cart_temp_price">Giá</string>
+    <string name="title_cart_info">Thông tin người nhận</string>
+    <string name="title_cart_payment">Chi tiết thanh toán</string>
 
     <!-- Profile Frag-->
     <string name="nav_personal_info">Thông tin cá nhân</string>
@@ -117,6 +128,7 @@
     <!-- Order Detail Activity-->
     <string name="order_total">Thành tiền</string>
 
+    <!-- Khác-->
     <string name="text_language">Ngôn ngữ</string>
     <string name="text_setting">Cài đặt</string>
     <string name="text_cart_empty">Giỏ hàng trống</string>
@@ -126,6 +138,9 @@
     <string name="text_register_fail">Đăng ký thất bại</string>
     <string name="text_preview_book">Xem trước</string>
     <string name="subtitle_receiver">Thông tin nhận hàng</string>
+    <string name="snackbar_dismiss">Đã hiểu</string>
+    <string name="backpressed_exit">Nhấn lại để thoát</string>
+
 
 
     <string-array name="language">

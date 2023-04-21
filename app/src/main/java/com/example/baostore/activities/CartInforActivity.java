@@ -67,7 +67,7 @@ public class CartInforActivity extends AppCompatActivity {
         cvIconProgress.setCardBackgroundColor(color);
 
         //header
-        tvTitleHeader.setText("Thông tin nhận hàng");
+        tvTitleHeader.setText(getResources().getString(R.string.header_cart_info));
 
         //button back
 
@@ -86,7 +86,7 @@ public class CartInforActivity extends AppCompatActivity {
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)) {
             addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for (Address address1 : addressList) {
-                Log.d("----UserInforActivity", address1.getLocation());
+                Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
             }
             Address address1 = new Address();
             address1.setLocation("Add new address");
@@ -101,7 +101,7 @@ public class CartInforActivity extends AppCompatActivity {
             spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(CartInforActivity.this, "position: " + i + "size: " + addressList.size(), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.debug_UserInforActivity), "position: " + i + "size: " + addressList.size());
                     if (i == addressList.size() - 1) {
                         Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
                         startActivity(intent);
@@ -115,7 +115,6 @@ public class CartInforActivity extends AppCompatActivity {
             });
 
 // xử lý button
-
             btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

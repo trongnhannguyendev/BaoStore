@@ -76,11 +76,28 @@ public class UserInforActivity extends AppCompatActivity {
 
         service = GetRetrofit.getInstance().createRetrofit();
 
+        //header
+        tvTitleHeader = findViewById(R.id.title);
+        tvTitleHeader.setText(getString(R.string.header_user_info));
+
+        //button back
+        imgBack = findViewById(R.id.back_button);
+
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackPressed();
+            }
+        });
+
+
         bundle = getIntent().getExtras();
         if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
             addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for(Address address1: addressList){
-                Log.d("----UserInforActivity", address1.getLocation());
+                Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
             }
             Address address1 = new Address();
             address1.setLocation("Add new address");
@@ -91,7 +108,7 @@ public class UserInforActivity extends AppCompatActivity {
             spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(UserInforActivity.this, "position: "+i+"size: "+addressList.size(), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.debug_UserInforActivity), "position: "+i+"size: "+addressList.size());
                     if (i == addressList.size()-1){
                         Intent intent = new Intent(UserInforActivity.this, AddAddressActivity.class);
                         startActivity(intent);
@@ -114,21 +131,7 @@ public class UserInforActivity extends AppCompatActivity {
         edfullname.setText(user.getFullname());
         edPhoneNumber.setText(user.getPhonenumber());
         edEmail.setText(user.getEmail());
-        //header
-        tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText("Thông tin cá nhân");
 
-        //button back
-        imgBack = findViewById(R.id.back_button);
-
-
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                onBackPressed();
-            }
-        });
 
         edfullname.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

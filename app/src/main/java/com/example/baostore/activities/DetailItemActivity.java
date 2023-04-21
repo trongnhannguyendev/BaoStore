@@ -71,7 +71,7 @@ public class DetailItemActivity extends AppCompatActivity {
             // Book has no description
             String description;
             tvTitle.setText(title);
-            Log.d("--", "book title: " + book.getTitle());
+            Log.d(getString(R.string.debug_activity_detail_item), "book title: " + book.getTitle());
             tvPrice.setText(new Utils().priceToString(price));
 
             BookImageList = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);

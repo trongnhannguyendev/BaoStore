@@ -59,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         btnSplash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pushNotification(SplashActivity.this, "Splash", "Click on splash");
+                //pushNotification(SplashActivity.this, "Splash", "Click on splash");
                 // Kiểm tra dữ liệu người dùng tồn tại
                 if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
                     finish();

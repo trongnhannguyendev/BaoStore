@@ -62,8 +62,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Cart cart = list.get(position);
         Book book = bookList.get(cart.getBookid()-1);
-        Log.d("--", "Cart Bookid: "+ cart.getBookid());
-        Log.d("--", "Bookid: : "+ book.getbookid());
 
         service = GetRetrofit.getInstance().createRetrofit();
         User user = SharedPrefManager.getInstance(context).getUser();

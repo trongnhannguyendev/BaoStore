@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_header"
         app:titleCentered="true"
-        app:title="Verify code"
+        app:title="Xác nhận email"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:navigationIconTint="@color/white"

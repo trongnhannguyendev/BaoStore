@@ -43,7 +43,7 @@ public class ChangePassActivity extends AppCompatActivity {
         btnChangePass = findViewById(R.id.btnChangePass_cp);
 
         // header
-        tvTitleHeader.setText("Thay đổi mật khẩu");
+        tvTitleHeader.setText(getString(R.string.header_change_pass));
 
         service= GetRetrofit.getInstance().createRetrofit();
         user= SharedPrefManager.getInstance(this).getUser();

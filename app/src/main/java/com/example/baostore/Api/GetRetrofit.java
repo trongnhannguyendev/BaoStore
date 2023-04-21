@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GetRetrofit {
     private static GetRetrofit Instance;
-    private static final String BASE_URL = "http://172.16.98.18/bookplatform/views/";
+    private static final String BASE_URL = "http://192.168.1.7/bookplatform/views/";
 
 
     public static synchronized GetRetrofit getInstance(){
@@ -23,9 +23,7 @@ public class GetRetrofit {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ApiService service = retrofit.create(ApiService.class);
-
-        return service;
+        return retrofit.create(ApiService.class);
 
     }
 }

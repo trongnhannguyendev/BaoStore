@@ -49,6 +49,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
     implementation 'com.google.firebase:firebase-analytics'
 
+    implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.10.2'
+
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     implementation 'com.paypal.sdk:paypal-android-sdk:2.14.2'
