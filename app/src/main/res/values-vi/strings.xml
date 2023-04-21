@@ -4,18 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Error -->
-    <string name="err_email_empty">Cần phải nhập email</string>
-    <string name="err_num_format">Phải là số</string>
-    <string name="err_email_format">Không đúng dịnh dạng email</string>
-    <string name="err_pass_empty">Cần phải nhập mật khẩu</string>
-    <string name="err_phonenumber_empty">Cần phải nhập sđt</string>
-    <string name="err_phonenumber_format">SĐT gồm 10 số</string>
-    <string name="err_fullname_empty">Cần phải nhập tên</string>
-    <string name="err_password_length">Mật khẩu phải > 6 ký tự</string>
-    <string name="err_not_identical">Mật khẩu không trùng khớp</string>
-    <string name="err_fail_login">Sai tên đăng nhập hoặc mật khẩu</string>
-
     <!-- Debug-->
     <string name="debug_SplashActivity">---SplashActivity</string>
     <string name="debug_LoginActivity">---LoginActivity</string>
@@ -31,6 +19,20 @@
     <string name="debug_adapter_book">--BookAdapter</string>
     <string name="debug_adapter_order_history">--OrderHistoryAdapter</string>
     <string name="enqueue_failure">Something wrong happen</string>
+
+    <!-- Error -->
+    <string name="err_email_empty">Cần phải nhập email</string>
+    <string name="err_num_format">Phải là số</string>
+    <string name="err_email_format">Không đúng dịnh dạng email</string>
+    <string name="err_pass_empty">Cần phải nhập mật khẩu</string>
+    <string name="err_phonenumber_empty">Cần phải nhập sđt</string>
+    <string name="err_phonenumber_format">SĐT gồm 10 số</string>
+    <string name="err_fullname_empty">Cần phải nhập tên</string>
+    <string name="err_password_length">Mật khẩu phải > 6 ký tự</string>
+    <string name="err_not_identical">Mật khẩu không trùng khớp</string>
+    <string name="err_fail_login">Sai tên đăng nhập hoặc mật khẩu</string>
+
+
 
     <!-- Hint-->
     <string name="hint_email">Email</string>
@@ -141,6 +143,7 @@
     <string name="subtitle_receiver">Thông tin nhận hàng</string>
     <string name="snackbar_dismiss">Đã hiểu</string>
     <string name="backpressed_exit">Nhấn lại để thoát</string>
+    <string name="text_spinner_new_address">Thêm địa chỉ mới</string>
 
 
 

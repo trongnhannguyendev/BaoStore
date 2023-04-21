@@ -30,7 +30,7 @@ import com.example.baostore.models.User;
 import java.util.List;
 
 public class CartInforActivity extends AppCompatActivity {
-    EditText edFullName, edPhoneNumber, edAddress, edEmail;
+    EditText edFullName, edPhoneNumber, edEmail;
     TextView tvTitleHeader;
     ImageView imgBack;
     Spinner spnAddress;
@@ -89,7 +89,7 @@ public class CartInforActivity extends AppCompatActivity {
                 Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
             }
             Address address1 = new Address();
-            address1.setLocation("Add new address");
+            address1.setLocation(getString(R.string.text_spinner_new_address));
             addressList.add(address1);
             AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
             spnAddress.setAdapter(adapter);

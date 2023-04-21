@@ -4,18 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Error -->
-    <string name="err_email_empty">L\'email ne peut pas être vide</string>
-    <string name="err_num_format">L\'entrée n\'est pas un nombre</string>
-    <string name="err_email_format">Veuillez saisir le format d\'e-mail correct</string>
-    <string name="err_pass_empty">Le mot de passe ne peut pas être vide</string>
-    <string name="err_phonenumber_empty">Le numéro de téléphone ne peut pas être vide</string>
-    <string name="err_phonenumber_format">Le numéro de téléphone doit contenir 10 chiffres</string>
-    <string name="err_fullname_empty">Le nom complet ne peut être vide</string>
-    <string name="err_password_length">Le mot de passe doit être >6 caractères</string>
-    <string name="err_not_identical">Le mot de passe ne correspond pas</string>
-    <string name="err_fail_login">Nom d\'utilisateur ou mot de passe erroné</string>
-
     <!-- Debug-->
     <string name="debug_SplashActivity">---SplashActivity</string>
     <string name="debug_LoginActivity">---LoginActivity</string>
@@ -31,6 +19,20 @@
     <string name="debug_adapter_book">--BookAdapter</string>
     <string name="debug_adapter_order_history">--OrderHistoryAdapter</string>
     <string name="enqueue_failure">Il se passe quelque chose d\'anormal</string>
+
+    <!-- Error -->
+    <string name="err_email_empty">L\'email ne peut pas être vide</string>
+    <string name="err_num_format">L\'entrée n\'est pas un nombre</string>
+    <string name="err_email_format">Veuillez saisir le format d\'e-mail correct</string>
+    <string name="err_pass_empty">Le mot de passe ne peut pas être vide</string>
+    <string name="err_phonenumber_empty">Le numéro de téléphone ne peut pas être vide</string>
+    <string name="err_phonenumber_format">Le numéro de téléphone doit contenir 10 chiffres</string>
+    <string name="err_fullname_empty">Le nom complet ne peut être vide</string>
+    <string name="err_password_length">Le mot de passe doit être >6 caractères</string>
+    <string name="err_not_identical">Le mot de passe ne correspond pas</string>
+    <string name="err_fail_login">Nom d\'utilisateur ou mot de passe erroné</string>
+
+
 
     <!-- Hint-->
     <string name="hint_email">Email</string>
@@ -141,6 +143,7 @@
     <string name="subtitle_receiver">Détails du récepteur</string>
     <string name="snackbar_dismiss">Rejeter</string>
     <string name="backpressed_exit">Appuyer à nouveau pour quitter</string>
+    <string name="text_spinner_new_address">Ajouter une adresse</string>
 
 
 
