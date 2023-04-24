@@ -87,11 +87,11 @@ public class CodeVerifyActivity extends AppCompatActivity {
                 int enterCode = Integer.parseInt(edVerifyCode.getText().toString().trim());
                 int code = intent.getIntExtra(VERIFICATION_CODE, -1);
                 Toast.makeText(this, code + "", Toast.LENGTH_SHORT).show();
+
                 if (code == -1) {
                     Toast.makeText(this, "Can't get verification code", Toast.LENGTH_SHORT).show();
                 }
                 if (enterCode == code) {
-                    Toast.makeText(this, "action code: " + actionCode, Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent();
                     if (actionCode == 1) {
                         intent1 = new Intent(CodeVerifyActivity.this, ForgotPasswordActivity.class);

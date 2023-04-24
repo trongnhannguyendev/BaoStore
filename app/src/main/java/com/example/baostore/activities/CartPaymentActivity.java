@@ -12,7 +12,6 @@ import static com.example.baostore.Constant.Constants.USER_FULL_NAME;
 import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import static com.example.baostore.Api.RetrofitCallBack.insertOrder;
-import static com.example.baostore.activities.DetailOrderItemActivity.PAYPAL_REQUEST_CODE;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -108,6 +107,8 @@ public class CartPaymentActivity extends AppCompatActivity {
         service = GetRetrofit.getInstance().createRetrofit();
         Bundle bundle = getIntent().getExtras();
 
+        tvTitleHeader.setText(getString(R.string.header_cart_payment));
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.payment_type));
         spnPaymentType.setAdapter(adapter);
 
@@ -139,10 +140,6 @@ public class CartPaymentActivity extends AppCompatActivity {
             if (paymentType == 1){
                 getPayment();
             }
-
-
-
-
         });
 
 

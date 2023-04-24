@@ -77,7 +77,7 @@ public class ProfileFragment extends Fragment {
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ivUserProfile.setImageBitmap(b);
         }
-        catch (FileNotFoundException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }

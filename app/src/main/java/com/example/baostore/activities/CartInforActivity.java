@@ -27,10 +27,11 @@ import com.example.baostore.adapters.AddressSpinnerAdapter;
 import com.example.baostore.models.Address;
 import com.example.baostore.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartInforActivity extends AppCompatActivity {
-    EditText edFullName, edPhoneNumber, edAddress, edEmail;
+    EditText edFullName, edPhoneNumber, edEmail;
     TextView tvTitleHeader;
     ImageView imgBack;
     Spinner spnAddress;
@@ -40,7 +41,6 @@ public class CartInforActivity extends AppCompatActivity {
     private Utils utils;
     Bundle bundle;
     List<Address> addressList;
-
 
 
     @Override
@@ -58,7 +58,7 @@ public class CartInforActivity extends AppCompatActivity {
         btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
         spnAddress = findViewById(R.id.spnAddresses_cartinfo);
 
-
+        addressList = new ArrayList<>();
 
         utils = new Utils();
 
@@ -67,7 +67,7 @@ public class CartInforActivity extends AppCompatActivity {
         cvIconProgress.setCardBackgroundColor(color);
 
         //header
-        tvTitleHeader.setText("Thông tin nhận hàng");
+        tvTitleHeader.setText(getResources().getString(R.string.header_cart_info));
 
         //button back
 
@@ -83,62 +83,68 @@ public class CartInforActivity extends AppCompatActivity {
 
         // Đổ địa chỉ
         bundle = getIntent().getExtras();
-        if(bundle!= null && bundle.containsKey(ADDRESS_LIST)) {
+        if (bundle != null && bundle.containsKey(ADDRESS_LIST)) {
             addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
             for (Address address1 : addressList) {
-                Log.d("----UserInforActivity", address1.getLocation());
+                Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
             }
             Address address1 = new Address();
-            address1.setLocation("Add new address");
+            address1.setLocation(getString(R.string.text_spinner_new_address));
             addressList.add(address1);
+            Toast.makeText(this, "size: " + addressList.size(), Toast.LENGTH_SHORT).show();
             AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
             spnAddress.setAdapter(adapter);
 
             edFullName.setText(user.getFullname());
             edPhoneNumber.setText(user.getPhonenumber());
             edEmail.setText(user.getEmail());
-
-            spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(CartInforActivity.this, "position: " + i + "size: " + addressList.size(), Toast.LENGTH_SHORT).show();
-                    if (i == addressList.size() - 1) {
-                        Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
-                        startActivity(intent);
-                    }
+        } else {
+            Address address1 = new Address();
+            address1.setLocation(getString(R.string.text_spinner_new_address));
+            addressList.add(address1);
+            AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
+            spnAddress.setAdapter(adapter);
+        }
+        spnAddress.setSelection(0, false);
+        spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(getString(R.string.debug_UserInforActivity), "position: " + i + "size: " + addressList.size());
+                if (i == addressList.size()-1) {
+                    Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
+                    startActivity(intent);
                 }
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                }
-            });
+            }
+        });
 
 // xử lý button
+        btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = edEmail.getText().toString().trim();
+                String phoneNumber = edPhoneNumber.getText().toString().trim();
+                String fullName = edFullName.getText().toString().trim();
+                Address address2 = (Address) spnAddress.getSelectedItem();
+                String address = address2.getLocation();
 
-            btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String email = edEmail.getText().toString().trim();
-                    String phoneNumber = edPhoneNumber.getText().toString().trim();
-                    String fullName = edFullName.getText().toString().trim();
-                    Address address2 = (Address) spnAddress.getSelectedItem();
-                    String address = address2.getLocation();
-
-                    if (!checkError(email, phoneNumber, fullName)) {
-                        Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
-                        bundle.putString(ADDRESS_LOCATION, address);
-                        bundle.putString(USER_PHONE_NUMBER, phoneNumber);
-                        bundle.putString(USER_FULL_NAME, fullName);
-                        i.putExtras(bundle);
-                        startActivity(i);
-                    }
+                if (!checkError(email, phoneNumber, fullName)) {
+                    Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
+                    bundle.putString(ADDRESS_LOCATION, address);
+                    bundle.putString(USER_PHONE_NUMBER, phoneNumber);
+                    bundle.putString(USER_FULL_NAME, fullName);
+                    i.putExtras(bundle);
+                    startActivity(i);
                 }
-            });
-        }
+            }
+        });
     }
 
-     private boolean checkError(String email, String phoneNumber, String fullname) {
+    private boolean checkError(String email, String phoneNumber, String fullname) {
 
         boolean hasError = false;
 

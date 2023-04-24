@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/custom_button_3"
-                    android:text="Thanh toán"
+                    android:text="@string/button_add_and_to_cart"
                     android:textColor="#fff"
                     android:textSize="20dp"
                     android:textAllCaps="false"

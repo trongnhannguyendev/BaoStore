@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import retrofit2.Call;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -72,12 +73,14 @@ public class RegisterActivity extends AppCompatActivity {
             // Lấy dữ liệu
             String email = getIntent().getStringExtra(USER_EMAIL);
             String pass = edPass.getText().toString().trim();
+
             String pass_re = edRePass.getText().toString().trim();
             String phoneNumber = edPhoneNumber.getText().toString().trim();
             String fullname = edFullName.getText().toString().trim();
 
             // Chạy đăng ký nếu không có lỗi
             if (!checkError(email, pass, pass_re, phoneNumber, fullname)) {
+                /*String usePass = BCrypt.withDefaults().hashToString(12, pass.toCharArray());*/
                 JsonObject object = new JsonObject();
                 object.addProperty(USER_EMAIL, email);
                 object.addProperty(USER_PASSWORD, pass);

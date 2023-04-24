@@ -34,7 +34,7 @@ public class AddAddressActivity extends AppCompatActivity {
     ArrayAdapter<String> wardAdapter;
     MaterialToolbar toolbar;
     Button btnAdd;
-    ApiService service = GetRetrofit.getInstance().createRetrofit();
+    ApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class AddAddressActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd_address);
         toolbar = findViewById(R.id.mtb_aa);
 
+        service = GetRetrofit.getInstance().createRetrofit();
 
         ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.district));
         spnDistrict.setAdapter(districtAdapter);

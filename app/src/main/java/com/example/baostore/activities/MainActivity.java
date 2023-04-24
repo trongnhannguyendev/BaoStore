@@ -52,6 +52,7 @@ import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.color.DynamicColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bundle = new Bundle();
         bundle.putInt(BOOK_SEARCH_CODE, 0);
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         // header
         tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText("Trang chủ");
+        tvTitleHeader.setText(getString(R.string.bot_nav_home));
 
         // button back
         imgBack = findViewById(R.id.back_button);
@@ -133,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             switch (item.getItemId()) {
                 case R.id.Home:
+                    tvTitleHeader.setText(getString(R.string.bot_nav_home));
                     fragment = new HomeFragment();
                     fragment.setArguments(bundle);
                     loadFragment(fragment);
 
                     return true;
                 case R.id.Search:
-                    tvTitleHeader.setText("Tìm kiếm");
+                    tvTitleHeader.setText(getString(R.string.bot_nav_search));
                     fragment = new SearchFragment();
                     fragment.setArguments(bundle);
                     loadSearchFragment(fragment,0,null);
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.Cart:
-                    tvTitleHeader.setText("Giỏ hàng");
+                    tvTitleHeader.setText(getString(R.string.bot_nav_cart));
                     fragment = new CartFragment();
                     fragment.setArguments(bundle);
                     cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle, fragment));
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
                     return true;
                 case R.id.User:
-                    tvTitleHeader.setText("Người dùng");
+                    tvTitleHeader.setText(getString(R.string.bot_nav_user));
                     fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
                     loadFragment(fragment);
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(BOOK_SEARCH, find);
         fragment.setArguments(bundle);
 
-        Log.d(String.valueOf(R.string.debug_MainActivity), "Search code: "+ searchCode);
+        Log.d(getString(R.string.debug_MainActivity), "Search code: "+ searchCode);
         loadFragment(fragment);
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Log.d("--", "onActivityResult: "+result.getResultCode());
+                    Log.d(getString(R.string.debug_MainActivity), "onActivityResult: "+result.getResultCode());
                     if(result.getResultCode()==111){
                         Intent data = result.getData();
                         Fragment fragment1 = new CartFragment();
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSnackbar(View v,String msg){
         Snackbar snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
+        snackbar.setAction(getString(R.string.snackbar_dismiss), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 snackbar.dismiss();
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         if (canExit) {
             super.onBackPressed();
         } else {
-            createToast("Press again to exit");
+            createToast(getString(R.string.backpressed_exit));
             canExit = !canExit;
 
             Handler handler = new Handler();

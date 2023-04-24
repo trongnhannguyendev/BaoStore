@@ -93,6 +93,16 @@ public class LoginActivity extends AppCompatActivity {
                 turnEditingOn();
             }
 
+            /* Compare using bcrypt
+            String bcryptHashString = "$2a$12$f3S3LFnHfEuhs8DezwNU5.3gZbpm9c0Mn8Aw9qWU.N2R1kDNlod6O";
+            String pass = edtSIPassword.getText().toString();
+            BCrypt.Result result = BCrypt.verifyer().verify(pass.toCharArray(), bcryptHashString);
+            if (result.verified) {
+                Toast.makeText(this, "match", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "notmatch", Toast.LENGTH_LONG).show();
+            }*/
+
         });
     }
 

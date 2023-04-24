@@ -4,6 +4,8 @@ import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Api.RetrofitCallBack.getOrderByUserID;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,16 +29,26 @@ public class BuyHistoryActivity extends AppCompatActivity {
 
     Bundle bundle;
     ApiService service;
+    ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_history);
 
-        // header
+        imgBack = findViewById(R.id.back_button);
         tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText("Lịch sử mua hàng");
         recyBuyHistory = findViewById(R.id.recyBuyHistory);
+
+        // header
+        tvTitleHeader.setText(getResources().getString(R.string.header_buy_history));
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
 

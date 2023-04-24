@@ -57,6 +57,7 @@ import com.example.baostore.responses.OrderResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.example.baostore.responses.UserResponse;
 import com.example.baostore.responses.VerificationCodeResponse;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -542,9 +543,13 @@ public class RetrofitCallBack {
             public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                 if (response.body().getResponseCode() == 1) {
                     List<Order> orderList = response.body().getData();
-                    OrderHistoryAdapter adapter = new OrderHistoryAdapter(orderList, context);
-                    Toast.makeText(activity, orderList.get(0).getPhonenumber()+"", Toast.LENGTH_SHORT).show();
-                    recy.setAdapter(adapter);
+                    if (orderList.size()>0) {
+                        OrderHistoryAdapter adapter = new OrderHistoryAdapter(orderList, context);
+                        Toast.makeText(activity, orderList.get(0).getPhonenumber() + "", Toast.LENGTH_SHORT).show();
+                        recy.setAdapter(adapter);
+                    } else{
+                        Toast.makeText(activity, "Chưa có đơn hàng nào", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }
