@@ -52,6 +52,7 @@ import com.example.baostore.responses.CartResponse;
 import com.example.baostore.responses.CategoryResponse;
 import com.example.baostore.responses.PublisherResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.color.DynamicColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bundle = new Bundle();
         bundle.putInt(BOOK_SEARCH_CODE, 0);
 
