@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -50,43 +51,50 @@ public class CartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        try {
+            // Inflate the layout for this fragment
 
-        tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
-        service= GetRetrofit.getInstance().createRetrofit();
-        activity = (MainActivity) getContext();
+            tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
-        // màu icon progress
-        cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
-        int color = getResources().getColor(R.color.ic_progress);
-        cvIconProgress.setCardBackgroundColor(color);
+            service = GetRetrofit.getInstance().createRetrofit();
+            activity = (MainActivity) getContext();
 
-        // xử lý button
-        btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
-        bundle = getArguments();
+            // màu icon progress
+            cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
+            int color = getResources().getColor(R.color.ic_progress);
+            cvIconProgress.setCardBackgroundColor(color);
 
-        cartList = new ArrayList<>();
-        recyCart = view.findViewById(R.id.recyCart_cart);
-        recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
+            // xử lý button
+            btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
+            bundle = getArguments();
 
-        getCart();
+            cartList = new ArrayList<>();
+            recyCart = view.findViewById(R.id.recyCart_cart);
+            recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        btnConfirmCart.setOnClickListener(v -> {
+            getCart();
+
+            btnConfirmCart.setOnClickListener(v -> {
                 if (!cartList.isEmpty()) {
                     Intent i = new Intent(getActivity(), CartInforActivity.class);
                     bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
                     bundle.putSerializable(CART_LIST, (Serializable) cartList);
-                    Log.d(getString(R.string.debug_frag_cart), "Total cart price: "+totalCartPrice);
+                    Log.d(getString(R.string.debug_frag_cart), "Total cart price: " + totalCartPrice);
 
                     i.putExtras(bundle);
                     startActivity(i);
-                } else{
+                } else {
                     activity.createSnackbar(v, getString(R.string.text_cart_empty));
                 }
 
-        });
+            });
+            return view;
+        } catch (Exception e){
+            Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+        }
         return view;
     }
 

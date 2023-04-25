@@ -46,37 +46,44 @@ public class DetailOrderItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_order_item);
-        tvDate = findViewById(R.id.tvOrderDate_detailorderitem);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice_detailorderitem);
-        tvPaymentType = findViewById(R.id.tvPaymentType_orderhistoryitem);
-        tvReceiverName = findViewById(R.id.tvReceiverName_detailorder);
-        tvReceiverPhoneNumber = findViewById(R.id.tvReceiverPhoneNumber_detailorder);
-        tvReceiverAddress = findViewById(R.id.tvReceiverAddress_orderhistoryitem);
-        recyOrderDetail = findViewById(R.id.recyDetailOrder_detailorder);
 
-        recyOrderDetail.setLayoutManager(new LinearLayoutManager(this));
+            tvDate = findViewById(R.id.tvOrderDate_detailorderitem);
+            tvTotalPrice = findViewById(R.id.tvTotalPrice_detailorderitem);
+            tvPaymentType = findViewById(R.id.tvPaymentType_orderhistoryitem);
+            tvReceiverName = findViewById(R.id.tvReceiverName_detailorder);
+            tvReceiverPhoneNumber = findViewById(R.id.tvReceiverPhoneNumber_detailorder);
+            tvReceiverAddress = findViewById(R.id.tvReceiverAddress_orderhistoryitem);
+            recyOrderDetail = findViewById(R.id.recyDetailOrder_detailorder);
 
-        service = GetRetrofit.getInstance().createRetrofit();
+            recyOrderDetail.setLayoutManager(new LinearLayoutManager(this));
 
-        Bundle bundle = getIntent().getExtras();
-        Order order = (Order) bundle.getSerializable(ORDER_OBJECT);
+            service = GetRetrofit.getInstance().createRetrofit();
 
-        JsonObject object = new JsonObject();
-        object.addProperty(ORDER_ID, order.getOrderid());
+            Bundle bundle = getIntent().getExtras();
+            Order order = (Order) bundle.getSerializable(ORDER_OBJECT);
 
-        Call<OrderDetailResponse> orderDetailCall = service.getOrderDetailById(object);
-        orderDetailCall.enqueue(getOrderDetail(this, recyOrderDetail, tvTotalPrice));
+            JsonObject object = new JsonObject();
+            object.addProperty(ORDER_ID, order.getOrderid());
 
-        tvDate.setText(order.getCreatedate());
-        //tvTotalPrice = order.getOrderTotal()
-        tvPaymentType.setText(order.getPayment() + "");
-        tvReceiverName.setText(order.getFullname());
-        tvReceiverPhoneNumber.setText(order.getPhonenumber());
-        tvReceiverAddress.setText(order.getAddress());
+            Call<OrderDetailResponse> orderDetailCall = service.getOrderDetailById(object);
+            orderDetailCall.enqueue(getOrderDetail(this, recyOrderDetail, tvTotalPrice));
 
-        checkTotalPrice();
+            tvDate.setText(order.getCreatedate());
+            //tvTotalPrice = order.getOrderTotal()
+            tvPaymentType.setText(order.getPayment() + "");
+            tvReceiverName.setText(order.getFullname());
+            tvReceiverPhoneNumber.setText(order.getPhonenumber());
+            tvReceiverAddress.setText(order.getAddress());
+
+            checkTotalPrice();
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
 

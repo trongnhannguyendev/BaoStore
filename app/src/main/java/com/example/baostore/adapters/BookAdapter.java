@@ -50,10 +50,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context myContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(myContext);
-        View v;
+        View v = null;
         if (loadCode == 2) {
             v = inflater.inflate(R.layout.item_layout_2, parent, false);
-        } else{
+        }
+        if (loadCode == 1){
             v = inflater.inflate(R.layout.item_layout_1, parent, false);
         }
         return new MyViewHolder(v);

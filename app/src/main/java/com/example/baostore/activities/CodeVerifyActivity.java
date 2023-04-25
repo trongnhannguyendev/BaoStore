@@ -49,71 +49,76 @@ public class CodeVerifyActivity extends AppCompatActivity {
     Intent intent ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_code);
 
-        llSend = findViewById(R.id.llsend);
-        llVerify = findViewById(R.id.llverify);
-        edEmail = findViewById(R.id.edEmail_verifycode);
-        edVerifyCode = findViewById(R.id.edVerifyCode);
-        btnVerify = findViewById(R.id.btnVerifyCode_verify);
-        btnSend = findViewById(R.id.btnEmail_verifyCode);
-        toolbar = findViewById(R.id.toolbar_vc);
+
+            llSend = findViewById(R.id.llsend);
+            llVerify = findViewById(R.id.llverify);
+            edEmail = findViewById(R.id.edEmail_verifycode);
+            edVerifyCode = findViewById(R.id.edVerifyCode);
+            btnVerify = findViewById(R.id.btnVerifyCode_verify);
+            btnSend = findViewById(R.id.btnEmail_verifyCode);
+            toolbar = findViewById(R.id.toolbar_vc);
 
 
+            turnVerifyFieldsOff();
 
-        turnVerifyFieldsOff();
+            intent = new Intent();
+            edVerifyCode.setEnabled(false);
+            btnVerify.setEnabled(false);
+            actionCode = getIntent().getIntExtra(ACTION_CODE, -1);
 
-        intent = new Intent();
-        edVerifyCode.setEnabled(false);
-        btnVerify.setEnabled(false);
-        actionCode = getIntent().getIntExtra(ACTION_CODE, -1);
+            service = GetRetrofit.getInstance().createRetrofit();
 
-        service = GetRetrofit.getInstance().createRetrofit();
-
-        btnSend.setOnClickListener(view->{
-            if (!checkError(edEmail.getText().toString().trim())) {
-                turnEditingOff();
-                email = edEmail.getText().toString().trim();
-                JsonObject object = new JsonObject();
-                object.addProperty(USER_EMAIL, email);
-                Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
-                call.enqueue(getVerificationCode(CodeVerifyActivity.this, intent));
-            }
-        });
-
-        btnVerify.setOnClickListener(view-> {
-            if (intent.hasExtra(VERIFICATION_CODE)) {
-                int enterCode = Integer.parseInt(edVerifyCode.getText().toString().trim());
-                int code = intent.getIntExtra(VERIFICATION_CODE, -1);
-                Toast.makeText(this, code + "", Toast.LENGTH_SHORT).show();
-
-                if (code == -1) {
-                    Toast.makeText(this, "Can't get verification code", Toast.LENGTH_SHORT).show();
+            btnSend.setOnClickListener(view -> {
+                if (!checkError(edEmail.getText().toString().trim())) {
+                    turnEditingOff();
+                    email = edEmail.getText().toString().trim();
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, email);
+                    Call<VerificationCodeResponse> call = service.getEmailVerifyCode(object);
+                    call.enqueue(getVerificationCode(CodeVerifyActivity.this, intent));
                 }
-                if (enterCode == code) {
-                    Intent intent1 = new Intent();
-                    if (actionCode == 1) {
-                        intent1 = new Intent(CodeVerifyActivity.this, ForgotPasswordActivity.class);
+            });
 
+            btnVerify.setOnClickListener(view -> {
+                if (intent.hasExtra(VERIFICATION_CODE)) {
+                    int enterCode = Integer.parseInt(edVerifyCode.getText().toString().trim());
+                    int code = intent.getIntExtra(VERIFICATION_CODE, -1);
+                    Toast.makeText(this, code + "", Toast.LENGTH_SHORT).show();
+
+                    if (code == -1) {
+                        Toast.makeText(this, "Can't get verification code", Toast.LENGTH_SHORT).show();
                     }
-                    if (actionCode == 2) {
-                        intent1 = new Intent(CodeVerifyActivity.this, RegisterActivity.class);
+                    if (enterCode == code) {
+                        Intent intent1 = new Intent();
+                        if (actionCode == 1) {
+                            intent1 = new Intent(CodeVerifyActivity.this, ForgotPasswordActivity.class);
+
+                        }
+                        if (actionCode == 2) {
+                            intent1 = new Intent(CodeVerifyActivity.this, RegisterActivity.class);
+                        }
+                        intent1.putExtra(USER_EMAIL, email);
+                        finish();
+                        startActivity(intent1);
                     }
-                    intent1.putExtra(USER_EMAIL, email);
+                }
+            });
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     finish();
-                    startActivity(intent1);
                 }
-            }
-        });
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
+            });
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
     public void turnEditingOff(){

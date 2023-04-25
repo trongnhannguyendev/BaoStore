@@ -71,6 +71,7 @@ public class CartPaymentActivity extends AppCompatActivity {
     double totalPrice;
     String fullName, phoneNumber,address;
     User user;
+    Bundle bundle;
 
     private static final String clientKey = "AQwusKD4K-4uW7Vu16IMPfvggch0k-g4bgBmwEcHuLjF3l5xmpzIc6HvOcxj1dE18AbMX5arDq-6KCyQ";
     public static final int PAYPAL_REQUEST_CODE = 123;
@@ -84,73 +85,79 @@ public class CartPaymentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart_payment);
 
-        cvIconProgress = findViewById(R.id.cvProgress_3);
-        tvTitleHeader = findViewById(R.id.title);
-        imgBack = findViewById(R.id.back_button);
-        btn_hide_show = findViewById(R.id.btn_hide_show);
-        layout_hide_show = findViewById(R.id.layout_hide_show);
-        img_funcpayment_arrow = findViewById(R.id.img_funcpayment_arrow);
-        spnPaymentType = findViewById(R.id.spnPaymentType_cp);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_cart_payment);
 
-        tvFullname = findViewById(R.id.tvFullname_cpayment);
-        tvPhoneNumber = findViewById(R.id.tvPhoneNumber_cpayment);
-        tvAddress = findViewById(R.id.tvAddress_cpayment);
-        tvOrderDate = findViewById(R.id.tvOrderDate_cpayment);
-        tvNote = findViewById(R.id.tvNote_cpayment);
-        tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
-        tvTotalPrice = findViewById(R.id.totalPrice_cpayment);
-        btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
+            cvIconProgress = findViewById(R.id.cvProgress_3);
+            tvTitleHeader = findViewById(R.id.title);
+            imgBack = findViewById(R.id.back_button);
+            btn_hide_show = findViewById(R.id.btn_hide_show);
+            layout_hide_show = findViewById(R.id.layout_hide_show);
+            img_funcpayment_arrow = findViewById(R.id.img_funcpayment_arrow);
+            spnPaymentType = findViewById(R.id.spnPaymentType_cp);
 
-        service = GetRetrofit.getInstance().createRetrofit();
-        Bundle bundle = getIntent().getExtras();
+            tvFullname = findViewById(R.id.tvFullname_cpayment);
+            tvPhoneNumber = findViewById(R.id.tvPhoneNumber_cpayment);
+            tvAddress = findViewById(R.id.tvAddress_cpayment);
+            tvOrderDate = findViewById(R.id.tvOrderDate_cpayment);
+            tvNote = findViewById(R.id.tvNote_cpayment);
+            tvShipPrice = findViewById(R.id.tvShipPrice_cpayment);
+            tvTotalPrice = findViewById(R.id.totalPrice_cpayment);
+            btnConfirm = findViewById(R.id.btnConfirm_CartPayment);
 
-        tvTitleHeader.setText(getString(R.string.header_cart_payment));
+            service = GetRetrofit.getInstance().createRetrofit();
+            bundle = getIntent().getExtras();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.payment_type));
-        spnPaymentType.setAdapter(adapter);
+            tvTitleHeader.setText(getString(R.string.header_cart_payment));
 
-        // Load dữ liệu lên Payment
-        String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        fullName =bundle.get(USER_FULL_NAME).toString();
-        phoneNumber = bundle.get(USER_PHONE_NUMBER).toString();
-        address = bundle.get(ADDRESS_LOCATION).toString();
-        totalPrice =Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString()) + 20000;
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.payment_type));
+            spnPaymentType.setAdapter(adapter);
 
-        tvFullname.setText(fullName);
-        tvPhoneNumber.setText(phoneNumber);
-        tvAddress.setText(address);
-        tvOrderDate.setText(orderDate);
-        //tvBookPrice.setText(null);
-        //tvShipPrice.setText(null);
-        tvTotalPrice.setText(new Utils().priceToString(totalPrice));
+            // Load dữ liệu lên Payment
+            String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            fullName = bundle.get(USER_FULL_NAME).toString();
+            phoneNumber = bundle.get(USER_PHONE_NUMBER).toString();
+            address = bundle.get(ADDRESS_LOCATION).toString();
+            totalPrice = Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString()) + 20000;
 
-        user= SharedPrefManager.getInstance(this).getUser();
-        cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
-        bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
+            tvFullname.setText(fullName);
+            tvPhoneNumber.setText(phoneNumber);
+            tvAddress.setText(address);
+            tvOrderDate.setText(orderDate);
+            //tvBookPrice.setText(null);
+            //tvShipPrice.setText(null);
+            tvTotalPrice.setText(new Utils().priceToString(totalPrice));
 
-        btnConfirm.setOnClickListener(view ->{
-            int paymentType = spnPaymentType.getSelectedItemPosition();
-            if (paymentType == 0){
-                insertItem(fullName,phoneNumber,address, user);
+            user = SharedPrefManager.getInstance(this).getUser();
+            cartList = (List<Cart>) bundle.getSerializable(CART_LIST);
+            bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
 
-            }
-            if (paymentType == 1){
-                getPayment();
-            }
-        });
+            btnConfirm.setOnClickListener(view -> {
+                int paymentType = spnPaymentType.getSelectedItemPosition();
+                if (paymentType == 0) {
+                    insertItem(fullName, phoneNumber, address, user, false);
 
+                }
+                if (paymentType == 1) {
+                    getPayment();
+                }
+            });
+        } catch (Exception e ){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
 
     }
 
-    private void insertItem(String fullName, String phoneNumber, String address, User user){
+    private void insertItem(String fullName, String phoneNumber, String address, User user, boolean paymentType){
         JsonObject object = new JsonObject();
         object.addProperty(ORDER_USER_NAME, fullName);
         object.addProperty(USER_PHONE_NUMBER, phoneNumber);
         object.addProperty(ORDER_ADDRESS, address);
-        object.addProperty(ORDER_PAYMENT, 0);
+        object.addProperty(ORDER_PAYMENT, paymentType);
         object.addProperty(ODER_NOTE, "None");
         object.addProperty(USER_ID, user.getUserid());
         Call<OrderResponse> call = service.addOrder(object);
@@ -202,6 +209,11 @@ public class CartPaymentActivity extends AppCompatActivity {
                         Toast.makeText(this, "Payment " + state + "\n with payment id is " + payID, Toast.LENGTH_SHORT).show();
                         Log.d("--Payment", "Payment " + state + "\n with payment id is " + payID);
 
+                        fullName = bundle.get(USER_FULL_NAME).toString();
+                        phoneNumber = bundle.get(USER_PHONE_NUMBER).toString();
+                        address = bundle.get(ADDRESS_LOCATION).toString();
+                        totalPrice = Double.parseDouble(bundle.get(CART_TOTAL_PRICE).toString()) + 20000;
+                        insertItem(fullName, phoneNumber, address, user, true);
                     } catch (JSONException e) {
                         // handling json exception on below line
                         Log.e("Error", "an extremely unlikely failure occurred: ", e);

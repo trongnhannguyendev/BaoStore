@@ -13,8 +13,10 @@ import static com.example.baostore.Constant.Constants.USER_PHONE_NUMBER;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -41,65 +43,70 @@ public class RegisterActivity extends AppCompatActivity {
     ApiService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        edPass = findViewById(R.id.edPassword_reg);
-        edRePass = findViewById(R.id.edRePassword_reg);
-        edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
-        edFullName = findViewById(R.id.edFullName_reg);
-        btnCancel = findViewById(R.id.btnCancel);
-        btnRegister = findViewById(R.id.btnRegister);
+            edPass = findViewById(R.id.edPassword_reg);
+            edRePass = findViewById(R.id.edRePassword_reg);
+            edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
+            edFullName = findViewById(R.id.edFullName_reg);
+            btnCancel = findViewById(R.id.btnCancel);
+            btnRegister = findViewById(R.id.btnRegister);
 
-        service = GetRetrofit.getInstance().createRetrofit();
+            service = GetRetrofit.getInstance().createRetrofit();
 
-        // ẩn thanh pin
-        if (Build.VERSION.SDK_INT >= 16) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            // ẩn thanh pin
+            if (Build.VERSION.SDK_INT >= 16) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            }
+
+            // Hủy
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+
+
+            // Đăng ký
+            btnRegister.setOnClickListener(view -> {
+                turnEditingOff();
+                // Lấy dữ liệu
+                String email = getIntent().getStringExtra(USER_EMAIL);
+                String pass = edPass.getText().toString().trim();
+
+                String pass_re = edRePass.getText().toString().trim();
+                String phoneNumber = edPhoneNumber.getText().toString().trim();
+                String fullname = edFullName.getText().toString().trim();
+
+                // Chạy đăng ký nếu không có lỗi
+                if (!checkError(pass, pass_re, phoneNumber, fullname)) {
+                    /*String usePass = BCrypt.withDefaults().hashToString(12, pass.toCharArray());*/
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, email);
+                    object.addProperty(USER_PASSWORD, pass);
+                    object.addProperty(USER_PHONE_NUMBER, phoneNumber);
+                    object.addProperty(USER_FULL_NAME, fullname);
+
+                    Call<UserResponse> call = service.registerUser(object);
+                    call.enqueue(getUserRegister(this, object));
+                } else {
+                    turnEditingOn();
+                }
+
+            });
+
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
         }
-
-        // Hủy
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-
-        // Đăng ký
-        btnRegister.setOnClickListener(view -> {
-            turnEditingOff();
-            // Lấy dữ liệu
-            String email = getIntent().getStringExtra(USER_EMAIL);
-            String pass = edPass.getText().toString().trim();
-
-            String pass_re = edRePass.getText().toString().trim();
-            String phoneNumber = edPhoneNumber.getText().toString().trim();
-            String fullname = edFullName.getText().toString().trim();
-
-            // Chạy đăng ký nếu không có lỗi
-            if (!checkError(email, pass, pass_re, phoneNumber, fullname)) {
-                /*String usePass = BCrypt.withDefaults().hashToString(12, pass.toCharArray());*/
-                JsonObject object = new JsonObject();
-                object.addProperty(USER_EMAIL, email);
-                object.addProperty(USER_PASSWORD, pass);
-                object.addProperty(USER_PHONE_NUMBER, phoneNumber);
-                object.addProperty(USER_FULL_NAME, fullname);
-
-                Call<UserResponse> call = service.registerUser(object);
-                call.enqueue(getUserRegister(this, object));
-            } else{
-                turnEditingOn();
-            }
-
-        });
-
-
 
     }
 
-    private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
+    private boolean checkError(String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();
 
         boolean hasError = false;

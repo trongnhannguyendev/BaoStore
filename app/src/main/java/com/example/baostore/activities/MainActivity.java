@@ -71,102 +71,104 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bundle = new Bundle();
-        bundle.putInt(BOOK_SEARCH_CODE, 0);
 
-        progressBar = findViewById(R.id.progressBar_Main);
+            bundle = new Bundle();
+            bundle.putInt(BOOK_SEARCH_CODE, 0);
 
-
-        // header
-        tvTitleHeader = findViewById(R.id.title);
-        tvTitleHeader.setText(getString(R.string.bot_nav_home));
-
-        // button back
-        imgBack = findViewById(R.id.back_button);
-        imgBack.setVisibility(View.GONE);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            progressBar = findViewById(R.id.progressBar_Main);
 
 
-        bottomNavigationView = findViewById(R.id.myBottomNav);
-        myToolbar = findViewById(R.id.myToolbar);
-        setSupportActionBar(myToolbar);
+            // header
+            tvTitleHeader = findViewById(R.id.title);
+            tvTitleHeader.setText(getString(R.string.bot_nav_home));
+
+            // button back
+            imgBack = findViewById(R.id.back_button);
+            imgBack.setVisibility(View.GONE);
+            imgBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
 
 
-        // Thêm HomeFragment vào FrameLayout
-
-        fragment = new HomeFragment();
-        service = GetRetrofit.getInstance().createRetrofit();
-
-        User user = SharedPrefManager.getInstance(this).getUser();
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USER_ID, user.getUserid());
-
-        Call<BookResponse> bookResponseCall = service.getbook();
-        Call<CategoryResponse> categoryResponseCall = service.getCategories();
-        Call<AddressResponse> addressResponseCall = service.getAddressByUser(jsonObject);
-        Call<CartResponse> cartResponseCall = service.getCartByUserID(jsonObject);
-        Call<PublisherResponse> publisherResponseCall = service.getPublishers();
-        Call<AuthorResponse> authorResponseCall = service.getAuthors();
-
-        bookResponseCall.clone().enqueue(bookGetAll(this, bundle, fragment));
-        categoryResponseCall.clone().enqueue(categoryGetAll(this, bundle, fragment));
-        addressResponseCall.clone().enqueue(userAddressGetAll(this, bundle, fragment));
-        //cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle,fragment));
-        publisherResponseCall.clone().enqueue(getPublisher(this, bundle, fragment));
-        authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
+            bottomNavigationView = findViewById(R.id.myBottomNav);
+            myToolbar = findViewById(R.id.myToolbar);
+            setSupportActionBar(myToolbar);
 
 
+            // Thêm HomeFragment vào FrameLayout
 
-        // Title toolbar
+            fragment = new HomeFragment();
+            service = GetRetrofit.getInstance().createRetrofit();
 
+            User user = SharedPrefManager.getInstance(this).getUser();
 
-        //Điều hướng navigation
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            progressBar.setVisibility(View.VISIBLE);
-            switch (item.getItemId()) {
-                case R.id.Home:
-                    tvTitleHeader.setText(getString(R.string.bot_nav_home));
-                    fragment = new HomeFragment();
-                    fragment.setArguments(bundle);
-                    loadFragment(fragment);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty(USER_ID, user.getUserid());
 
-                    return true;
-                case R.id.Search:
-                    tvTitleHeader.setText(getString(R.string.bot_nav_search));
-                    fragment = new SearchFragment();
-                    fragment.setArguments(bundle);
-                    loadSearchFragment(fragment,0,null);
+            Call<BookResponse> bookResponseCall = service.getbook();
+            Call<CategoryResponse> categoryResponseCall = service.getCategories();
+            Call<AddressResponse> addressResponseCall = service.getAddressByUser(jsonObject);
+            Call<CartResponse> cartResponseCall = service.getCartByUserID(jsonObject);
+            Call<PublisherResponse> publisherResponseCall = service.getPublishers();
+            Call<AuthorResponse> authorResponseCall = service.getAuthors();
 
-                    progressBar.setVisibility(View.INVISIBLE);
-                    return true;
-                case R.id.Cart:
-                    tvTitleHeader.setText(getString(R.string.bot_nav_cart));
-                    fragment = new CartFragment();
-                    fragment.setArguments(bundle);
-                    cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle, fragment));
+            bookResponseCall.clone().enqueue(bookGetAll(this, bundle, fragment));
+            categoryResponseCall.clone().enqueue(categoryGetAll(this, bundle, fragment));
+            addressResponseCall.clone().enqueue(userAddressGetAll(this, bundle, fragment));
+            //cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle,fragment));
+            publisherResponseCall.clone().enqueue(getPublisher(this, bundle, fragment));
+            authorResponseCall.clone().enqueue(getAuthor(this, bundle, fragment));
 
 
-                    return true;
-                case R.id.User:
-                    tvTitleHeader.setText(getString(R.string.bot_nav_user));
-                    fragment = new ProfileFragment();
-                    fragment.setArguments(bundle);
-                    loadFragment(fragment);
-                    return true;
-            }
-            return false;
-        });
+
+            // Title toolbar
 
 
-        //
+            //Điều hướng navigation
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                progressBar.setVisibility(View.VISIBLE);
+                switch (item.getItemId()) {
+                    case R.id.Home:
+                        tvTitleHeader.setText(getString(R.string.bot_nav_home));
+                        fragment = new HomeFragment();
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+
+                        return true;
+                    case R.id.Search:
+                        tvTitleHeader.setText(getString(R.string.bot_nav_search));
+                        fragment = new SearchFragment();
+                        fragment.setArguments(bundle);
+                        loadSearchFragment(fragment, 0, null);
+
+                        progressBar.setVisibility(View.INVISIBLE);
+                        return true;
+                    case R.id.Cart:
+                        tvTitleHeader.setText(getString(R.string.bot_nav_cart));
+                        fragment = new CartFragment();
+                        fragment.setArguments(bundle);
+                        cartResponseCall.clone().enqueue(cartGetAllByUserID(this, bundle, fragment));
+
+
+                        return true;
+                    case R.id.User:
+                        tvTitleHeader.setText(getString(R.string.bot_nav_user));
+                        fragment = new ProfileFragment();
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
+                        return true;
+                }
+                return false;
+            });
+
+
+            //
 //        AppBarLayout appBarLayout = findViewById(R.id.myAppBarLayout);
 //        Toolbar toolbar = findViewById(R.id.myToolbarTest);
 //        NestedScrollView nestedScrollView = findViewById(R.id.myNestedScroll);
@@ -190,7 +192,10 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+        }
 
     }
 
@@ -204,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         bundle.putInt(BOOK_SEARCH_CODE, searchCode);
         bundle.putString(BOOK_SEARCH, find);
+        Toast.makeText(this, "bookname:" +find, Toast.LENGTH_SHORT).show();
         fragment.setArguments(bundle);
 
         Log.d(getString(R.string.debug_MainActivity), "Search code: "+ searchCode);

@@ -19,39 +19,6 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(int bookid, String title, Double price, String url) {
-        this.bookid = bookid;
-        this.title = title;
-        this.price = price;
-        this.url = url;
-    }
-
-    public Book(int bookid, String title, Double price, int quantity, int categoryid, int authorid, int publisherid, String url) {
-        this.bookid = bookid;
-        this.title = title;
-        this.price = price;
-        this.quantity = quantity;
-        this.categoryid = categoryid;
-        this.authorid = authorid;
-        this.publisherid = publisherid;
-        this.url = url;
-    }
-
-    public Book(int bookid, String title, int totalPage, String description, String releasedate, Double price, int quantity, int categoryid, int authorid, int publisherid, int state, String url) {
-        this.bookid = bookid;
-        this.title = title;
-        this.totalPage = totalPage;
-        this.description = description;
-        this.releasedate = releasedate;
-        this.price = price;
-        this.quantity = quantity;
-        this.categoryid = categoryid;
-        this.authorid = authorid;
-        this.publisherid = publisherid;
-        this.state = state;
-        this.url = url;
-    }
-
     public int getbookid() {
         return bookid;
     }

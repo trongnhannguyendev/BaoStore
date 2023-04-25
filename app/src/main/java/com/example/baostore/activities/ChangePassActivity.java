@@ -5,10 +5,12 @@ import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 import static com.example.baostore.Api.RetrofitCallBack.userUpdateInfo;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,37 +33,43 @@ public class ChangePassActivity extends AppCompatActivity {
     User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_pass);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_change_pass);
 
-        tvTitleHeader = findViewById(R.id.title);
+            tvTitleHeader = findViewById(R.id.title);
 
-        imgBack = findViewById(R.id.back_button);
-        edOldPass = findViewById(R.id.edOldPass_cp);
-        edNewPass = findViewById(R.id.edNewPass_cp);
-        edReNewPass = findViewById(R.id.edReNewPass_cp);
-        btnChangePass = findViewById(R.id.btnChangePass_cp);
+            imgBack = findViewById(R.id.back_button);
+            edOldPass = findViewById(R.id.edOldPass_cp);
+            edNewPass = findViewById(R.id.edNewPass_cp);
+            edReNewPass = findViewById(R.id.edReNewPass_cp);
+            btnChangePass = findViewById(R.id.btnChangePass_cp);
 
-        // header
-        tvTitleHeader.setText(getString(R.string.header_change_pass));
+            // header
+            tvTitleHeader.setText(getString(R.string.header_change_pass));
 
-        service= GetRetrofit.getInstance().createRetrofit();
-        user= SharedPrefManager.getInstance(this).getUser();
+            service = GetRetrofit.getInstance().createRetrofit();
+            user = SharedPrefManager.getInstance(this).getUser();
 
-        btnChangePass.setOnClickListener(view -> {
-            String oldPass = edOldPass.getText().toString().trim();
-            String newPass = edNewPass.getText().toString().trim();
-            String reNewPass = edReNewPass.getText().toString().trim();
+            btnChangePass.setOnClickListener(view -> {
+                String oldPass = edOldPass.getText().toString().trim();
+                String newPass = edNewPass.getText().toString().trim();
+                String reNewPass = edReNewPass.getText().toString().trim();
 
-            if(!checkError(oldPass,newPass,reNewPass)){
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty(USER_EMAIL, user.getEmail());
-            jsonObject.addProperty(USER_PASSWORD, newPass);
+                if (!checkError(oldPass, newPass, reNewPass)) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty(USER_EMAIL, user.getEmail());
+                    jsonObject.addProperty(USER_PASSWORD, newPass);
 
-            Call<UserResponse> call = service.updatePassword(jsonObject);
-            call.enqueue(userUpdateInfo(this, 1));
-            }
-        });
+                    Call<UserResponse> call = service.updatePassword(jsonObject);
+                    call.enqueue(userUpdateInfo(this, 1));
+                }
+            });
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
     private boolean checkError(String oldPass, String newPass, String reNewPass) {

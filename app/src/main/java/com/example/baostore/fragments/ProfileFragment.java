@@ -57,77 +57,81 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        // ánh xạ
-        tvFullname = view.findViewById(R.id.tvFullname_profile);
-        btnUserInfor=view.findViewById(R.id.btnUserInfor);
-        btnChangePass = view.findViewById(R.id.btnChangePass_profile);
-        btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
-        btnToSettings = view.findViewById(R.id.btnToSettings_profile);
-        btnLogOut=view.findViewById(R.id.btnLogOut);
-        ivUserProfile = view.findViewById(R.id.ivUser_profile);
-
-
-        User user = SharedPrefManager.getInstance(getContext()).getUser();
-        tvFullname.setText(user.getFullname());
-
-        bundle = getArguments();
         try {
-            String path = SharedPrefManager.getInstance(getContext()).getUserImage();
-            File f=new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            ivUserProfile.setImageBitmap(b);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+            // ánh xạ
+            tvFullname = view.findViewById(R.id.tvFullname_profile);
+            btnUserInfor = view.findViewById(R.id.btnUserInfor);
+            btnChangePass = view.findViewById(R.id.btnChangePass_profile);
+            btnToCartHistory = view.findViewById(R.id.btnToCartHistory_profile);
+            btnToSettings = view.findViewById(R.id.btnToSettings_profile);
+            btnLogOut = view.findViewById(R.id.btnLogOut);
+            ivUserProfile = view.findViewById(R.id.ivUser_profile);
 
-        // xử lý thông tin cá nhân
-        btnUserInfor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), UserInforActivity.class);
 
-                if(bundle!= null && bundle.containsKey(ADDRESS_LIST)){
-                    i.putExtras(bundle);
-                }
-                startActivity(i);
+            User user = SharedPrefManager.getInstance(getContext()).getUser();
+            tvFullname.setText(user.getFullname());
+
+            bundle = getArguments();
+            try {
+                String path = SharedPrefManager.getInstance(getContext()).getUserImage();
+                File f = new File(path, "profile.jpg");
+                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                ivUserProfile.setImageBitmap(b);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
 
-        btnChangePass.setOnClickListener(v ->{
-            i = new Intent(getActivity(), ChangePassActivity.class);
-            i.putExtras(bundle);
-            startActivity(i);
-        });
+            // xử lý thông tin cá nhân
+            btnUserInfor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getActivity(), UserInforActivity.class);
 
-        btnToCartHistory.setOnClickListener(v ->{
-            i = new Intent(getActivity(), BuyHistoryActivity.class);
-            startActivity(i);
-        });
+                    if (bundle != null && bundle.containsKey(ADDRESS_LIST)) {
+                        i.putExtras(bundle);
+                    }
+                    startActivity(i);
+                }
+            });
 
-        ivUserProfile.setOnClickListener(v ->{
-            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-            photoPickerIntent.setType("image/*");
-            getImageResult(photoPickerIntent);
-            //startActivityForResult(photoPickerIntent, 1);
-        });
+            btnChangePass.setOnClickListener(v -> {
+                i = new Intent(getActivity(), ChangePassActivity.class);
+                i.putExtras(bundle);
+                startActivity(i);
+            });
 
-        btnToSettings.setOnClickListener(v->{
-            i = new Intent(getActivity(), SettingsActivity.class);
-            startActivity(i);
-        });
+            btnToCartHistory.setOnClickListener(v -> {
+                i = new Intent(getActivity(), BuyHistoryActivity.class);
+                startActivity(i);
+            });
 
-        // Đăng xuất
+            ivUserProfile.setOnClickListener(v -> {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                getImageResult(photoPickerIntent);
+                //startActivityForResult(photoPickerIntent, 1);
+            });
 
-        btnLogOut.setOnClickListener(v -> {
-            getActivity().finish();
-            SharedPrefManager.getInstance(getContext()).logout();
-            Intent i = new Intent(getActivity(), LoginActivity.class);
-            startActivity(i);
+            btnToSettings.setOnClickListener(v -> {
+                i = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(i);
+            });
 
-        });
+            // Đăng xuất
 
+            btnLogOut.setOnClickListener(v -> {
+                getActivity().finish();
+                SharedPrefManager.getInstance(getContext()).logout();
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+
+            });
+
+            return view;
+        } catch (Exception e){
+            Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+        }
         return view;
 
     }

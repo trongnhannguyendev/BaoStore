@@ -21,6 +21,8 @@ public class Constants {
     public static final String USER_OBJECT = "userObject";
 
 
+    public static final String STATE = "state";
+
     // Book
     public static final String BOOK_ID = "bookid";
     public static final String BOOK_TITLE = "title";
