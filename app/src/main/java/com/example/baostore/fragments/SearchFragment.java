@@ -56,118 +56,122 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_search, container, false);
-        svSearch_search = v.findViewById(R.id.svSearch_search);
-        recyBook_search = v.findViewById(R.id.recyBook_search);
-        spnFind = v.findViewById(R.id.spnFind_search);
-        spnSortBy = v.findViewById(R.id.spnSortBy_search);
-        tvEmpty  =v.findViewById(R.id.tvEmptyMsg_search);
-        tvToggle = v.findViewById(R.id.toggleAction);
-        rlSearchOption = v.findViewById(R.id.llSearchOptions);
-        llRecy = v.findViewById(R.id.llRecy_fs);
+        try {
+            svSearch_search = v.findViewById(R.id.svSearch_search);
+            recyBook_search = v.findViewById(R.id.recyBook_search);
+            spnFind = v.findViewById(R.id.spnFind_search);
+            spnSortBy = v.findViewById(R.id.spnSortBy_search);
+            tvEmpty = v.findViewById(R.id.tvEmptyMsg_search);
+            tvToggle = v.findViewById(R.id.toggleAction);
+            rlSearchOption = v.findViewById(R.id.llSearchOptions);
+            llRecy = v.findViewById(R.id.llRecy_fs);
 
-        recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyBook_search.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        searchList = new ArrayList<>();
+            searchList = new ArrayList<>();
 
-        bundle = getArguments();
-        if (bundle!= null) {
-            if (bundle.containsKey(BOOK_SEARCH_CODE)) {
-                searchCode = bundle.getInt(BOOK_SEARCH_CODE);
-            }
-            if (bundle.containsKey(BOOK_LIST)) {
-                list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
-            }
-            if (bundle.containsKey(CATEGORY_LIST)) {
-                categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
-            }
-            if (bundle.containsKey(PUBLISHER_LIST)) {
-                publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
-            }
-            if (bundle.containsKey(AUTHOR_LIST)) {
-                authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
-            }
-        }
-
-        ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
-        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnFind.setAdapter(spnAdapter);
-
-        ArrayAdapter spnAdapterSort = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sort_item));
-        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnSortBy.setAdapter(spnAdapterSort);
-
-        spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                searchCode = i+1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        spnSortBy.setSelection(0, false);
-        spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int sortCode = i;
-                sortBy();
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        adapter = new BookAdapter(list_book, getContext(),1);
-        recyBook_search.setAdapter(adapter);
-
-
-
-        svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterV1(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (searchCode ==0){
-                    searchCode =1;
+            bundle = getArguments();
+            if (bundle != null) {
+                if (bundle.containsKey(BOOK_SEARCH_CODE)) {
+                    searchCode = bundle.getInt(BOOK_SEARCH_CODE);
                 }
-                filterV1(newText);
-                return false;
+                if (bundle.containsKey(BOOK_LIST)) {
+                    list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
+                }
+                if (bundle.containsKey(CATEGORY_LIST)) {
+                    categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
+                }
+                if (bundle.containsKey(PUBLISHER_LIST)) {
+                    publisherList = (List<Publisher>) bundle.getSerializable(PUBLISHER_LIST);
+                }
+                if (bundle.containsKey(AUTHOR_LIST)) {
+                    authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+                }
             }
-        });
 
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-            }
-        });
+            ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
+            spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnFind.setAdapter(spnAdapter);
 
-        tvToggle.setOnClickListener(view->{
-            if(rlSearchOption.getVisibility() != View.VISIBLE){
-                rlSearchOption.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0, 220, 0, 0);
-                llRecy.setLayoutParams(lp);
-            } else{
-                rlSearchOption.setVisibility(View.GONE);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0, 170, 0, 0);
-                llRecy.setLayoutParams(lp);
-            }
-        });
+            ArrayAdapter spnAdapterSort = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sort_item));
+            spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnSortBy.setAdapter(spnAdapterSort);
 
+            spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    searchCode = i + 1;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+
+            spnSortBy.setSelection(0, false);
+            spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    int sortCode = i;
+                    sortBy();
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            adapter = new BookAdapter(list_book, getContext(), 1);
+            recyBook_search.setAdapter(adapter);
+
+
+            svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    filterV1(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (searchCode == 0) {
+                        searchCode = 1;
+                    }
+                    filterV1(newText);
+                    return false;
+                }
+            });
+
+            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                }
+            });
+
+            tvToggle.setOnClickListener(view -> {
+                if (rlSearchOption.getVisibility() != View.VISIBLE) {
+                    rlSearchOption.setVisibility(View.VISIBLE);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(0, 220, 0, 0);
+                    llRecy.setLayoutParams(lp);
+                } else {
+                    rlSearchOption.setVisibility(View.GONE);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(0, 170, 0, 0);
+                    llRecy.setLayoutParams(lp);
+                }
+            });
+
+            return v;
+        } catch (Exception e){
+            Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+        }
         return v;
-
 
     }
 

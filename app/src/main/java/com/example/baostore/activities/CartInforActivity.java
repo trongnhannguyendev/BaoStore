@@ -45,107 +45,113 @@ public class CartInforActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart_infor);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_cart_infor);
 
-        tvTitleHeader = findViewById(R.id.title);
-        imgBack = findViewById(R.id.back_button);
-        cvIconProgress = findViewById(R.id.cvProgress_2);
+            tvTitleHeader = findViewById(R.id.title);
+            imgBack = findViewById(R.id.back_button);
+            cvIconProgress = findViewById(R.id.cvProgress_2);
 
-        edFullName = findViewById(R.id.edFullName_cartinfo);
-        edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
-        edEmail = findViewById(R.id.edEmail_cartinfo);
-        btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
-        spnAddress = findViewById(R.id.spnAddresses_cartinfo);
+            edFullName = findViewById(R.id.edFullName_cartinfo);
+            edPhoneNumber = findViewById(R.id.edPhoneNumber_cartinfo);
+            edEmail = findViewById(R.id.edEmail_cartinfo);
+            btnConfirmCartInfor = findViewById(R.id.btnConfirmCartInfor);
+            spnAddress = findViewById(R.id.spnAddresses_cartinfo);
 
-        addressList = new ArrayList<>();
+            addressList = new ArrayList<>();
 
-        utils = new Utils();
+            utils = new Utils();
 
-        // màu icon progress
-        int color = getResources().getColor(R.color.ic_progress);
-        cvIconProgress.setCardBackgroundColor(color);
+            // màu icon progress
+            int color = getResources().getColor(R.color.ic_progress);
+            cvIconProgress.setCardBackgroundColor(color);
 
-        //header
-        tvTitleHeader.setText(getResources().getString(R.string.header_cart_info));
+            //header
+            tvTitleHeader.setText(getResources().getString(R.string.header_cart_info));
 
-        //button back
+            //button back
 
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        // Load user
-        User user = SharedPrefManager.getInstance(this).getUser();
-
-        // Đổ địa chỉ
-        bundle = getIntent().getExtras();
-        if (bundle != null && bundle.containsKey(ADDRESS_LIST)) {
-            addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
-            for (Address address1 : addressList) {
-                Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
-            }
-            Address address1 = new Address();
-            address1.setLocation(getString(R.string.text_spinner_new_address));
-            addressList.add(address1);
-            Toast.makeText(this, "size: " + addressList.size(), Toast.LENGTH_SHORT).show();
-            AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
-            spnAddress.setAdapter(adapter);
-
-            edFullName.setText(user.getFullname());
-            edPhoneNumber.setText(user.getPhonenumber());
-            edEmail.setText(user.getEmail());
-        } else {
-            Address address1 = new Address();
-            address1.setLocation(getString(R.string.text_spinner_new_address));
-            addressList.add(address1);
-            AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
-            spnAddress.setAdapter(adapter);
-        }
-        spnAddress.setSelection(0, false);
-        spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(getString(R.string.debug_UserInforActivity), "position: " + i + "size: " + addressList.size());
-                if (i == addressList.size()-1) {
-                    Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
-                    startActivity(intent);
+            imgBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
                 }
-            }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                int somethingid = adapterView.getSelectedItemPosition();
-                if (somethingid == addressList.size()-1){
-                    Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
-                    startActivity(intent);
+            // Load user
+            User user = SharedPrefManager.getInstance(this).getUser();
+
+            // Đổ địa chỉ
+            bundle = getIntent().getExtras();
+            if (bundle != null && bundle.containsKey(ADDRESS_LIST)) {
+                addressList = (List<Address>) bundle.getSerializable(ADDRESS_LIST);
+                for (Address address1 : addressList) {
+                    Log.d(getString(R.string.debug_UserInforActivity), address1.getLocation());
                 }
+                Address address1 = new Address();
+                address1.setLocation(getString(R.string.text_spinner_new_address));
+                addressList.add(address1);
+                Toast.makeText(this, "size: " + addressList.size(), Toast.LENGTH_SHORT).show();
+                AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
+                spnAddress.setAdapter(adapter);
+
+                edFullName.setText(user.getFullname());
+                edPhoneNumber.setText(user.getPhonenumber());
+                edEmail.setText(user.getEmail());
+            } else {
+                Address address1 = new Address();
+                address1.setLocation(getString(R.string.text_spinner_new_address));
+                addressList.add(address1);
+                AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
+                spnAddress.setAdapter(adapter);
             }
-        });
+            spnAddress.setSelection(0, false);
+            spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d(getString(R.string.debug_UserInforActivity), "position: " + i + "size: " + addressList.size());
+                    if (i == addressList.size() - 1) {
+                        Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    int somethingid = adapterView.getSelectedItemPosition();
+                    if (somethingid == addressList.size() - 1) {
+                        Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
 
 // xử lý button
-        btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = edEmail.getText().toString().trim();
-                String phoneNumber = edPhoneNumber.getText().toString().trim();
-                String fullName = edFullName.getText().toString().trim();
-                Address address2 = (Address) spnAddress.getSelectedItem();
-                String address = address2.getLocation();
+            btnConfirmCartInfor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String email = edEmail.getText().toString().trim();
+                    String phoneNumber = edPhoneNumber.getText().toString().trim();
+                    String fullName = edFullName.getText().toString().trim();
+                    Address address2 = (Address) spnAddress.getSelectedItem();
+                    String address = address2.getLocation();
 
-                if (!checkError(email, phoneNumber, fullName)) {
-                    Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
-                    bundle.putString(ADDRESS_LOCATION, address);
-                    bundle.putString(USER_PHONE_NUMBER, phoneNumber);
-                    bundle.putString(USER_FULL_NAME, fullName);
-                    i.putExtras(bundle);
-                    startActivity(i);
+                    if (!checkError(email, phoneNumber, fullName)) {
+                        Intent i = new Intent(CartInforActivity.this, CartPaymentActivity.class);
+                        bundle.putString(ADDRESS_LOCATION, address);
+                        bundle.putString(USER_PHONE_NUMBER, phoneNumber);
+                        bundle.putString(USER_FULL_NAME, fullName);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
     private boolean checkError(String email, String phoneNumber, String fullname) {

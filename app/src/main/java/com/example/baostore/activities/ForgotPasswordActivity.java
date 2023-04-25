@@ -9,7 +9,9 @@ import static com.example.baostore.Constant.Constants.USER_PASSWORD;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -34,43 +36,50 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-        edPass = findViewById(R.id.ednewPass_forgotPass);
-        edRePass = findViewById(R.id.edReNewPass_forgotPass);
-        btnConfirm = findViewById(R.id.btnChangePass_forgotPass);
-        service = GetRetrofit.getInstance().createRetrofit();
 
-        // Change password
+            edPass = findViewById(R.id.ednewPass_forgotPass);
+            edRePass = findViewById(R.id.edReNewPass_forgotPass);
+            btnConfirm = findViewById(R.id.btnChangePass_forgotPass);
+            service = GetRetrofit.getInstance().createRetrofit();
 
-        btnConfirm.setOnClickListener(view -> {
-            turnEditingOff();
-            String email = getIntent().getStringExtra(USER_EMAIL);
-            String pass = edPass.getText().toString().trim();
-            String rePass = edRePass.getText().toString().trim();
+            // Change password
 
-            if (!checkError(pass, rePass)) {
-                Intent intent =new Intent(ForgotPasswordActivity.this, CodeVerifyActivity.class);
-                Bundle bundle = new Bundle();
-                User user = new User();
-                user.setEmail(email);
-                user.setPassword(pass);
-                bundle.putSerializable(USER_OBJECT, (Serializable) user);
-                // Forgot password
-                bundle.putInt(ACTION_CODE, 2);
-                intent.putExtras(bundle);
+            btnConfirm.setOnClickListener(view -> {
+                turnEditingOff();
+                String email = getIntent().getStringExtra(USER_EMAIL);
+                String pass = edPass.getText().toString().trim();
+                String rePass = edRePass.getText().toString().trim();
+
+                if (!checkError(pass, rePass)) {
+                    Intent intent = new Intent(ForgotPasswordActivity.this, CodeVerifyActivity.class);
+                    Bundle bundle = new Bundle();
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setPassword(pass);
+                    bundle.putSerializable(USER_OBJECT, (Serializable) user);
+                    // Forgot password
+                    bundle.putInt(ACTION_CODE, 2);
+                    intent.putExtras(bundle);
 
 
-                JsonObject object = new JsonObject();
-                object.addProperty(USER_EMAIL, email);
-                object.addProperty(USER_PASSWORD, pass);
+                    JsonObject object = new JsonObject();
+                    object.addProperty(USER_EMAIL, email);
+                    object.addProperty(USER_PASSWORD, pass);
 
-                Call<UserResponse> call = service.updatePassword(object);
-                call.enqueue(userUpdateInfo(this,2));
-            } else{
-                turnEditingOn();
-            }
-        });
+                    Call<UserResponse> call = service.updatePassword(object);
+                    call.enqueue(userUpdateInfo(this, 2));
+                } else {
+                    turnEditingOn();
+                }
+            });
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
     public boolean checkError(String pass, String rePass) {

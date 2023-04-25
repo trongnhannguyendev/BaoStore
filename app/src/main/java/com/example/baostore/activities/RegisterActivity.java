@@ -43,9 +43,10 @@ public class RegisterActivity extends AppCompatActivity {
     ApiService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        try {
+
             edPass = findViewById(R.id.edPassword_reg);
             edRePass = findViewById(R.id.edRePassword_reg);
             edPhoneNumber = findViewById(R.id.edPhoneNumber_reg);
@@ -81,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String fullname = edFullName.getText().toString().trim();
 
                 // Chạy đăng ký nếu không có lỗi
-                if (!checkError(email, pass, pass_re, phoneNumber, fullname)) {
+                if (!checkError(pass, pass_re, phoneNumber, fullname)) {
                     /*String usePass = BCrypt.withDefaults().hashToString(12, pass.toCharArray());*/
                     JsonObject object = new JsonObject();
                     object.addProperty(USER_EMAIL, email);
@@ -100,11 +101,12 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (Exception e){
             Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
             Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
         }
 
     }
 
-    private boolean checkError(String email, String pass, String pass_re, String phoneNumber, String fullname) {
+    private boolean checkError(String pass, String pass_re, String phoneNumber, String fullname) {
         utils = new Utils();
 
         boolean hasError = false;

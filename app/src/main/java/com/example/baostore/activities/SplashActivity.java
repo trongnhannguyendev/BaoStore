@@ -41,9 +41,10 @@ public class SplashActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        try {
+
             service = GetRetrofit.getInstance().createRetrofit();
 
 

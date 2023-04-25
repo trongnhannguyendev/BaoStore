@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -46,57 +47,63 @@ public class DetailItemActivity extends AppCompatActivity {
     Utils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_item);
 
-        tvTitle = findViewById(R.id.tvTitle_detail);
-        tvPrice = findViewById(R.id.tvPrice_detail);
-        tvDescription = findViewById(R.id.tvDescription_detail);
-        tvToPDF = findViewById(R.id.tvToPDF_detail_item);
-        recyImages = findViewById(R.id.recyImages_detailItem);
-        btnAddToCart = findViewById(R.id.btnAddtocart_detail);
-        btnToPayment = findViewById(R.id.btnPay_detail);
+            tvTitle = findViewById(R.id.tvTitle_detail);
+            tvPrice = findViewById(R.id.tvPrice_detail);
+            tvDescription = findViewById(R.id.tvDescription_detail);
+            tvToPDF = findViewById(R.id.tvToPDF_detail_item);
+            recyImages = findViewById(R.id.recyImages_detailItem);
+            btnAddToCart = findViewById(R.id.btnAddtocart_detail);
+            btnToPayment = findViewById(R.id.btnPay_detail);
 
-        service = GetRetrofit.getInstance().createRetrofit();
-        utils = new Utils();
+            service = GetRetrofit.getInstance().createRetrofit();
+            utils = new Utils();
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            book = (Book) bundle.getSerializable(BOOK_OBJECT);
-            Log.d("--", book.getbookid()+"");
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                book = (Book) bundle.getSerializable(BOOK_OBJECT);
+                Log.d("--", book.getbookid() + "");
 
-            String title = book.getTitle();
-            double price = book.getPrice();
+                String title = book.getTitle();
+                double price = book.getPrice();
 
-            // Book has no description
-            tvTitle.setText(title);
-            Log.d(getString(R.string.debug_activity_detail_item), "book title: " + book.getTitle());
-            tvPrice.setText(new Utils().priceToString(price));
-            tvDescription.setText(book.getDescription());
+                // Book has no description
+                tvTitle.setText(title);
+                Log.d(getString(R.string.debug_activity_detail_item), "book title: " + book.getTitle());
+                tvPrice.setText(new Utils().priceToString(price));
+                tvDescription.setText(book.getDescription());
 
-            BookImageList = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);
-            SnapHelper helper = new LinearSnapHelper();
-            helper.attachToRecyclerView(recyImages);
+                BookImageList = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);
+                SnapHelper helper = new LinearSnapHelper();
+                helper.attachToRecyclerView(recyImages);
 
-            recyImages.setLayoutManager(new LinearLayoutManager(DetailItemActivity.this, LinearLayoutManager.HORIZONTAL, false));
-            bookImageAdapter = new BookImageAdapter(DetailItemActivity.this, BookImageList);
-            recyImages.setAdapter(bookImageAdapter);
+                recyImages.setLayoutManager(new LinearLayoutManager(DetailItemActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                bookImageAdapter = new BookImageAdapter(DetailItemActivity.this, BookImageList);
+                recyImages.setAdapter(bookImageAdapter);
 
-        }
-        btnAddToCart.setOnClickListener(view -> {
-            addCart();
-        });
+            }
+            btnAddToCart.setOnClickListener(view -> {
+                addCart();
+            });
 
-        btnToPayment.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            setResult(111, intent);
+            btnToPayment.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                setResult(111, intent);
+                finish();
+            });
+
+            tvToPDF.setOnClickListener(view -> {
+                Intent intent = new Intent(DetailItemActivity.this, ViewPDFActivity.class);
+                startActivity(intent);
+            });
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
             finish();
-        });
-
-        tvToPDF.setOnClickListener(view->{
-            Intent intent = new Intent(DetailItemActivity.this, ViewPDFActivity.class);
-            startActivity(intent);
-        });
+        }
     }
 
     public void addCart() {

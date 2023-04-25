@@ -4,9 +4,11 @@ import static com.example.baostore.Constant.Constants.USER_ID;
 import static com.example.baostore.Api.RetrofitCallBack.getOrderByUserID;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.MotionButton;
@@ -33,29 +35,35 @@ public class BuyHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buy_history);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_buy_history);
 
-        imgBack = findViewById(R.id.back_button);
-        tvTitleHeader = findViewById(R.id.title);
-        recyBuyHistory = findViewById(R.id.recyBuyHistory);
+            imgBack = findViewById(R.id.back_button);
+            tvTitleHeader = findViewById(R.id.title);
+            recyBuyHistory = findViewById(R.id.recyBuyHistory);
 
-        // header
-        tvTitleHeader.setText(getResources().getString(R.string.header_buy_history));
+            // header
+            tvTitleHeader.setText(getResources().getString(R.string.header_buy_history));
 
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            imgBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
 
-        recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
+            recyBuyHistory.setLayoutManager(new LinearLayoutManager(this));
 
-        service = GetRetrofit.getInstance().createRetrofit();
-        bundle = getIntent().getExtras();
+            service = GetRetrofit.getInstance().createRetrofit();
+            bundle = getIntent().getExtras();
 
-        loadData();
+            loadData();
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            finish();
+        }
     }
 
     public void loadData(){
