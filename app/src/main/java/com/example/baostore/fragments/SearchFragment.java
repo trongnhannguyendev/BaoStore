@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -88,6 +89,7 @@ public class SearchFragment extends Fragment {
                 if (bundle.containsKey(AUTHOR_LIST)) {
                     authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
                 }
+
             }
 
             ArrayAdapter spnAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.search_item));
@@ -113,9 +115,7 @@ public class SearchFragment extends Fragment {
             spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    int sortCode = i;
                     sortBy();
-
                 }
 
                 @Override
@@ -149,20 +149,6 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onChanged() {
                     super.onChanged();
-                }
-            });
-
-            tvToggle.setOnClickListener(view -> {
-                if (rlSearchOption.getVisibility() != View.VISIBLE) {
-                    rlSearchOption.setVisibility(View.VISIBLE);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 220, 0, 0);
-                    llRecy.setLayoutParams(lp);
-                } else {
-                    rlSearchOption.setVisibility(View.GONE);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 170, 0, 0);
-                    llRecy.setLayoutParams(lp);
                 }
             });
 
@@ -216,7 +202,6 @@ public class SearchFragment extends Fragment {
                 break;
 
         }
-        sortBy();
         if (searchList.isEmpty()){
             tvEmpty.setVisibility(View.VISIBLE);
         } else if(tvEmpty.getVisibility() == View.VISIBLE){
@@ -224,9 +209,13 @@ public class SearchFragment extends Fragment {
         }
     }
 
+
     public void sortBy(){
         long sortCode = spnSortBy.getSelectedItemPosition();
-        Toast.makeText(getContext(), "position: "+sortCode, Toast.LENGTH_SHORT).show();
+        Log.d(getString(R.string.debug_frag_search), "sortBy option: " + sortCode);
+        if (searchList.size() ==0){
+            searchList = list_book;
+        }
         if(sortCode == 0) {
             Collections.sort(searchList, new Comparator<Book>() {
                 @Override
@@ -337,28 +326,32 @@ public class SearchFragment extends Fragment {
     }
 
     void filterByPublisher(String publisherName){
-        searchList.clear();
+        if (searchList != null) {
+            searchList.clear();
+        }
 
         Log.d(getString(R.string.debug_frag_search), publisherName + "");
         for (int i = 0; i < list_book.size(); i++) {
-            Publisher publisher = publisherList.get(i);
             Book book = list_book.get(i);
-            publisher = publisherList.get(book.getPublisherid());
+            Publisher publisher = publisherList.get(book.getPublisherid()-1);
             Log.d(getString(R.string.debug_frag_search), "find: " + publisherName);
             Log.d(getString(R.string.debug_frag_search), "filterByPublisherName: " + publisher.getPublishername());
             if (publisher.getPublishername().toLowerCase().contains(publisherName.toLowerCase())) {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext(),2);
+        adapter = new BookAdapter(searchList, getContext(),1);
         recyBook_search.setAdapter(adapter);
     }
     void filterByAuthor(String authorName){
-        searchList.clear();
+        if (searchList != null) {
+            searchList.clear();
+        }
+
         Log.d("----------------------", authorName + "");
         for (int i = 0; i < list_book.size(); i++) {
             Book book = list_book.get(i);
-            Author author = authorList.get(book.getbookid()-1);
+            Author author = authorList.get(book.getAuthorid()-1);
             Log.d(getString(R.string.debug_frag_search), "author name: " + authorName);
             Log.d(getString(R.string.debug_frag_search), "filter: " + author.getAuthorname());
             if (author.getAuthorname().toLowerCase().contains(authorName.toLowerCase())) {
