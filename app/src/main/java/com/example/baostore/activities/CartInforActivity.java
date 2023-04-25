@@ -118,7 +118,11 @@ public class CartInforActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                int somethingid = adapterView.getSelectedItemPosition();
+                if (somethingid == addressList.size()-1){
+                    Intent intent = new Intent(CartInforActivity.this, AddAddressActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

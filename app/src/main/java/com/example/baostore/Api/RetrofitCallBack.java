@@ -159,41 +159,31 @@ public class RetrofitCallBack {
 
     public static Callback<UserResponse> getUserRegister(Context context, JsonObject object){
         RegisterActivity activity = (RegisterActivity) context;
-        Callback<UserResponse> callback = new Callback<UserResponse>() {
+        return new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                Call<UserResponse> regCall = service.registerUser(object);
-
-                regCall.enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.body().getResponseCode() == RESPONSE_OKAY) {
-                            Toast.makeText(context, context.getString(R.string.text_register_success), Toast.LENGTH_SHORT).show();
-                            activity.finish();
-                            context.startActivity(new Intent(context, LoginActivity.class));
-                        } else {
-                            Toast.makeText(context, context.getString(R.string.text_register_fail), Toast.LENGTH_SHORT).show();
-                            Log.d(context.getString(R.string.debug_callback), "onResponse: "+response.body().getMessage());
-                        }
-
+                if (response.isSuccessful()) {
+                    if (response.body().getResponseCode() == RESPONSE_OKAY) {
+                        Toast.makeText(context, context.getString(R.string.text_register_success), Toast.LENGTH_SHORT).show();
+                        activity.finish();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.text_register_fail), Toast.LENGTH_SHORT).show();
+                        Log.d(context.getString(R.string.debug_callback), "onResponse: " + response.body().getMessage());
                     }
-
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        Log.d(String.valueOf(R.string.debug_callback), String.valueOf(t.getMessage()));
-                        Toast.makeText(context, context.getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                } else{
+                    Toast.makeText(context, context.getString(R.string.text_register_fail), Toast.LENGTH_SHORT).show();
+                    Log.d(context.getString(R.string.debug_callback), "onResponse: " + response.message());
+                }
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.d(String.valueOf(R.string.debug_callback), "onFailure: "+t.toString());
+                Log.d(String.valueOf(R.string.debug_callback), String.valueOf(t.getMessage()));
+                Toast.makeText(context, context.getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
             }
         };
 
-
-    return callback;
     }
 
     public static Callback<UserResponse> userUpdateInfo(Context context, int goTo){

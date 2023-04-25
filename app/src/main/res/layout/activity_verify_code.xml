@@ -40,6 +40,8 @@
         android:layout_below="@+id/myToolbar"
         android:drawableStart="@drawable/ic_mail_2"
         android:drawablePadding="10dp"
+        android:maxLines="1"
+        android:inputType="textEmailAddress"
         android:paddingLeft="8dp"
         android:textSize="20dp"
         android:background="@drawable/custom_form_2"
@@ -83,7 +85,8 @@
             android:drawableStart="@drawable/ic_key"
             android:drawablePadding="10dp"
             android:paddingLeft="8dp"
-            android:maxLines="4"
+            android:maxLines="1"
+            android:inputType="number"
             android:textSize="20dp"
             android:background="@drawable/custom_form_2"
             android:hint="@string/hint_verification_code"/>

@@ -122,9 +122,16 @@ public class UserInforActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                int somethingid = adapterView.getSelectedItemPosition();
+                Toast.makeText(UserInforActivity.this, "id: "+somethingid, Toast.LENGTH_SHORT).show();
+                if (somethingid == addressList.size()-1){
+                    Intent intent = new Intent(UserInforActivity.this, AddAddressActivity.class);
+                    startActivity(intent);
+                }
             }
+
         });
+
 
 
         user = SharedPrefManager.getInstance(this).getUser();

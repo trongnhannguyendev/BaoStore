@@ -69,10 +69,10 @@ public class DetailItemActivity extends AppCompatActivity {
             double price = book.getPrice();
 
             // Book has no description
-            String description;
             tvTitle.setText(title);
             Log.d(getString(R.string.debug_activity_detail_item), "book title: " + book.getTitle());
             tvPrice.setText(new Utils().priceToString(price));
+            tvDescription.setText(book.getDescription());
 
             BookImageList = (List<BookImage>) bundle.get(BOOK_IMAGE_LIST);
             SnapHelper helper = new LinearSnapHelper();

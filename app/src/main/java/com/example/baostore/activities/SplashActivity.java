@@ -43,40 +43,46 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        service = GetRetrofit.getInstance().createRetrofit();
-
-
-
-        // ẩn thanh pin
-        if (Build.VERSION.SDK_INT >= 16) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-        }
+        try {
+            service = GetRetrofit.getInstance().createRetrofit();
 
 
-        // chuyển màn hình Login
-        btnSplash = findViewById(R.id.btnSplash);
-        btnSplash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pushNotification(SplashActivity.this, "Splash", "Click on splash");
-                // Kiểm tra dữ liệu người dùng tồn tại
-                if(!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()){
-                    finish();
-                    i = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(i);
-
-                } else {
-                    User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
-                    Log.d(getString(R.string.debug_SplashActivity), user.getUserid() +" " + user.getFullname()+" " + user.getState());
-                    JsonObject object = new JsonObject();
-                    object.addProperty(USER_EMAIL, user.getEmail());
-                    // Kiểm tra xem email có tồn tại không (vì không lưu user password)
-                    Call<UserResponse> call = service.checkUserEmailExist(object);
-                    call.enqueue(getCheckSaveUserSplash(SplashActivity.this));
-                }
+            // ẩn thanh pin
+            if (Build.VERSION.SDK_INT >= 16) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
             }
-        });
+
+
+            // chuyển màn hình Login
+            btnSplash = findViewById(R.id.btnSplash);
+            btnSplash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //pushNotification(SplashActivity.this, "Splash", "Click on splash");
+                    // Kiểm tra dữ liệu người dùng tồn tại
+                    if (!SharedPrefManager.getInstance(SplashActivity.this).isLoggedIn()) {
+                        finish();
+                        i = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(i);
+
+                    } else {
+                        User user = SharedPrefManager.getInstance(SplashActivity.this).getUser();
+                        Log.d(getString(R.string.debug_SplashActivity), user.getUserid() + " " + user.getFullname() + " " + user.getState());
+                        JsonObject object = new JsonObject();
+                        object.addProperty(USER_EMAIL, user.getEmail());
+                        // Kiểm tra xem email có tồn tại không (vì không lưu user password)
+                        Call<UserResponse> call = service.checkUserEmailExist(object);
+                        call.enqueue(getCheckSaveUserSplash(SplashActivity.this));
+                    }
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(this, getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e.toString());
+            finish();
+            i = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(i);
+        }
     }
 
 

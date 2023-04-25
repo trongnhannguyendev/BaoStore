@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_above="@id/myBottomNav"
         android:layout_below="@id/myToolbar"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
     </FrameLayout>
     <ProgressBar
