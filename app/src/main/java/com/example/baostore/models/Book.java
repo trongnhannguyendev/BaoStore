@@ -3,17 +3,17 @@ package com.example.baostore.models;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    private int bookid;
+    private Integer bookid;
     private String title;
-    private int totalPage;
+    private Integer totalPage;
     private String description;
     private String releasedate;
     private Double price;
-    private int quantity;
-    private int categoryid;
-    private int authorid;
-    private int publisherid;
-    private int state;
+    private Integer quantity;
+    private Integer categoryid;
+    private Integer authorid;
+    private Integer publisherid;
+    private Integer state;
     private String url;
 
     public Book() {

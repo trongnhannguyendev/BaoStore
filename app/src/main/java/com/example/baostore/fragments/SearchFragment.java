@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -44,13 +43,13 @@ public class SearchFragment extends Fragment {
     SearchView svSearch_search;
     Spinner spnFind, spnSortBy;
     TextView tvEmpty, tvToggle;
-    List<Book> list_book;
+    List<Book> bookList;
     List<Book> searchList;
     List<Category> categoryList;
     List<Publisher> publisherList;
     List<Author> authorList;
     RecyclerView recyBook_search;
-    BookAdapter adapter;
+    BookAdapter bookAdapter;
     int searchCode = 0;
     Bundle bundle;
 
@@ -73,17 +72,13 @@ public class SearchFragment extends Fragment {
 
                 searchList = new ArrayList<>();
 
+
+
+
                 bundle = getArguments();
                 if (bundle != null) {
-                    if (bundle.containsKey(BOOK_SEARCH_CODE)) {
-                        Toast.makeText(getContext(), "In", Toast.LENGTH_SHORT).show();
-                        searchCode = bundle.getInt(BOOK_SEARCH_CODE);
-                        filterV1(bundle.getString(BOOK_SEARCH));
-                    } else{
-                        searchCode = 0;
-                    }
                     if (bundle.containsKey(BOOK_LIST)) {
-                        list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
+                        bookList = (List<Book>) bundle.getSerializable(BOOK_LIST);
                     }
                     if (bundle.containsKey(CATEGORY_LIST)) {
                         categoryList = (List<Category>) bundle.getSerializable(CATEGORY_LIST);
@@ -93,6 +88,20 @@ public class SearchFragment extends Fragment {
                     }
                     if (bundle.containsKey(AUTHOR_LIST)) {
                         authorList = (List<Author>) bundle.getSerializable(AUTHOR_LIST);
+                        Log.d(getString(R.string.debug_frag_search), "author name: " + authorList.get(0).getAuthorname());
+                    }
+
+                    if (bundle.containsKey(BOOK_SEARCH_CODE)) {
+
+                        searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+                        Log.d(getString(R.string.debug_frag_search), "Search code: "+searchCode);
+                        Log.d(getString(R.string.debug_frag_search), "Book search: "+bundle.getString(BOOK_SEARCH));
+                        filterV1(bundle.getString(BOOK_SEARCH));
+                        spnFind.setSelection(1,false);
+
+                    } else{
+                        searchCode = 0;
+                        filterV1("");
                     }
 
                 }
@@ -111,12 +120,14 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         searchCode = i + 1;
+                        filterV1(svSearch_search.getQuery().toString());
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
                 });
+
 
                 spnSortBy.setSelection(0, false);
                 spnSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -131,8 +142,7 @@ public class SearchFragment extends Fragment {
                     }
                 });
 
-                adapter = new BookAdapter(list_book, getContext());
-                recyBook_search.setAdapter(adapter);
+
 
 
                 svSearch_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -152,7 +162,9 @@ public class SearchFragment extends Fragment {
                     }
                 });
 
-                adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+
+                bookAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onChanged() {
                         super.onChanged();
@@ -174,8 +186,8 @@ public class SearchFragment extends Fragment {
         switch (searchCode) {
             // All
             case 0:
-                adapter = new BookAdapter(list_book, getContext());
-                recyBook_search.setAdapter(adapter);
+                bookAdapter = new BookAdapter(bookList, getContext());
+                recyBook_search.setAdapter(bookAdapter);
                 break;
                 // Title
             case 1:
@@ -210,10 +222,15 @@ public class SearchFragment extends Fragment {
                 break;
 
         }
-        if (searchList.isEmpty()){
+        if (searchList.isEmpty() && searchCode != 0){
             tvEmpty.setVisibility(View.VISIBLE);
-        } else if(tvEmpty.getVisibility() == View.VISIBLE){
+        } else {
             tvEmpty.setVisibility(View.GONE);
+
+        }
+
+        if (!searchList.isEmpty()){
+            sortBy();
         }
     }
 
@@ -221,45 +238,47 @@ public class SearchFragment extends Fragment {
     public void sortBy(){
         long sortCode = spnSortBy.getSelectedItemPosition();
         Log.d(getString(R.string.debug_frag_search), "sortBy option: " + sortCode);
-        if (searchList.size() ==0){
-            searchList = list_book;
+        if (searchList.isEmpty()){
+            searchList = bookList;
         }
-        if(sortCode == 0) {
-            Collections.sort(searchList, new Comparator<Book>() {
-                @Override
-                public int compare(Book book, Book t1) {
-                    return book.getTitle().compareTo(t1.getTitle());
-                }
-            });
-        }
+        switch ((int) sortCode) {
+            case 0:
+                Collections.sort(searchList, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getTitle().compareTo(t1.getTitle());
+                    }
+                });
+                break;
+            case 1:
+                Collections.sort(searchList, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return t1.getTitle().compareTo(book.getTitle());
+                    }
+                });
+                break;
 
-        if (sortCode == 1){
-            Collections.sort(searchList, new Comparator<Book>() {
-                @Override
-                public int compare(Book book, Book t1) {
-                    return t1.getTitle().compareTo(book.getTitle());
-                }
-            });
-        }
 
-        if (sortCode == 2){
-            Collections.sort(searchList, new Comparator<Book>() {
-                @Override
-                public int compare(Book book, Book t1) {
-                    return book.getPrice().compareTo(t1.getPrice());
-                }
-            });
+            case 2:
+                Collections.sort(searchList, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return book.getPrice().compareTo(t1.getPrice());
+                    }
+                });
+                break;
+            case 3:
+                Collections.sort(searchList, new Comparator<Book>() {
+                    @Override
+                    public int compare(Book book, Book t1) {
+                        return t1.getPrice().compareTo(book.getPrice());
+                    }
+                });
+                break;
         }
-        if (sortCode == 3){
-            Collections.sort(searchList, new Comparator<Book>() {
-                @Override
-                public int compare(Book book, Book t1) {
-                    return t1.getPrice().compareTo(book.getPrice());
-                }
-            });
-        }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
 
     }
 
@@ -268,79 +287,87 @@ public class SearchFragment extends Fragment {
             searchList.clear();
         }
         Log.d(getString(R.string.debug_frag_search), find);
-        for (int i = 0; i < list_book.size(); i++) {
+        for (int i = 0; i < bookList.size(); i++) {
             Book book;
-            book = list_book.get(i);
+            book = bookList.get(i);
             find = find.toLowerCase();
             if (book.getTitle().toLowerCase().contains(find)) {
                 searchList.add(book);
 
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
 
     }
 
     void filterByPrice(double find) {
         searchList.clear();
         Log.d(getString(R.string.debug_frag_search), find + "");
-        for (int i = 0; i < list_book.size(); i++) {
+        for (int i = 0; i < bookList.size(); i++) {
             Book book;
-            book = list_book.get(i);
+            book = bookList.get(i);
             if (book.getPrice() == find) {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
     }
 
     void filterByPriceRange(double lowest, double highest) {
         searchList.clear();
-        for (int i = 0; i < list_book.size(); i++) {
+        for (int i = 0; i < bookList.size(); i++) {
             Book book;
-            book = list_book.get(i);
+            book = bookList.get(i);
             double minPrice = lowest;
             double maxPrice = highest;
             if (book.getPrice() >= minPrice && book.getPrice() <= maxPrice) {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
     }
 
     void filterByCategory(String categoryName){
+
         if (!searchList.isEmpty()) {
             searchList.clear();
         }
-        Log.d("----------------------", categoryName + "");
-        for (int i = 0; i < list_book.size(); i++) {
-            Book book = list_book.get(i);
-            Log.d(getString(R.string.debug_frag_search), "categoryid: " + book.getCategoryid());
+        Log.d(getString(R.string.debug_frag_search), categoryName + "");
+        //if (bundle.containsKey(BOOK_LIST)) {
+
+        Log.d(getString(R.string.debug_frag_search), "filterByCategory: "+bookList.get(0).getTitle());
+        //}
+        for (int i = 0; i < bookList.size(); i++) {
+            Log.d(getString(R.string.debug_frag_search), "Category: inside loop");
+            Book book = bookList.get(i);
+            int categoryId = book.getCategoryid();
+            Log.d(getString(R.string.debug_frag_search), "Book: "+book.getTitle());
+            Log.d(getString(R.string.debug_frag_search), "categoryid: " + categoryId);
+
+            Log.d(getString(R.string.debug_frag_search), "category: "+ categoryList.get(0));
             Category category = categoryList.get(book.getCategoryid()-1);
 
+            Log.d(getString(R.string.debug_frag_search), "category name: "+ category.getCategoryname());
 
-            Log.d(getString(R.string.debug_frag_search), "Find: " + categoryName);
-            Log.d(getString(R.string.debug_frag_search), "filterByCategoryName: " + category.getCategoryname());
             if (category.getCategoryname().toLowerCase().contains(categoryName.toLowerCase())) {
                 Log.d(getString(R.string.debug_frag_search), "--found: "+category.getCategoryname().toLowerCase());
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        Log.d(getString(R.string.debug_frag_search), "search list size: "+ searchList.size());
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
     }
 
     void filterByPublisher(String publisherName){
-        if (searchList != null) {
-            searchList.clear();
-        }
+        searchList.clear();
 
         Log.d(getString(R.string.debug_frag_search), publisherName + "");
-        for (int i = 0; i < list_book.size(); i++) {
-            Book book = list_book.get(i);
+        for (int i = 0; i < bookList.size(); i++) {
+            Book book = bookList.get(i);
             Publisher publisher = publisherList.get(book.getPublisherid()-1);
             Log.d(getString(R.string.debug_frag_search), "find: " + publisherName);
             Log.d(getString(R.string.debug_frag_search), "filterByPublisherName: " + publisher.getPublishername());
@@ -348,17 +375,17 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
     }
     void filterByAuthor(String authorName){
-        if (searchList != null) {
-            searchList.clear();
-        }
+        searchList.clear();
 
-        Log.d("----------------------", authorName + "");
-        for (int i = 0; i < list_book.size(); i++) {
-            Book book = list_book.get(i);
+        Log.d(getString(R.string.debug_frag_search), authorName + "");
+        for (int i = 0; i < bookList.size(); i++) {
+            Book book = bookList.get(i);
+            Log.d(getString(R.string.debug_frag_search), "book: " + book.getTitle());
+            Log.d(getString(R.string.debug_frag_search), "author list item: " + authorList.get(0).getAuthorname());
             Author author = authorList.get(book.getAuthorid()-1);
             Log.d(getString(R.string.debug_frag_search), "author name: " + authorName);
             Log.d(getString(R.string.debug_frag_search), "filter: " + author.getAuthorname());
@@ -366,8 +393,8 @@ public class SearchFragment extends Fragment {
                 searchList.add(book);
             }
         }
-        adapter = new BookAdapter(searchList, getContext());
-        recyBook_search.setAdapter(adapter);
+        bookAdapter = new BookAdapter(searchList, getContext());
+        recyBook_search.setAdapter(bookAdapter);
     }
 
 

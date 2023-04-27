@@ -144,7 +144,8 @@
     <string name="text_payment_when_arrived">Thanh toán khi nhận hàng</string>
     <string name="text_payment_google_pay">Thanh toán Google Pay</string>
 
-
+    <string name="payments_show_name">Thanh toán thành công cho %s</string>
+    <string name="text_out_of_stock">Sản phẩm hết hàng</string>
     <string-array name="language">
         <item>Tiếng Việt</item>
         <item>Tiếng Anh</item>
@@ -548,6 +549,6 @@
         <item> Xã Phước Kiển</item>
         <item> Xã Phước Lộc</item>
     </string-array>
-    <string name="payments_show_name">Thanh toán thành công cho %s</string>
+
 
 </resources>

@@ -8,6 +8,7 @@ import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.ORDER_ID;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -538,6 +539,7 @@ public class RetrofitCallBack {
                         OrderHistoryAdapter adapter = new OrderHistoryAdapter(orderList, context);
                         Toast.makeText(activity, orderList.get(0).getPhonenumber() + "", Toast.LENGTH_SHORT).show();
                         recy.setAdapter(adapter);
+
                     } else{
                         Toast.makeText(activity, "Chưa có đơn hàng nào", Toast.LENGTH_SHORT).show();
                     }

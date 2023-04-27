@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Author implements Serializable {
     private int authorid;
     private String authorname;
+    private Integer authorState;
 
     public Author(){}
 
@@ -22,5 +23,13 @@ public class Author implements Serializable {
 
     public void setAuthorname(String authorname) {
         this.authorname = authorname;
+    }
+
+    public Integer getAuthorState() {
+        return authorState;
+    }
+
+    public void setAuthorState(Integer authorState) {
+        this.authorState = authorState;
     }
 }

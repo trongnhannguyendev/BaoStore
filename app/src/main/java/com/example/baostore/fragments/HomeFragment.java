@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
 
                 btnSearchNew.setOnClickListener(view -> {
                     Fragment fragment = new SearchFragment();
-
+                    activity.setSearchSelection();
                     activity.loadSearchFragment(fragment, 0, "");
                 });
 
@@ -149,6 +149,14 @@ public class HomeFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(BOOK_LIST)) {
             bookList = new ArrayList<> ((List<Book>) bundle.getSerializable(BOOK_LIST));
+
+            for (int i = 0; i < bookList.size(); i++) {
+                Book book = bookList.get(i);
+                if (book.getState() == 0){
+                    bookList.remove(i);
+                }
+            }
+
             bookList_date = new ArrayList<> ((List<Book>) bundle.getSerializable(BOOK_LIST));
 
             bookHorizontalAdapter = new BookHorizontalAdapter(bookList, getContext());
