@@ -146,6 +146,9 @@
     <string name="backpressed_exit">Nhấn lại để thoát</string>
     <string name="text_spinner_new_address">Thêm địa chỉ mới</string>
 
+    <string name="text_payment_when_arrived">Thanh toán khi nhận hàng</string>
+    <string name="text_payment_google_pay">Thanh toán Google Pay</string>
+
 
     <string-array name="language">
         <item>Tiếng Việt</item>

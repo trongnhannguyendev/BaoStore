@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
 
         bundle.putInt(BOOK_SEARCH_CODE, searchCode);
         bundle.putString(BOOK_SEARCH, find);
-        Toast.makeText(this, "bookname:" +find, Toast.LENGTH_SHORT).show();
         fragment.setArguments(bundle);
 
         Log.d(getString(R.string.debug_MainActivity), "Search code: "+ searchCode);

@@ -54,43 +54,44 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         try {
             // Inflate the layout for this fragment
+            if (getActivity() != null && isAdded()) {
 
+                tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
 
-            tvTotalPrice = view.findViewById(R.id.tvTotalPrice_cart);
+                service = GetRetrofit.getInstance().createRetrofit();
+                activity = (MainActivity) getContext();
 
-            service = GetRetrofit.getInstance().createRetrofit();
-            activity = (MainActivity) getContext();
+                // màu icon progress
+                cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
+                int color = getResources().getColor(R.color.ic_progress);
+                cvIconProgress.setCardBackgroundColor(color);
 
-            // màu icon progress
-            cvIconProgress = (CardView) view.findViewById(R.id.cvProgress_1);
-            int color = getResources().getColor(R.color.ic_progress);
-            cvIconProgress.setCardBackgroundColor(color);
+                // xử lý button
+                btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
+                bundle = getArguments();
 
-            // xử lý button
-            btnConfirmCart = view.findViewById(R.id.btnComnfirmCart);
-            bundle = getArguments();
+                cartList = new ArrayList<>();
+                recyCart = view.findViewById(R.id.recyCart_cart);
+                recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            cartList = new ArrayList<>();
-            recyCart = view.findViewById(R.id.recyCart_cart);
-            recyCart.setLayoutManager(new LinearLayoutManager(getContext()));
+                getCart();
 
-            getCart();
+                btnConfirmCart.setOnClickListener(v -> {
+                    if (!cartList.isEmpty()) {
+                        Intent i = new Intent(getActivity(), CartInforActivity.class);
+                        bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
+                        bundle.putSerializable(CART_LIST, (Serializable) cartList);
+                        Log.d(getString(R.string.debug_frag_cart), "Total cart price: " + totalCartPrice);
 
-            btnConfirmCart.setOnClickListener(v -> {
-                if (!cartList.isEmpty()) {
-                    Intent i = new Intent(getActivity(), CartInforActivity.class);
-                    bundle.putDouble(CART_TOTAL_PRICE, totalCartPrice);
-                    bundle.putSerializable(CART_LIST, (Serializable) cartList);
-                    Log.d(getString(R.string.debug_frag_cart), "Total cart price: " + totalCartPrice);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                    } else {
+                        activity.createSnackbar(v, getString(R.string.text_cart_empty));
+                    }
 
-                    i.putExtras(bundle);
-                    startActivity(i);
-                } else {
-                    activity.createSnackbar(v, getString(R.string.text_cart_empty));
-                }
-
-            });
-            return view;
+                });
+                return view;
+            }
         } catch (Exception e){
             Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
             Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);

@@ -69,7 +69,12 @@ public class DetailOrderItemActivity extends AppCompatActivity {
 
             tvDate.setText(order.getCreatedate());
             //tvTotalPrice = order.getOrderTotal()
-            tvPaymentType.setText(order.getPayment() + "");
+            if (order.getPayment() == 0){
+                tvPaymentType.setText(getString(R.string.text_payment_when_arrived));
+            }
+            if (order.getPayment() == 1){
+                tvPaymentType.setText(getString(R.string.text_payment_google_pay));
+            }
             tvReceiverName.setText(order.getFullname());
             tvReceiverPhoneNumber.setText(order.getPhonenumber());
             tvReceiverAddress.setText(order.getAddress());

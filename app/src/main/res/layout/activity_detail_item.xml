@@ -76,8 +76,10 @@
                 android:id="@+id/tvDescription_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
                 android:text="Đắc nhân tâm được mệnh danh là quyển sách hay nhất, nổi tiếng nhất, bán chạy nhất và nó có tầm ảnh hưởng đi xa nhất mọi thời đại"
                 android:textColor="#000"
+                android:justificationMode="inter_word"
                 android:textSize="14dp" />
 
             <TextView
