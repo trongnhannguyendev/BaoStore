@@ -23,11 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baostore.R;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.adapters.BookAdapter;
+import com.example.baostore.adapters.BookHorizontalAdapter;
 import com.example.baostore.adapters.CategoryAdapter;
 import com.example.baostore.models.Book;
 import com.example.baostore.models.Category;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -36,11 +39,11 @@ public class HomeFragment extends Fragment {
     ImageView ivSearch;
     RecyclerView recyBook_Popular, recyBook_New, recyCategory, recyCategory1;
     BookAdapter bookAdapter;
-    BookAdapter bookAdapterHorizontal;
+    BookHorizontalAdapter bookHorizontalAdapter;
     CategoryAdapter categoryAdapter;
     MainActivity activity;
     Bundle bundle;
-    List<Book> list_book;
+    List<Book> bookList, bookList_date;
     List<Category> list_category;
 
     @Override
@@ -51,9 +54,6 @@ public class HomeFragment extends Fragment {
             NestedScrollView nestedScrollView = v.findViewById(R.id.myScrollView);
             LinearLayout layout1 = v.findViewById(R.id.layout_category_1);
             LinearLayout layout2 = v.findViewById(R.id.layout_category_2);
-
-            list_book = new ArrayList<>();
-            list_category = new ArrayList<>();
 
             // Ánh xạ
             recyBook_Popular = v.findViewById(R.id.recyBook_Popular);
@@ -77,15 +77,6 @@ public class HomeFragment extends Fragment {
             bundle = getArguments();
             getBooks();
             getCategory();
-
-            bookAdapter = new BookAdapter(list_book, getContext(), 1);
-            bookAdapterHorizontal = new BookAdapter(list_book, getContext(), 2);
-            categoryAdapter = new CategoryAdapter(list_category, getContext());
-
-            recyBook_Popular.setAdapter(bookAdapterHorizontal);
-            recyBook_New.setAdapter(bookAdapter);
-            recyCategory.setAdapter(categoryAdapter);
-            recyCategory1.setAdapter(categoryAdapter);
 
             btnSearchNew.setOnClickListener(view -> {
                 Fragment fragment = new SearchFragment();
@@ -146,7 +137,7 @@ public class HomeFragment extends Fragment {
             return v;
         } catch (Exception e){
             Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
-            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            Log.d(getString(R.string.debug_frag_home), "Error: "+e);
         }
         return v;
     }
@@ -155,14 +146,14 @@ public class HomeFragment extends Fragment {
     public void getBooks() {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(BOOK_LIST)) {
-            list_book = (List<Book>) bundle.getSerializable(BOOK_LIST);
+            bookList = new ArrayList<> ((List<Book>) bundle.getSerializable(BOOK_LIST));
+            bookList_date = new ArrayList<> ((List<Book>) bundle.getSerializable(BOOK_LIST));
 
-            bookAdapter = new BookAdapter(list_book, getContext(),1);
+            bookHorizontalAdapter = new BookHorizontalAdapter(bookList, getContext());
+            recyBook_Popular.setAdapter(bookHorizontalAdapter);
 
-            recyBook_Popular.setAdapter(bookAdapter);
-            recyBook_New.setAdapter(bookAdapter);
-
-            Log.d(getString(R.string.debug_frag_home), "Check bundle book:"+list_book.get(0).getTitle());
+            sortByReleaseDate();
+            Log.d(getString(R.string.debug_frag_home), "Check bundle book:"+ bookList.get(0).getTitle());
         } else {
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -196,5 +187,25 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    public void sortByReleaseDate(){
+
+        Collections.sort(bookList_date, new Comparator<Book>() {
+            @Override
+            public int compare(Book book, Book t1) {
+                return t1.getReleasedate().compareTo(book.getReleasedate());
+            }
+        });
+
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book book, Book t1) {
+                return t1.getPrice().compareTo(book.getPrice());
+            }
+        });
+
+        bookAdapter = new BookAdapter(bookList_date, getContext());
+        recyBook_New.setAdapter(bookAdapter);
+
+    }
 
 }

@@ -146,6 +146,7 @@
     <string name="backpressed_exit">Press again to exit</string>
     <string name="text_spinner_new_address">Add new address</string>
 
+    <string name="payments_show_name">success for %s</string>
 
 
     <string-array name="language">
@@ -176,7 +177,7 @@
 
     <array name="payment_type">
         <item>Receipt</item>
-        <item>Paypal</item>
+        <item>Google Pay</item>
     </array>
 
 
