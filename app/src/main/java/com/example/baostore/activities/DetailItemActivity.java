@@ -115,8 +115,11 @@ public class DetailItemActivity extends AppCompatActivity {
         object.addProperty(BOOK_ID, bookid);
         object.addProperty(CART_AMOUNT, 1);
 
-        Call<CartResponse> call = service.insertCart(object);
-
-        call.enqueue(cartAddItem(this));
+        if (book.getQuantity()>0){
+            Call<CartResponse> call = service.insertCart(object);
+            call.enqueue(cartAddItem(this));
+        } else {
+            Toast.makeText(this, R.string.text_out_of_stock, Toast.LENGTH_SHORT).show();
+        }
     }
 }

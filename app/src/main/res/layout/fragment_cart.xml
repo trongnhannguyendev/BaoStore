@@ -34,7 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_above="@id/layoutBotButton"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/custom_button_4"
             android:gravity="center"
             android:padding="10dp">

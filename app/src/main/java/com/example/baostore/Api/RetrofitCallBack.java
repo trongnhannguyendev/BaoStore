@@ -33,6 +33,7 @@ import com.example.baostore.activities.LoginActivity;
 import com.example.baostore.activities.MainActivity;
 import com.example.baostore.activities.RegisterActivity;
 import com.example.baostore.activities.SplashActivity;
+import com.example.baostore.activities.SuccessActivity;
 import com.example.baostore.adapters.OrderHistoryAdapter;
 import com.example.baostore.adapters.OrderItemAdapter;
 import com.example.baostore.fragments.CartFragment;
@@ -246,7 +247,7 @@ public class RetrofitCallBack {
                     Log.d("--updateBook", "onResponse: " + response.body().getMessage());
                 }
                 if (actionCode == 1){
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, SuccessActivity.class);
                     context.startActivity(intent);
                 }
 

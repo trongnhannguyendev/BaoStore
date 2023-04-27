@@ -47,7 +47,7 @@ public class AddAddressActivity extends AppCompatActivity {
             spnWard = findViewById(R.id.spnWard);
             edAddressName = findViewById(R.id.edAddressName);
             btnAdd = findViewById(R.id.btnAdd_address);
-            toolbar = findViewById(R.id.mtb_aa);
+            toolbar = findViewById(R.id.myToolbar);
 
             service = GetRetrofit.getInstance().createRetrofit();
 

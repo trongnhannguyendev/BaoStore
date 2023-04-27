@@ -26,6 +26,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SuccessActivity"
+            android:exported="false"
+            android:label="@string/title_activity_success"
+            android:theme="@style/BaoStore" />
+        <activity
+            android:name=".activities.SuccessPaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_success_payment"
+            android:theme="@style/BaoStore" />
+        <activity
             android:name=".activities.AddAddressActivity"
             android:exported="false" />
         <activity
@@ -82,7 +92,7 @@
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true"/>
+            android:value="true" />
     </application>
 
 </manifest>

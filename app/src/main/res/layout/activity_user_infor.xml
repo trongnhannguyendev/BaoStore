@@ -49,14 +49,29 @@
             android:textSize="20dp" />
 
 
-        <Spinner
-            android:id="@+id/spnAddress_info"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
             android:background="@drawable/custom_form_2"
-            android:drawablePadding="10dp"
-            android:paddingLeft="8dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:layout_height="50dp"
+            >
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_address" />
+            <Spinner
+                android:id="@+id/spnAddress_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+
+
+
+                />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/edNewAddress_info"

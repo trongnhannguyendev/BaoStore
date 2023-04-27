@@ -112,7 +112,16 @@ public class CartPaymentActivity extends AppCompatActivity {
             service = GetRetrofit.getInstance().createRetrofit();
             bundle = getIntent().getExtras();
 
-
+            // màu icon progress
+            cvIconProgress = findViewById(R.id.cvProgress_3);
+            int color = getResources().getColor(R.color.ic_progress);
+            cvIconProgress.setCardBackgroundColor(color);
+            imgBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
             tvTitleHeader.setText(getString(R.string.header_cart_payment));
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.payment_type));
@@ -139,7 +148,7 @@ public class CartPaymentActivity extends AppCompatActivity {
 
             btnConfirm.setOnClickListener(view -> {
                 if (spnPaymentType.getSelectedItemPosition() == 0){
-                    insertItem(fullName,phoneNumber,address,user, false);
+                    insertItem(fullName,phoneNumber,address,user, 0);
                 }
                 if (spnPaymentType.getSelectedItemPosition() == 1){
                     initializeUi();
@@ -160,7 +169,7 @@ public class CartPaymentActivity extends AppCompatActivity {
 
 
 
-    private void insertItem(String fullName, String phoneNumber, String address, User user, boolean paymentType){
+    private void insertItem(String fullName, String phoneNumber, String address, User user, int paymentType){
         JsonObject object = new JsonObject();
         object.addProperty(ORDER_USER_NAME, fullName);
         object.addProperty(USER_PHONE_NUMBER, phoneNumber);
@@ -214,8 +223,7 @@ public class CartPaymentActivity extends AppCompatActivity {
                     case AppCompatActivity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
                         handlePaymentSuccess(paymentData);
-                        insertItem(fullName,phoneNumber,address,user,true);
-                        finish();
+
                         break;
 
                     case AppCompatActivity.RESULT_CANCELED:
@@ -251,6 +259,7 @@ public class CartPaymentActivity extends AppCompatActivity {
 
             // Logging token string.
             Log.d("Google Pay token: ", token);
+            insertItem(fullName,phoneNumber,address,user,1);
 
         } catch (JSONException e) {
             throw new RuntimeException("The selected garment cannot be parsed from the list of elements");

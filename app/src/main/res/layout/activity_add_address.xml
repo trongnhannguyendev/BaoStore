@@ -7,16 +7,8 @@
     tools:context=".activities.AddAddressActivity"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/mtb_aa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_header"
-        app:navigationIcon="@drawable/arrow_back"
-        app:navigationIconTint="@color/white"
-        app:title="Thêm địa chỉ"
-        app:titleCentered="true"
-        app:titleTextColor="@color/white" />
+    <include  android:id="@+id/myToolbar" layout="@layout/layout_toolbar"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,64 +17,69 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/custom_card">
 
-    <EditText
-        android:id="@+id/edAddressName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLines="1"
-        android:hint="Địa chỉ" />
+        <EditText
+            android:id="@+id/edAddressName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:hint="Địa chỉ" />
 
-    <TextView
-        android:id="@+id/tvDistrict"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20sp"
-        android:gravity="center_vertical"
-        android:layout_below="@+id/edAddressName"
-        android:textColor="@color/black"
-        android:text="Phường"/>
+        <TextView
+            android:id="@+id/tvDistrict"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
 
-    <Spinner
-        android:id="@+id/spnDistrict"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@+id/edAddressName"
-        android:layout_toRightOf="@+id/tvDistrict"/>
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_below="@+id/edAddressName"
+            android:text="Phường"/>
 
-    <TextView
-        android:id="@+id/tvWard"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20sp"
-        android:gravity="center_vertical"
-        android:layout_below="@+id/tvDistrict"
-        android:textColor="@color/black"
-        android:text="Quận"/>
+        <Spinner
+            android:id="@+id/spnDistrict"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/edAddressName"
+            android:layout_toRightOf="@+id/tvDistrict"/>
 
-    <Spinner
-        android:id="@+id/spnWard"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@+id/tvWard"
-        android:layout_below="@+id/spnDistrict"/>
+        <TextView
+            android:id="@+id/tvWard"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
 
-    <TextView
-        android:id="@+id/tvCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:layout_below="@+id/spnWard"
-        android:text="TP.HCM" />
+            android:textColor="@color/black"
+
+            android:gravity="center_vertical"
+            android:layout_below="@+id/tvDistrict"
+            android:text="Quận"/>
+
+        <Spinner
+            android:id="@+id/spnWard"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/tvWard"
+            android:layout_below="@+id/spnDistrict"/>
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_below="@+id/spnWard"
+            android:text="TP.HCM" />
 
 
 
@@ -95,7 +92,7 @@
 
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/custom_button_1"
+        android:background="@drawable/custom_header"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_below="@+id/tvCity"
         android:textSize="20dp"

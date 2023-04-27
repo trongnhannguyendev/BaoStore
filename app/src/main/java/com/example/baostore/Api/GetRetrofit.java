@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GetRetrofit {
     private static GetRetrofit Instance;
-    private static final String BASE_URL = "http://192.168.1.8/bookplatform/views/";
+    private static final String BASE_URL = "http://172.20.10.3/BaoStoreApi/views/";
 
 
     public static synchronized GetRetrofit getInstance(){
