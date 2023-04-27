@@ -87,7 +87,7 @@ public interface ApiService {
     @GET("get-all-book.php")
     Call<BookResponse> getbook();
 
-    @POST("update-book-quantity.php")
+    @POST("update-quantity-book.php")
     Call<BookResponse> updateBook(
             @Body JsonObject jsonObject
     );

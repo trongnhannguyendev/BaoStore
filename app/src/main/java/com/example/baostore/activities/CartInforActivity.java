@@ -106,7 +106,6 @@ public class CartInforActivity extends AppCompatActivity {
                 AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(this, addressList);
                 spnAddress.setAdapter(adapter);
             }
-            spnAddress.setSelection(0, false);
             spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

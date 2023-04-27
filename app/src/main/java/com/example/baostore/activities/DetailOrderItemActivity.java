@@ -24,11 +24,7 @@ import com.example.baostore.Utils.Utils;
 import com.example.baostore.models.Order;
 import com.example.baostore.responses.OrderDetailResponse;
 import com.google.gson.JsonObject;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
+
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;

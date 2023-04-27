@@ -175,7 +175,7 @@
 
     <array name="payment_type">
         <item>Khi nhận hàng</item>
-        <item>Paypal</item>
+        <item><item>Google Pay</item></item>
     </array>
 
 
@@ -548,5 +548,6 @@
         <item> Xã Phước Kiển</item>
         <item> Xã Phước Lộc</item>
     </string-array>
+    <string name="payments_show_name">Thanh toán thành công cho %s</string>
 
 </resources>

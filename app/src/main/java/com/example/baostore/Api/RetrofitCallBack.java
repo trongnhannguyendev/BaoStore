@@ -596,7 +596,7 @@ public class RetrofitCallBack {
 
             @Override
             public void onFailure(Call<OrderResponse> call, Throwable t) {
-                Log.d("---", t.toString()+"");
+                Log.d(context.getString(R.string.debug_callback), t.toString());
             }
         };
         return  callback;

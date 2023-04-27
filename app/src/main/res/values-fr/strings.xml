@@ -175,7 +175,7 @@
 
     <array name="payment_type">
         <item>Accusé de réception</item>
-        <item>Paypal</item>
+        <item><item>Google Pay</item></item>
     </array>
 
 
@@ -548,4 +548,5 @@
         <item> Xã Phước Kiển</item>
         <item> Xã Phước Lộc</item>
     </string-array>
+    <string name="payments_show_name">succès pour %s</string>
 </resources>
