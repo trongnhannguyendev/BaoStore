@@ -66,10 +66,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 if (response.isSuccessful()){
-                    if (response.body().getResponseCode() == RESPONSE_OKAY){
+                    if (response.body().getResponseCode() == RESPONSE_OKAY) {
                         List<OrderDetail> orderDetailList = response.body().getData();
 
-                        double totalPrice = orderDetailList.get(0).getPrice();
+                        double totalPrice = 0;
+
+                        for (int i = 0; i < orderDetailList.size(); i++) {
+                            totalPrice += orderDetailList.get(i).getPrice();
+                        }
                         holder.tvTotalPrice.setText(new Utils().priceToString(totalPrice));
                         Thread thread = new Thread(new Runnable() {
                             @Override
