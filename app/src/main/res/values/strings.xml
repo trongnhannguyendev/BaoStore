@@ -20,7 +20,6 @@
     <string name="enqueue_failure">Something wrong happen</string>
 
 
-
     <!-- Error -->
     <string name="err_email_empty">Cần phải nhập email</string>
     <string name="err_num_format">Phải là số</string>
@@ -32,7 +31,6 @@
     <string name="err_password_length">Mật khẩu phải > 6 ký tự</string>
     <string name="err_not_identical">Mật khẩu không trùng khớp</string>
     <string name="err_fail_login">Sai tên đăng nhập hoặc mật khẩu</string>
-
 
 
     <!-- Hint-->
@@ -56,8 +54,6 @@
     <string name="header_cart_info">Thông tin nhận hàng</string>
     <string name="header_change_pass">Thay đổi mật khẩu</string>
     <string name="header_user_info">Thông tin cá nhân</string>
-
-
 
 
     <string name="msg_exit_app">Nhấn lại để thoát app</string>
@@ -128,7 +124,6 @@
     <string name="button_add_and_to_cart">Thanh toán</string>
 
 
-
     <!-- Order Detail Activity-->
     <string name="order_total">Thành tiền</string>
 
@@ -178,7 +173,9 @@
 
     <array name="payment_type">
         <item>Khi nhận hàng</item>
-        <item><item>Google Pay</item></item>
+        <item>
+            <item>Google Pay</item>
+        </item>
     </array>
 
 
@@ -209,16 +206,16 @@
     </string-array>
 
     <string-array name="ward_1">
-    <item>Bến Nghé</item>
-    <item>Bến Thành</item>
-    <item>Cầu Kho</item>
-    <item>Cầu Ông Lãnh</item>
-    <item>Cô Giang</item>
-    <item>Đa Kao</item>
-    <item>Nguyễn Cư Trinh</item>
-    <item>Nguyễn Cư Trinh</item>
-    <item>Phạm Ngũ Lão</item>
-    <item>Tân Định</item>
+        <item>Bến Nghé</item>
+        <item>Bến Thành</item>
+        <item>Cầu Kho</item>
+        <item>Cầu Ông Lãnh</item>
+        <item>Cô Giang</item>
+        <item>Đa Kao</item>
+        <item>Nguyễn Cư Trinh</item>
+        <item>Nguyễn Cư Trinh</item>
+        <item>Phạm Ngũ Lão</item>
+        <item>Tân Định</item>
     </string-array>
     <string-array name="ward_2">
         <item>An Khánh</item>

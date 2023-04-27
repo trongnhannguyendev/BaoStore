@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.PaymentSuccessActivity;
 import com.example.baostore.R;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
@@ -246,7 +247,7 @@ public class RetrofitCallBack {
                     Log.d("--updateBook", "onResponse: " + response.body().getMessage());
                 }
                 if (actionCode == 1){
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, PaymentSuccessActivity.class);
                     context.startActivity(intent);
                 }
 

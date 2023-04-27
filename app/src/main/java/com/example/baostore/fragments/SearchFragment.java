@@ -76,7 +76,9 @@ public class SearchFragment extends Fragment {
                 bundle = getArguments();
                 if (bundle != null) {
                     if (bundle.containsKey(BOOK_SEARCH_CODE)) {
+                        Toast.makeText(getContext(), "In", Toast.LENGTH_SHORT).show();
                         searchCode = bundle.getInt(BOOK_SEARCH_CODE);
+                        filterV1(bundle.getString(BOOK_SEARCH));
                     } else{
                         searchCode = 0;
                     }
@@ -103,6 +105,8 @@ public class SearchFragment extends Fragment {
                 spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnSortBy.setAdapter(spnAdapterSort);
 
+
+                spnFind.setSelection(0, false);
                 spnFind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -159,7 +163,7 @@ public class SearchFragment extends Fragment {
             }
         } catch (Exception e){
             Toast.makeText(getContext(), getString(R.string.text_something_wrong), Toast.LENGTH_SHORT).show();
-            Log.d(getString(R.string.debug_LoginActivity), "Error: "+e);
+            Log.d(getString(R.string.debug_frag_search), "Error: "+e);
         }
         return v;
 
@@ -308,7 +312,7 @@ public class SearchFragment extends Fragment {
     }
 
     void filterByCategory(String categoryName){
-        if (searchList != null) {
+        if (!searchList.isEmpty()) {
             searchList.clear();
         }
         Log.d("----------------------", categoryName + "");
