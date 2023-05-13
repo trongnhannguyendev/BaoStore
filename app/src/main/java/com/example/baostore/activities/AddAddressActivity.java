@@ -61,73 +61,78 @@ public class AddAddressActivity extends AppCompatActivity {
             spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String[] myArr = new String[0];
                     switch (i) {
+                        
                         case 0:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_1));
+                            myArr = getResources().getStringArray(R.array.ward_1);
                             break;
                         case 1:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_2));
+                            myArr = getResources().getStringArray(R.array.ward_2);
                             break;
                         case 2:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_3));
+                            myArr = getResources().getStringArray(R.array.ward_3);
                             break;
                         case 3:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_4));
+                            myArr = getResources().getStringArray(R.array.ward_4);
                             break;
                         case 4:
                         case 5:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_5));
+                            myArr = getResources().getStringArray(R.array.ward_5);
                             break;
                         case 6:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_7));
+                            myArr = getResources().getStringArray(R.array.ward_7);
                             break;
                         case 7:
                         case 10:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_8));
+                            myArr = getResources().getStringArray(R.array.ward_8);
                             break;
                         case 8:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_9));
+                            myArr = getResources().getStringArray(R.array.ward_9);
                             break;
                         case 9:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_10));
+                            myArr = getResources().getStringArray(R.array.ward_10);
                             break;
                         case 11:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_12));
+                            myArr = getResources().getStringArray(R.array.ward_12);
                             break;
                         case 12:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_binhtan));
+                            myArr = getResources().getStringArray(R.array.ward_binhtan);
                             break;
                         case 13:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_binhthanh));
+                            myArr = getResources().getStringArray(R.array.ward_binhthanh);
                             break;
                         case 14:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_govap));
+                            myArr = getResources().getStringArray(R.array.ward_govap);
                             break;
                         case 15:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_phunhuan));
+                            myArr = getResources().getStringArray(R.array.ward_phunhuan);
                             break;
                         case 16:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_tanbinh));
+                            myArr = getResources().getStringArray(R.array.ward_tanbinh);
                             break;
                         case 17:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_tanphu));
+                            myArr = getResources().getStringArray(R.array.ward_tanphu);
                             break;
                         case 18:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_binhchanh));
+                            myArr = getResources().getStringArray(R.array.ward_binhchanh);
                             break;
                         case 19:
+                            myArr = getResources().getStringArray(R.array.ward_cangio);
                             wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_cangio));
                             break;
                         case 20:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_cuchi));
+                            myArr = getResources().getStringArray(R.array.ward_cuchi);
                             break;
                         case 21:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_hocmon));
+                            myArr = getResources().getStringArray(R.array.ward_hocmon);
                             break;
                         case 22:
-                            wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ward_nhabe));
+                            myArr = getResources().getStringArray(R.array.ward_nhabe);
                             break;
                     }
+                    wardAdapter = new ArrayAdapter<>(AddAddressActivity.this, android.R.layout.simple_spinner_dropdown_item, myArr);
+
                     spnWard.setAdapter(wardAdapter);
                 }
 

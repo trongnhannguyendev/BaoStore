@@ -47,7 +47,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 MainActivity mainActivity = (MainActivity) context;
                 SearchFragment fragment = new SearchFragment();
                 mainActivity.setSearchSelection();
-                mainActivity.loadSearchFragment(fragment,6,category.getCategoryname()+"");
+                mainActivity.loadSearchFragment(fragment,2,category.getCategoryname()+"");
 
                 Log.d(context.getString(R.string.debug_CartAdapter), "category name: "+category.getCategoryname()+"");
             }

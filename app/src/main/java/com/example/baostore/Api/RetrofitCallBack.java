@@ -8,6 +8,7 @@ import static com.example.baostore.Constant.Constants.BOOK_LIST;
 import static com.example.baostore.Constant.Constants.BOOK_QUANTITY;
 import static com.example.baostore.Constant.Constants.CART_LIST;
 import static com.example.baostore.Constant.Constants.CATEGORY_LIST;
+import static com.example.baostore.Constant.Constants.ORDER_ID;
 import static com.example.baostore.Constant.Constants.PUBLISHER_LIST;
 import static com.example.baostore.Constant.Constants.RESPONSE_OKAY;
 import static com.example.baostore.Constant.Constants.USER_ID;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baostore.PaymentSuccessActivity;
 import com.example.baostore.R;
 import com.example.baostore.activities.BuyHistoryActivity;
 import com.example.baostore.activities.DetailItemActivity;
@@ -246,7 +248,7 @@ public class RetrofitCallBack {
                     Log.d("--updateBook", "onResponse: " + response.body().getMessage());
                 }
                 if (actionCode == 1){
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, PaymentSuccessActivity.class);
                     context.startActivity(intent);
                 }
 
@@ -537,6 +539,7 @@ public class RetrofitCallBack {
                         OrderHistoryAdapter adapter = new OrderHistoryAdapter(orderList, context);
                         Toast.makeText(activity, orderList.get(0).getPhonenumber() + "", Toast.LENGTH_SHORT).show();
                         recy.setAdapter(adapter);
+
                     } else{
                         Toast.makeText(activity, "Chưa có đơn hàng nào", Toast.LENGTH_SHORT).show();
                     }

@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".PaymentSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddAddressActivity"
             android:exported="false" />
         <activity
@@ -82,7 +85,7 @@
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true"/>
+            android:value="true" />
     </application>
 
 </manifest>
